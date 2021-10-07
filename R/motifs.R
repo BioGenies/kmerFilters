@@ -45,3 +45,117 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
   
   motif  
 }
+
+#' Motif to a sequence injection 
+#' 
+#' this function injects motifs to a sequence
+#' @param motifs list of motifs to be injected
+#' @param sequence vector of alphabet elements
+#' @return list(sequence, motifs, masks)
+#' @export
+#' @examples
+#' # simple injection
+#' add_motifs(list(c(1, "_", 1), c(1, 1)), c(2, 2, 3, 4))
+#' # little bit more interesting
+#' alph <- as.character(1L:4)
+#' n <- 4
+#' d <- 1
+#' motifs <- generate_motifs(alph, 2, n, d)
+#' example_sequence <- sample(alph, size = 10, replace = TRUE)
+#' add_motifs(motifs, example_sequence)
+
+add_motifs <- function(motifs, sequence) {
+  sequence_len <- length(sequence)
+  
+  #create grid of possible motifs' positions
+  maximum_motifs_positions <- lapply(motifs, function(x)
+    seq(sequence_len - length(x) + 1))
+  motifs_grid <- expand.grid(maximum_motifs_positions)
+  motifs_grid <- motifs_grid[sample(1:nrow(motifs_grid)), , drop = FALSE]
+  
+  for (i in 1:nrow(motifs_grid)) {
+    
+    list_of_masks <- list()
+    injected_sequence <- sequence
+    injected_positions <- logical(length(sequence))
+    
+    for (j in 1:ncol(motifs_grid)) {
+      mask <- rep(FALSE, sequence_len)
+      new_injected_sequence <- injected_sequence
+      motif <- motifs[[j]]
+      ids <- 0:(length(motif) - 1)
+      ids <- ids[motif != "_"] + motifs_grid[i, j]
+      mask[ids] <- TRUE
+      new_injected_sequence[ids] <- motif[motif != "_"]
+      
+      if (j == 1) {
+        injected_sequence <- new_injected_sequence
+        injected_positions <- mask
+      } else {
+        if (all(injected_sequence[injected_positions] == new_injected_sequence[injected_positions])){
+          injected_sequence <- new_injected_sequence
+          injected_positions <- (injected_positions | mask)
+        } else {
+          break
+        }
+      }
+      
+      list_of_masks[[j]] <- mask
+      
+      if (j == ncol(motifs_grid)){
+        attr(injected_sequence, "motifs") <- motifs
+        attr(injected_sequence, "masks") <- list_of_masks
+        return(injected_sequence)
+      }
+    }
+  }
+  stop("Given motifs cannot be injected to a sequence!")
+}
+
+#' Validate if given set of motifs can occur in a sequence at the same time
+#' 
+#' function validates if given motifs can be injected to a sequence of given length
+#' @param motifs list of motifs we are checking
+#' @param sequence_length length of sequence we want to inject
+#' @return logical value if such injection is possible
+#' @export
+#' @examples
+#' set.seed(42)
+#' motifs <- generate_motifs(1:4, n_motifs = 2, n = 3, d = 3)
+#' validate_motifs(motifs, 7)
+#' validate_motifs(motifs, 9)
+validate_motifs <- function(motifs, sequence_length) {
+  result <- tryCatch(add_motifs(motifs, rep("*", sequence_length)),
+                     error = function(dummy) FALSE)
+  ifelse(class(result) == "character", TRUE, FALSE)
+}
+
+#' Function generates list of motifs
+#' 
+#' generate multiple motifs from alphabet
+#' @inheritParams generate_motif
+#' @param n_motifs number of motifs to generate
+#' @param validate if true, returns a set of motifs that can be injected to a sequence of length 10
+#' @return list of generated motifs
+#' @export
+#' @examples
+#' generate_motifs(1:4, 5, n = 6, d = 6)
+#' generate_motifs(1:4, 5, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
+generate_motifs <- function(alphabet, n_motifs, n, d, motifProbs = NULL, validate = TRUE) {
+  
+  if (!validate) {
+    motifs <- lapply(1L:n_motifs, function(dummy) generate_motif(alphabet, n, d, motifProbs))
+    } 
+  else {
+    # check if generated motifs can be injected to sequence of length 10
+    validated <- FALSE
+    while (!validated) {
+      motifs <- lapply(1L:n_motifs, function(dummy) generate_motif(alphabet, n, d, motifProbs))
+      validated <- validate_motifs(motifs, 10)
+      }
+    }
+    
+  motifs
+}
+
+
