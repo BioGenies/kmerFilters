@@ -16,10 +16,10 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
   
   checkmate::assert_number(n)
   checkmate::assert_number(d)
-  checkmate::assert(length(alphabet) == length(unique(alphabet)),
-         sum(motifProbs) == 1)
+  checkmate::assert(length(alphabet) == length(unique(alphabet)))
   
   if (!is.null(motifProbs)){
+    checkmate::assert(sum(motifProbs) == 1)
     checkmate::assertNumeric(motifProbs)
     checkmate::assert(length(alphabet) == length(motifProbs))
   }
@@ -136,12 +136,13 @@ validate_motifs <- function(motifs, sequence_length) {
 #' @inheritParams generate_motif
 #' @param n_motifs number of motifs to generate
 #' @param validate if true, returns a set of motifs that can be injected to a sequence of length 10
+#' @param sequence_length length of a sequence that must contain all motifs
 #' @return list of generated motifs
 #' @export
 #' @examples
 #' generate_motifs(1:4, 5, n = 6, d = 6)
 #' generate_motifs(1:4, 5, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
-generate_motifs <- function(alphabet, n_motifs, n, d, motifProbs = NULL, validate = TRUE) {
+generate_motifs <- function(alphabet, n_motifs, n, d, motifProbs = NULL, validate = TRUE, sequence_length = 10) {
   
   if (!validate) {
     motifs <- lapply(1L:n_motifs, function(dummy) generate_motif(alphabet, n, d, motifProbs))
@@ -151,7 +152,7 @@ generate_motifs <- function(alphabet, n_motifs, n, d, motifProbs = NULL, validat
     validated <- FALSE
     while (!validated) {
       motifs <- lapply(1L:n_motifs, function(dummy) generate_motif(alphabet, n, d, motifProbs))
-      validated <- validate_motifs(motifs, 10)
+      validated <- validate_motifs(motifs, sequence_length)
       }
     }
     
