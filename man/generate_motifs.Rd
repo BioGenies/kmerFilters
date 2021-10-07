@@ -4,7 +4,15 @@
 \alias{generate_motifs}
 \title{Function generates list of motifs}
 \usage{
-generate_motifs(alphabet, n_motifs, n, d, motifProbs = NULL, validate = TRUE)
+generate_motifs(
+  alphabet,
+  n_motifs,
+  n,
+  d,
+  motifProbs = NULL,
+  validate = TRUE,
+  sequence_length = 10
+)
 }
 \arguments{
 \item{alphabet}{elements used to generate a motif}
@@ -18,6 +26,8 @@ generate_motifs(alphabet, n_motifs, n, d, motifProbs = NULL, validate = TRUE)
 \item{motifProbs}{alphabet elements' probabilites}
 
 \item{validate}{if true, returns a set of motifs that can be injected to a sequence of length 10}
+
+\item{sequence_length}{length of a sequence that must contain all motifs}
 }
 \value{
 list of generated motifs
