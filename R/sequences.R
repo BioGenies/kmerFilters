@@ -1,6 +1,6 @@
 #' generates sequence of elements from alphabet with replacement
 #' @param alphabet elements used to build sequence
-#' @param len length of generated sample sequence
+#' @param sequence_length length of generated sample sequence
 #' @param seqProbs alphabet probabilites for sequences
 #' @return randomly generated sequence
 #' @export
@@ -8,13 +8,13 @@
 #' generate_sequence(5, 1L:4)
 #' generate_sequence(10, c("a", "b", "c"))
 #' generate_sequence(10, c("a", "b", "c"), c(0.6, 0.2, 0.2))
-generate_sequence <- function(len, alphabet, seqProbs = NULL){
-  sample(alphabet, size = len, replace = TRUE, prob = seqProbs)
+generate_sequence <- function(sequence_length, alphabet, seqProbs = NULL){
+  sample(alphabet, size = sequence_length, replace = TRUE, prob = seqProbs)
 }
 
 #' function generates sequences (both positive & negative)
 #' @param n_seq number of sequences to be generated
-#' @param len sequence length
+#' @param sequence_length sequence length
 #' @param alphabet elements used to build sequence
 #' @param motifs_list list of injected motifs
 #' @param n_motifs number of motifs injected to each positive sequence
@@ -24,20 +24,20 @@ generate_sequence <- function(len, alphabet, seqProbs = NULL){
 #' @export
 #' @examples
 #' n_seq <- 20
-#' len <- 10
+#' sequence_length <- 10
 #' alph <- 1L:4
 #' motifs <- generate_motifs(alph, 2, 3, 0)
-#' generate_sequence_data(n_seq, len, alph, motifs, 1)
-#' generate_sequence_data(n_seq, len, alph, motifs, 1, fraction = 0.8)
-#' generate_sequence_data(n_seq, len, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
+#' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
+#' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1, fraction = 0.8)
+#' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
 generate_sequence_data <- function(n_seq,
-                               len,
-                               alphabet,
-                               motifs_list,
-                               n_motifs,
-                               fraction = 0.5,
-                               seqProbs = NULL,
-                               sequence_length = 10) {
+                                   sequence_length,
+                                   alphabet,
+                                   motifs_list,
+                                   n_motifs,
+                                   fraction = 0.5,
+                                   seqProbs = NULL
+                                   ) {
   
   n_pos <- round(fraction*n_seq, 0)
   
@@ -46,7 +46,7 @@ generate_sequence_data <- function(n_seq,
   
   target <- logical(n_seq)
   target[1:n_pos] <- TRUE
-  sequences <- matrix(nrow = n_seq, ncol = len)
+  sequences <- matrix(nrow = n_seq, ncol = sequence_length)
   
   for (i in 1:n_pos) {
     
@@ -57,13 +57,13 @@ generate_sequence_data <- function(n_seq,
       motifs <- motifs_list[sample(1:length(motifs_list), n_motifs)]
     } 
     
-    new_seq <- add_motifs(motifs, generate_sequence(len, alphabet))
+    new_seq <- add_motifs(motifs, generate_sequence(sequence_length, alphabet))
     list_of_motifs[[i]] <- attr(new_seq, "motifs")
     list_of_masks[[i]] <- attr(new_seq, "masks")
     sequences[i, ] <- new_seq
   }
   for (i in 1:(n_seq - n_pos)) {
-    sequences[n_pos + i, ] <- generate_sequence(len, alphabet, seqProbs)
+    sequences[n_pos + i, ] <- generate_sequence(sequence_length, alphabet, seqProbs)
   }
   attr(sequences, "motifs") <- list_of_motifs
   attr(sequences, "masks") <- list_of_masks
@@ -105,7 +105,7 @@ count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
 
 #' function counts n-grams in given sequences
 #' @param n_seq number of sequences to be generated
-#' @param l_seq sequence length
+#' @param sequence_length sequence length
 #' @param alphabet elements used to build sequence
 #' @param motifs_list list of injected motifs
 #' @param n_motifs number of motifs injected to each positive sequence
@@ -117,32 +117,31 @@ count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
 #' @export
 #' @examples
 #' n_seq <- 20
-#' len <- 1200
+#' sequence_length <- 1200
 #' alph <- letters[1:4]
 #' motifs <- generate_motifs(alph, 2, 3, 0)
-#' results <- generate_sequences(n_seq, len, alph, motifs, 1)
-#' results <- generate_sequences(n_seq, len, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
+#' results <- generate_sequences(n_seq, sequence_length, alph, motifs, 1)
+#' results <- generate_sequences(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
 #' results
 #' attributes(results)
 generate_kmer_data <- function(n_seq,
-                               l_seq,
+                               sequence_length,
                                alphabet,
                                motifs_list,
                                n_motifs,
                                fraction = 0.5,
                                seqProbs = NULL,
                                n = 4,
-                               d = 6,
-                               sequence_length = 10) {
+                               d = 6
+                               ) {
   # generate sequence data
   test_dat <- generate_sequence_data(n_seq, 
-                                     l_seq, 
+                                     sequence_length, 
                                      alphabet, 
                                      motifs_list, 
                                      n_motifs, 
                                      fraction, 
-                                     seqProbs,
-                                     sequence_length)
+                                     seqProbs)
   
   test_res <- count_ngrams(test_dat, alphabet, n, d)
   
