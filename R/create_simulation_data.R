@@ -80,30 +80,29 @@ create_simulation_data <- function(replications,
           set.seed(replication)
           
           # 90% of all combinations of 
-          possible_90perc <- FALSE
+          #possible_90perc <- FALSE
           
-          while (!possible_90perc) {
+          #while (!possible_90perc) {
             
             motifs <- lapply(1L:motif_set_size, 
-                             function(dummy) generate_single_motif(alphabet, n, d, motifProbs))     
+                             function(dummy) generate_motif(alphabet, n, d, motifProbs))     
             
             motifs_grid <- do.call(expand.grid, rep(list(1:motif_set_size), n_motifs))
             
             possible_motifs_grid <- motifs_grid[apply(motifs_grid, 1, 
                                                       function(x) length(unique(unlist(x))) == n_motifs), , drop=FALSE]
             
-            check <- table(apply(possible_motifs_grid, 1, function(x) validate_motifs(motifs[unlist(x)], 10)))
+            #check <- table(apply(possible_motifs_grid, 1, function(x) validate_motifs(motifs[unlist(x)], 10)))
             
-            if (length(check) == 1) {
-              possible_90perc <- TRUE
-            } else if (check["FALSE"] * 9 <= check["TRUE"]) {
-              possible_90perc <- TRUE              
-            }
-          }
+            #if (length(check) == 1) {
+            #  possible_90perc <- TRUE
+            #} else if (check["FALSE"] * 9 <= check["TRUE"]) {
+            #  possible_90perc <- TRUE              
+            #}
+          #}
           
-          
-          dat <- generate_sequences(n_seq,
-                                    l_seq,
+          dat <- generate_kmer_data(n_seq,
+                                    sequence_length,
                                     alphabet,
                                     motifs,
                                     n_motifs,

@@ -9,3 +9,6 @@ count_ngrams(sequences, alphabet, n = 4, d = 6)
 \description{
 wrapper for seqR counters
 }
+\examples{
+
+}

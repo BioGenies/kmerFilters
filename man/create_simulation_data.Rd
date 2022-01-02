@@ -8,6 +8,7 @@ create_simulation_data(
   replications,
   seq_nums,
   seq_lengths,
+  motif_set_size,
   num_motifs,
   alphabet,
   path,
@@ -26,6 +27,8 @@ create_simulation_data(
 \item{seq_nums}{vector of sequences' numbers}
 
 \item{seq_lengths}{vector of sequences' lengths}
+
+\item{motif_set_size}{number of motifs to be created}
 
 \item{num_motifs}{vector of number of motifs to be injected}
 
