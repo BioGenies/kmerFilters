@@ -16,7 +16,6 @@
 #' @importFrom utils write.csv
 #' @importFrom progress progress_bar
 #' @importFrom tools md5sum
-#' @export
 #' @examples
 #' alph <- letters[1:4]
 #' reps <- 10
@@ -36,7 +35,7 @@
 #'                                  motifProbs = c(0.7, 0.1, 0.1, 0.1),
 #'                                  seqProbs = c(0.7, 0.1, 0.1, 0.1),
 #'                                  n = 4, d = 4)
-#'
+#' @export
 create_simulation_data <- function(replications,
                                    seq_nums,
                                    seq_lengths,
