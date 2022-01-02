@@ -3,6 +3,7 @@
 #' @param seq_nums vector of sequences' numbers
 #' @param seq_lengths vector of sequences' lengths
 #' @param num_motifs vector of number of motifs to be injected
+#' @param motif_set_size number of motifs to be created
 #' @param alphabet elements used to build both sequence and motif
 #' @param path file path of RDS files
 #' @param title simulation name
@@ -39,6 +40,7 @@
 create_simulation_data <- function(replications,
                                    seq_nums,
                                    seq_lengths,
+                                   motif_set_size,
                                    num_motifs,
                                    alphabet,
                                    path,
@@ -71,21 +73,37 @@ create_simulation_data <- function(replications,
   
   for (replication in 1:replications) {
     for (n_motifs in num_motifs) {
-      
-      motifs <- generate_motifs(alphabet,
-                                n_motifs,
-                                n = n,
-                                d = d,
-                                motifProbs = motifProbs)
-      
       for (n_seq in seq_nums) {
         for (sequence_length in seq_lengths) {
           
           pb$tick(1)
           set.seed(replication)
           
-          dat <- generate_kmer_data(n_seq,
-                                    sequence_length,
+          # 90% of all combinations of 
+          possible_90perc <- FALSE
+          
+          while (!possible_90perc) {
+            
+            motifs <- lapply(1L:motif_set_size, 
+                             function(dummy) generate_single_motif(alphabet, n, d, motifProbs))     
+            
+            motifs_grid <- do.call(expand.grid, rep(list(1:motif_set_size), n_motifs))
+            
+            possible_motifs_grid <- motifs_grid[apply(motifs_grid, 1, 
+                                                      function(x) length(unique(unlist(x))) == n_motifs), , drop=FALSE]
+            
+            check <- table(apply(possible_motifs_grid, 1, function(x) validate_motifs(motifs[unlist(x)], 10)))
+            
+            if (length(check) == 1) {
+              possible_90perc <- TRUE
+            } else if (check["FALSE"] * 9 <= check["TRUE"]) {
+              possible_90perc <- TRUE              
+            }
+          }
+          
+          
+          dat <- generate_sequences(n_seq,
+                                    l_seq,
                                     alphabet,
                                     motifs,
                                     n_motifs,
