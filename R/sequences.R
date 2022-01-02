@@ -74,7 +74,11 @@ generate_sequence_data <- function(n_seq,
 #' wrapper for seqR counters
 #' @importFrom seqR count_kmers count_multimers
 #' @export
+#' @examples
+#' 
 count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
+  
+  sequences <- apply(sequences, 1, function(x) paste(x, collapse=""))
   
   if (n == 1) {
     
@@ -120,8 +124,8 @@ count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
 #' sequence_length <- 1200
 #' alph <- letters[1:4]
 #' motifs <- generate_motifs(alph, 2, 3, 0)
-#' results <- generate_sequences(n_seq, sequence_length, alph, motifs, 1)
-#' results <- generate_sequences(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
+#' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
+#' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
 #' results
 #' attributes(results)
 generate_kmer_data <- function(n_seq,
