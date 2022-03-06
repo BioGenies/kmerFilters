@@ -8,8 +8,8 @@ generate_kmer_data(
   n_seq,
   sequence_length,
   alphabet,
-  motifs_list,
-  n_motifs,
+  motifs,
+  n_injections,
   fraction = 0.5,
   seqProbs = NULL,
   n = 4,
@@ -23,11 +23,11 @@ generate_kmer_data(
 
 \item{alphabet}{elements used to build sequence}
 
-\item{motifs_list}{list of injected motifs}
+\item{motifs}{list of motifs}
 
-\item{n_motifs}{number of motifs injected to each positive sequence}
+\item{n_injections}{number of motifs injected to each positive sequence}
 
-\item{fraction}{TODO: add fraction: of positive sequences / change approach}
+\item{fraction}{fraction of positive sequences}
 
 \item{seqProbs}{alphabet probabilites for sequences}
 
@@ -45,10 +45,6 @@ function counts n-grams in given sequences
 n_seq <- 20
 sequence_length <- 1200
 alph <- letters[1:4]
-motifs <- generate_motifs(alph, 2, 3, 0)
+motifs <- generate_motifs(alph, 2, 3, 4, 6)
 results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
-results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1,
- seqProbs = c(0.7, 0.1, 0.1, 0.1))
-results
-attributes(results)
 }

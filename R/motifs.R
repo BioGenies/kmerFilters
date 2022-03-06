@@ -118,7 +118,7 @@ add_motifs <- function(motifs, sequence) {
 #' @export
 #' @examples
 #' set.seed(42)
-#' motifs <- generate_motifs(1:4, n_motifs = 2, n = 3, d = 3)
+#' motifs <- generate_motifs(1:4, n_motifs = 2, n_injections = 2, n = 3, d = 3)
 #' validate_motifs(motifs, 7)
 #' validate_motifs(motifs, 9)
 validate_motifs <- function(motifs, sequence_length) {

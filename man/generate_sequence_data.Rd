@@ -8,8 +8,8 @@ generate_sequence_data(
   n_seq,
   sequence_length,
   alphabet,
-  motifs_list,
-  n_motifs,
+  motifs,
+  n_injections,
   fraction = 0.5,
   seqProbs = NULL
 )
@@ -21,9 +21,9 @@ generate_sequence_data(
 
 \item{alphabet}{elements used to build sequence}
 
-\item{motifs_list}{list of injected motifs}
+\item{motifs}{list of motifs}
 
-\item{n_motifs}{number of motifs injected to each positive sequence}
+\item{n_injections}{number of motifs injected to each positive sequence}
 
 \item{fraction}{of positive sequences}
 
@@ -39,8 +39,6 @@ function generates sequences (both positive & negative)
 n_seq <- 20
 sequence_length <- 10
 alph <- 1L:4
-motifs <- generate_motifs(alph, 2, 3, 0)
+motifs <- generate_motifs(alph, 2, 3, 3, 2)
 generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
-generate_sequence_data(n_seq, sequence_length, alph, motifs, 1, fraction = 0.8)
-generate_sequence_data(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
 }

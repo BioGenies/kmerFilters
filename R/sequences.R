@@ -16,8 +16,8 @@ generate_sequence <- function(sequence_length, alphabet, seqProbs = NULL){
 #' @param n_seq number of sequences to be generated
 #' @param sequence_length sequence length
 #' @param alphabet elements used to build sequence
-#' @param motifs_list list of injected motifs
-#' @param n_motifs number of motifs injected to each positive sequence
+#' @param motifs list of motifs
+#' @param n_injections number of motifs injected to each positive sequence
 #' @param fraction of positive sequences
 #' @param seqProbs alphabet probabilites for sequences
 #' @return generated sequences
@@ -26,15 +26,13 @@ generate_sequence <- function(sequence_length, alphabet, seqProbs = NULL){
 #' n_seq <- 20
 #' sequence_length <- 10
 #' alph <- 1L:4
-#' motifs <- generate_motifs(alph, 2, 3, 0)
+#' motifs <- generate_motifs(alph, 2, 3, 3, 2)
 #' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
-#' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1, fraction = 0.8)
-#' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
 generate_sequence_data <- function(n_seq,
                                    sequence_length,
                                    alphabet,
-                                   motifs_list,
-                                   n_motifs,
+                                   motifs,
+                                   n_injections,
                                    fraction = 0.5,
                                    seqProbs = NULL
                                    ) {
@@ -50,20 +48,20 @@ generate_sequence_data <- function(n_seq,
 
   for (i in 1:n_pos) {
 
-    correct_motifs <- FALSE
-    motifs <- motifs_list[sample(1:length(motifs_list), n_motifs)]
+    selected_motifs <- motifs[sample(1:length(motifs), n_injections)]
 
-    while (!validate_motifs(motifs, sequence_length)) {
-      motifs <- motifs_list[sample(1:length(motifs_list), n_motifs)]
-    }
+    new_seq <- add_motifs(selected_motifs,
+                          generate_sequence(sequence_length,
+                                            alphabet, seqProbs))
 
-    new_seq <- add_motifs(motifs, generate_sequence(sequence_length, alphabet))
     list_of_motifs[[i]] <- attr(new_seq, "motifs")
     list_of_masks[[i]] <- attr(new_seq, "masks")
     sequences[i, ] <- new_seq
   }
+
   for (i in 1:(n_seq - n_pos)) {
-    sequences[n_pos + i, ] <- generate_sequence(sequence_length, alphabet, seqProbs)
+    sequences[n_pos + i, ] <- generate_sequence(sequence_length,
+                                                alphabet, seqProbs)
   }
   attr(sequences, "motifs") <- list_of_motifs
   attr(sequences, "masks") <- list_of_masks
@@ -73,16 +71,24 @@ generate_sequence_data <- function(n_seq,
 
 #' wrapper for seqR counters
 #' @importFrom seqR count_kmers count_multimers
-#' @inheritParams generate_kmer_data
+#' @inheritParams generate_motifs
 #' @param sequences input data for k-mer counting
 #' @export
-count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
+#' @example
+#' n_seq <- 20
+#' sequence_length <- 10
+#' alph <- letters[1:6]
+#' motifs <- generate_motifs(alph, 2, 3, 3, 2)
+#' seq_data <- generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
+#' count_seq_kmers(seq_data, alph)
+count_seq_kmers <- function(sequences, alphabet, n = 4, d = 6) {
 
   sequences <- apply(sequences, 1, function(x) paste(x, collapse=""))
 
   if (n == 1) {
 
-    test_res <- count_kmers(sequences, 1, alphabet, with_kmer_counts = FALSE)
+    test_res <- count_kmers(sequences, 1, alphabet,
+                                  with_kmer_counts = FALSE)
 
   } else {
     # element & gaps' positions for count_multigrams
@@ -111,9 +117,9 @@ count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
 #' @param n_seq number of sequences to be generated
 #' @param sequence_length sequence length
 #' @param alphabet elements used to build sequence
-#' @param motifs_list list of injected motifs
-#' @param n_motifs number of motifs injected to each positive sequence
-#' @param fraction TODO: add fraction: of positive sequences / change approach
+#' @param motifs list of motifs
+#' @param n_injections number of motifs injected to each positive sequence
+#' @param fraction fraction of positive sequences
 #' @param seqProbs alphabet probabilites for sequences
 #' @param n maximum number of alphabet elements in n-gram
 #' @param d maximum number of gaps in n-gram
@@ -123,17 +129,13 @@ count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
 #' n_seq <- 20
 #' sequence_length <- 1200
 #' alph <- letters[1:4]
-#' motifs <- generate_motifs(alph, 2, 3, 0)
+#' motifs <- generate_motifs(alph, 2, 3, 4, 6)
 #' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
-#' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1,
-#'  seqProbs = c(0.7, 0.1, 0.1, 0.1))
-#' results
-#' attributes(results)
 generate_kmer_data <- function(n_seq,
                                sequence_length,
                                alphabet,
-                               motifs_list,
-                               n_motifs,
+                               motifs,
+                               n_injections,
                                fraction = 0.5,
                                seqProbs = NULL,
                                n = 4,
@@ -143,12 +145,12 @@ generate_kmer_data <- function(n_seq,
   test_dat <- generate_sequence_data(n_seq,
                                      sequence_length,
                                      alphabet,
-                                     motifs_list,
-                                     n_motifs,
+                                     motifs,
+                                     n_injections,
                                      fraction,
                                      seqProbs)
 
-  test_res <- count_ngrams(test_dat, alphabet, n, d)
+  test_res <- count_seq_kmers(test_dat, alphabet, n, d)
 
   attr(test_res, "sequences") <- matrix(test_dat,
                                         nrow = nrow(test_dat),
