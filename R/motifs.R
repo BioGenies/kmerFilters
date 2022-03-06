@@ -1,7 +1,7 @@
 #' Random motifs generator
-#' 
+#'
 #' Function generates random motif based on a given alphabet.
-#' The maximum range of a motif equals `n + d`. 
+#' The maximum range of a motif equals `n + d`.
 #' @param alphabet elements used to generate a motif
 #' @param n maximum number of alphabet elements
 #' @param d number of possible gaps
@@ -13,41 +13,41 @@
 #' generate_motif(c("a", "b", "c"), n = 6, d = 1)
 #' generate_motif(1:4, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
 generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
-  
+
   checkmate::assert_number(n)
   checkmate::assert_number(d)
   checkmate::assert(length(alphabet) == length(unique(alphabet)))
-  
+
   if (!is.null(motifProbs)){
     checkmate::assert(sum(motifProbs) == 1)
     checkmate::assertNumeric(motifProbs)
     checkmate::assert(length(alphabet) == length(motifProbs))
   }
-  
-  # generate contiguous motif 
+
+  # generate contiguous motif
   contiguous_motif <- sample(alphabet, sample(2:n, 1), replace = TRUE, prob = motifProbs)
   motif <- contiguous_motif
-  
+
   if (d > 0) {
     # generate vector of gaps
     gaps <- expand.grid(list(0:d)[rep(1, length(contiguous_motif) - 1)])
     possibleGaps <- gaps[apply(gaps, 1, sum) <= d, , drop = FALSE]
     gap <- possibleGaps[sample(1:nrow(possibleGaps), 1), , drop = FALSE]
-    
+
     # merge motif with gaps
     motif <- vector()
     for (i in 1:(length(contiguous_motif) -1)) {
       motif <- c(motif, contiguous_motif[i], rep("_", gap[1, i]))
     }
     motif <- c(motif, contiguous_motif[length(contiguous_motif)])
-    
+
   }
-  
-  motif  
+
+  motif
 }
 
-#' Motif to a sequence injection 
-#' 
+#' Motif to a sequence injection
+#'
 #' this function injects motifs to a sequence
 #' @param motifs list of motifs to be injected
 #' @param sequence vector of alphabet elements
@@ -58,27 +58,24 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
 #' add_motifs(list(c(1, "_", 1), c(1, 1)), c(2, 2, 3, 4))
 #' # little bit more interesting
 #' alph <- as.character(1L:4)
-#' n <- 4
-#' d <- 1
-#' motifs <- generate_motifs(alph, 2, n, d)
+#' motifs <- generate_motifs(alph, 2, 2, n = 4, d = 6)
 #' example_sequence <- sample(alph, size = 10, replace = TRUE)
 #' add_motifs(motifs, example_sequence)
-
 add_motifs <- function(motifs, sequence) {
   sequence_len <- length(sequence)
-  
+
   #create grid of possible motifs' positions
   maximum_motifs_positions <- lapply(motifs, function(x)
     seq(sequence_len - length(x) + 1))
   motifs_grid <- expand.grid(maximum_motifs_positions)
   motifs_grid <- motifs_grid[sample(1:nrow(motifs_grid)), , drop = FALSE]
-  
+
   for (i in 1:nrow(motifs_grid)) {
-    
+
     list_of_masks <- list()
     injected_sequence <- sequence
     injected_positions <- logical(length(sequence))
-    
+
     for (j in 1:ncol(motifs_grid)) {
       mask <- rep(FALSE, sequence_len)
       new_injected_sequence <- injected_sequence
@@ -87,7 +84,7 @@ add_motifs <- function(motifs, sequence) {
       ids <- ids[motif != "_"] + motifs_grid[i, j]
       mask[ids] <- TRUE
       new_injected_sequence[ids] <- motif[motif != "_"]
-      
+
       if (j == 1) {
         injected_sequence <- new_injected_sequence
         injected_positions <- mask
@@ -99,9 +96,9 @@ add_motifs <- function(motifs, sequence) {
           break
         }
       }
-      
+
       list_of_masks[[j]] <- mask
-      
+
       if (j == ncol(motifs_grid)){
         attr(injected_sequence, "motifs") <- motifs
         attr(injected_sequence, "masks") <- list_of_masks
@@ -113,7 +110,7 @@ add_motifs <- function(motifs, sequence) {
 }
 
 #' Validate if given set of motifs can occur in a sequence at the same time
-#' 
+#'
 #' function validates if given motifs can be injected to a sequence of given length
 #' @param motifs list of motifs we are checking
 #' @param sequence_length length of sequence we want to inject
@@ -131,32 +128,54 @@ validate_motifs <- function(motifs, sequence_length) {
 }
 
 #' Function generates list of motifs
-#' 
+#'
 #' generate multiple motifs from alphabet
 #' @inheritParams generate_motif
 #' @param n_motifs number of motifs to generate
-#' @param validate if true, returns a set of motifs that can be injected to a sequence of length 10
+#' @param n_injections number of injections (for validation purposes:
+#' checks if each subset of motifs of size `n_injections` can be injected
+#' to a sequence of length `sequence_length`)
+#' @param validate if true, returns a set of motifs that can be injected
+#'  to a sequence of length 10
 #' @param sequence_length length of a sequence that must contain all motifs
 #' @return list of generated motifs
 #' @export
 #' @examples
-#' generate_motifs(1:4, 5, n = 6, d = 6)
-#' generate_motifs(1:4, 5, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
-generate_motifs <- function(alphabet, n_motifs, n, d, motifProbs = NULL, validate = TRUE, sequence_length = 10) {
-  
+#' generate_motifs(1:4, 5, 3, n = 6, d = 6)
+#' generate_motifs(1:4, 5, 3, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
+generate_motifs <- function(alphabet,
+                            n_motifs,
+                            n_injections,
+                            n,
+                            d,
+                            motifProbs = NULL,
+                            validate = TRUE,
+                            sequence_length = 10) {
+
   if (!validate) {
-    motifs <- lapply(1L:n_motifs, function(dummy) generate_motif(alphabet, n, d, motifProbs))
-    } 
+    motifs <- lapply(1L:n_motifs, function(dummy)
+      generate_motif(alphabet, n, d, motifProbs))
+  }
   else {
-    # check if generated motifs can be injected to sequence of length 10
     validated <- FALSE
     while (!validated) {
-      motifs <- lapply(1L:n_motifs, function(dummy) generate_motif(alphabet, n, d, motifProbs))
-      validated <- validate_motifs(motifs, sequence_length)
+
+      motifs <- lapply(1L:n_motifs, function(dummy)
+        generate_motif(alphabet, n, d, motifProbs))
+
+      grid <- expand.grid(rep(list(1:n_motifs), n_injections))
+      grid <- grid[apply(grid, 1, function(x) length(unique(x)) == n_injections), ]
+      row.names(grid) <- NULL
+
+      possible_injections <- lapply(1:nrow(grid), function(i) {
+        validate_motifs(motifs[as.numeric(grid[i, ])], sequence_length)
+      })
+
+      if (all(unlist(possible_injections))) {
+        validated <- TRUE
       }
     }
-    
+  }
+
   motifs
 }
-
-

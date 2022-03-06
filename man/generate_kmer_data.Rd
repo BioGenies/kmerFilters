@@ -47,7 +47,8 @@ sequence_length <- 1200
 alph <- letters[1:4]
 motifs <- generate_motifs(alph, 2, 3, 0)
 results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
-results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
+results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1,
+ seqProbs = c(0.7, 0.1, 0.1, 0.1))
 results
 attributes(results)
 }

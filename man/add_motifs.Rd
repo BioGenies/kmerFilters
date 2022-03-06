@@ -22,9 +22,7 @@ this function injects motifs to a sequence
 add_motifs(list(c(1, "_", 1), c(1, 1)), c(2, 2, 3, 4))
 # little bit more interesting
 alph <- as.character(1L:4)
-n <- 4
-d <- 1
-motifs <- generate_motifs(alph, 2, n, d)
+motifs <- generate_motifs(alph, 2, 2, n = 4, d = 6)
 example_sequence <- sample(alph, size = 10, replace = TRUE)
 add_motifs(motifs, example_sequence)
 }

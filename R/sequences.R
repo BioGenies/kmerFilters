@@ -38,25 +38,25 @@ generate_sequence_data <- function(n_seq,
                                    fraction = 0.5,
                                    seqProbs = NULL
                                    ) {
-  
+
   n_pos <- round(fraction*n_seq, 0)
-  
+
   list_of_motifs <- list()
   list_of_masks <- list()
-  
+
   target <- logical(n_seq)
   target[1:n_pos] <- TRUE
   sequences <- matrix(nrow = n_seq, ncol = sequence_length)
-  
+
   for (i in 1:n_pos) {
-    
+
     correct_motifs <- FALSE
     motifs <- motifs_list[sample(1:length(motifs_list), n_motifs)]
-    
+
     while (!validate_motifs(motifs, sequence_length)) {
       motifs <- motifs_list[sample(1:length(motifs_list), n_motifs)]
-    } 
-    
+    }
+
     new_seq <- add_motifs(motifs, generate_sequence(sequence_length, alphabet))
     list_of_motifs[[i]] <- attr(new_seq, "motifs")
     list_of_masks[[i]] <- attr(new_seq, "masks")
@@ -73,17 +73,17 @@ generate_sequence_data <- function(n_seq,
 
 #' wrapper for seqR counters
 #' @importFrom seqR count_kmers count_multimers
+#' @inheritParams generate_kmer_data
+#' @param sequences input data for k-mer counting
 #' @export
-#' @examples
-#' 
 count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
-  
+
   sequences <- apply(sequences, 1, function(x) paste(x, collapse=""))
-  
+
   if (n == 1) {
-    
+
     test_res <- count_kmers(sequences, 1, alphabet, with_kmer_counts = FALSE)
-    
+
   } else {
     # element & gaps' positions for count_multigrams
     ns <- c()
@@ -95,15 +95,15 @@ count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
       ds <- c(ds, split(ds_, 1:nrow(ds_)))
     }
     ds <- lapply(ds, unlist)
-    
+
     test_res <- count_multimers(sequences,
                                 c(1, ns),
                                 alphabet,
                                 kmer_gaps_list = c(list(c()), ds),
                                 with_kmer_counts = FALSE)
-    
+
   }
-  
+
   test_res
 }
 
@@ -125,7 +125,8 @@ count_ngrams <- function(sequences, alphabet, n = 4, d = 6) {
 #' alph <- letters[1:4]
 #' motifs <- generate_motifs(alph, 2, 3, 0)
 #' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
-#' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1, seqProbs = c(0.7, 0.1, 0.1, 0.1))
+#' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1,
+#'  seqProbs = c(0.7, 0.1, 0.1, 0.1))
 #' results
 #' attributes(results)
 generate_kmer_data <- function(n_seq,
@@ -139,17 +140,19 @@ generate_kmer_data <- function(n_seq,
                                d = 6
                                ) {
   # generate sequence data
-  test_dat <- generate_sequence_data(n_seq, 
-                                     sequence_length, 
-                                     alphabet, 
-                                     motifs_list, 
-                                     n_motifs, 
-                                     fraction, 
+  test_dat <- generate_sequence_data(n_seq,
+                                     sequence_length,
+                                     alphabet,
+                                     motifs_list,
+                                     n_motifs,
+                                     fraction,
                                      seqProbs)
-  
+
   test_res <- count_ngrams(test_dat, alphabet, n, d)
-  
-  attr(test_res, "sequences") <- matrix(test_dat, nrow = nrow(test_dat), ncol = ncol(test_dat))
+
+  attr(test_res, "sequences") <- matrix(test_dat,
+                                        nrow = nrow(test_dat),
+                                        ncol = ncol(test_dat))
   attr(test_res, "motifs") <- attr(test_dat, "motifs")
   attr(test_res, "masks") <- attr(test_dat, "masks")
   attr(test_res, "target") <- attr(test_dat, "target")

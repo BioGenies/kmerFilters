@@ -6,9 +6,15 @@
 \usage{
 count_ngrams(sequences, alphabet, n = 4, d = 6)
 }
+\arguments{
+\item{sequences}{input data for k-mer counting}
+
+\item{alphabet}{elements used to build sequence}
+
+\item{n}{maximum number of alphabet elements in n-gram}
+
+\item{d}{maximum number of gaps in n-gram}
+}
 \description{
 wrapper for seqR counters
-}
-\examples{
-
 }
