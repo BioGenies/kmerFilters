@@ -45,6 +45,6 @@ function counts n-grams in given sequences
 n_seq <- 20
 sequence_length <- 1200
 alph <- letters[1:4]
-motifs <- generate_motifs(alph, 2, 3, 4, 6)
+motifs <- generate_motifs(alph, 3, 3, 4, 6)
 results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
 }

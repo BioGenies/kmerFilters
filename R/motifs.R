@@ -130,6 +130,8 @@ validate_motifs <- function(motifs, sequence_length) {
 #' Function generates list of motifs
 #'
 #' generate multiple motifs from alphabet
+#'
+#' @importFrom utils combn
 #' @inheritParams generate_motif
 #' @param n_motifs number of motifs to generate
 #' @param n_injections number of injections (for validation purposes:
@@ -163,12 +165,13 @@ generate_motifs <- function(alphabet,
       motifs <- lapply(1L:n_motifs, function(dummy)
         generate_motif(alphabet, n, d, motifProbs))
 
-      grid <- expand.grid(rep(list(1:n_motifs), n_injections))
-      grid <- grid[apply(grid, 1, function(x) length(unique(x)) == n_injections), ]
-      row.names(grid) <- NULL
+      #grid <- expand.grid(rep(list(1:n_motifs), n_injections))
+      #grid <- grid[apply(grid, 1, function(x) length(unique(x)) == n_injections), ]
+      #row.names(grid) <- NULL
+      combns <- t(combn(1:n_motifs, n_injections))
 
-      possible_injections <- lapply(1:nrow(grid), function(i) {
-        validate_motifs(motifs[as.numeric(grid[i, ])], sequence_length)
+      possible_injections <- lapply(1:nrow(combns), function(i) {
+        validate_motifs(motifs[as.numeric(combns[i, ])], sequence_length)
       })
 
       if (all(unlist(possible_injections))) {

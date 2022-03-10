@@ -39,6 +39,6 @@ function generates sequences (both positive & negative)
 n_seq <- 20
 sequence_length <- 10
 alph <- 1L:4
-motifs <- generate_motifs(alph, 2, 3, 3, 2)
+motifs <- generate_motifs(alph, 3, 3, 3, 2)
 generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
 }

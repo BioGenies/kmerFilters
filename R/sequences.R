@@ -26,7 +26,7 @@ generate_sequence <- function(sequence_length, alphabet, seqProbs = NULL){
 #' n_seq <- 20
 #' sequence_length <- 10
 #' alph <- 1L:4
-#' motifs <- generate_motifs(alph, 2, 3, 3, 2)
+#' motifs <- generate_motifs(alph, 3, 3, 3, 2)
 #' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
 generate_sequence_data <- function(n_seq,
                                    sequence_length,
@@ -129,7 +129,7 @@ count_seq_kmers <- function(sequences, alphabet, n = 4, d = 6) {
 #' n_seq <- 20
 #' sequence_length <- 1200
 #' alph <- letters[1:4]
-#' motifs <- generate_motifs(alph, 2, 3, 4, 6)
+#' motifs <- generate_motifs(alph, 3, 3, 4, 6)
 #' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
 generate_kmer_data <- function(n_seq,
                                sequence_length,

@@ -58,12 +58,12 @@ test_that("k-mer counts", {
   n_seq <- 20
   sequence_length <- 10
   alph <- letters[1:6]
-  motifs <- generate_motifs(alph, 2, 3, 3, 2)
+  motifs <- generate_motifs(alph, 3, 3, 3, 2)
   seq_data <- generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
 
   kmers <- count_seq_kmers(seq_data, alph)
 
-  expect_equal(dim(kmers), c(20L, 6128L))
+  expect_equal(dim(kmers), c(20L, 6027L))
 
   kmers <- count_seq_kmers(seq_data, alph, n = 1, d = 0)
   expect_equal(ncol(kmers), length(alph))
@@ -87,7 +87,7 @@ test_that("k-mer data", {
                                   n_injections, fraction)
 
 
-  expect_equal(dim(kmer_data), c(20L, 2850L))
+  expect_equal(dim(kmer_data), c(20L, 2616L))
   expect_equal(n_seq, nrow(kmer_data))
 
   # correct fraction of positive sequences

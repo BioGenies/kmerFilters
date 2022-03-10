@@ -68,7 +68,7 @@ test_that("generate list of motifs", {
 
   motifs <- generate_motifs(alphabet, 1, 1, n, d, weights, validate = FALSE)
 
-  expect_equal(motifs, list(c("b", "_", "_", "b", "a")))
+  expect_equal(motifs, list(c("c", "_", "_", "a", "a", "a")))
 })
 
 test_that("motif injection", {
@@ -79,14 +79,13 @@ test_that("motif injection", {
   motifs <- generate_motifs(letters[1:4], 2, 2, 4, 2)
   injected_sequence <- add_motifs(motifs, sequence)
   expect_equal(injected_sequence,
-               structure(c("a", "c", "b", "b", "c", "d", "c", "d"),
-                         motifs = list(
-                 c("d", "c"), c("a", "c", "_", "_", "c")),
-                 masks = list(c(FALSE, FALSE, FALSE, FALSE, FALSE,
-                                TRUE, TRUE, FALSE),
-                              c(TRUE, TRUE, FALSE, FALSE, TRUE,
-                                FALSE, FALSE, FALSE))))
-
+               structure(c("a", "c", "b", "d", "c", "c", "d", "d"),
+                         motifs = list(c("d", "c"),
+                                       c("a", "c", "_", "_", "c")),
+                         masks = list(c(FALSE, FALSE, FALSE, TRUE,
+                                        TRUE, FALSE, FALSE, FALSE),
+                                      c(TRUE, TRUE, FALSE, FALSE,
+                                        TRUE, FALSE, FALSE, FALSE))))
 })
 
 test_that("set of motifs cannot be injected", {
