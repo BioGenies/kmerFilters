@@ -165,9 +165,6 @@ generate_motifs <- function(alphabet,
       motifs <- lapply(1L:n_motifs, function(dummy)
         generate_motif(alphabet, n, d, motifProbs))
 
-      #grid <- expand.grid(rep(list(1:n_motifs), n_injections))
-      #grid <- grid[apply(grid, 1, function(x) length(unique(x)) == n_injections), ]
-      #row.names(grid) <- NULL
       combns <- t(combn(1:n_motifs, n_injections))
 
       possible_injections <- lapply(1:nrow(combns), function(i) {
