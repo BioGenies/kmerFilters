@@ -244,15 +244,14 @@ get_target_interactions <- function(kmer_dat,
         stop("The length of prob vector should equal the max_injection number!")
     if(!is.null(probs) & !all(probs <= 1 & probs >= 0))
         stop("The provided probabilities should be less than 1 and greated than 0.")
+    if(is.unsorted(probs))
+        stop("The vector of probabilities should be increasing.")
 
     motifs_counts <- lengths(attr(kmer_dat, "motifs"))
     target <- attr(kmer_dat, "target")
     target_probs <- target
 
-    if(is.null(zero_prob))
-        target_probs[target == 0] <- exp(-2)/(1 + exp(-2))
-    else
-        target_probs[target == 0] <- zero_prob
+    target_probs[target == 0] <- zero_prob
 
     if(is.null(probs))
         target_probs[target != 0] <- exp(motifs_counts)/(1 + exp(motifs_counts))
@@ -309,6 +308,10 @@ get_target_interactions <- function(kmer_dat,
 get_target_additive <- function(kmer_dat,
                                 weights = NULL,
                                 zero_weight = NULL) {
+
+    if(length(weights) != length(attr(kmer_dat, "motifs_set")) & !is.null(weights))
+        stop("The length of weights vector should equal number of motifs!")
+
     target <- attr(kmer_dat, "target")
     ids <- attr(kmer_dat, "motifs_ids")
     motifs_set <- attr(kmer_dat, "motifs_set")
