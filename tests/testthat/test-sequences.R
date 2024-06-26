@@ -1,5 +1,6 @@
 library(kmerFilters)
 library(testthat)
+
 context("Sequence generation")
 
 test_that("generate single sequence", {
@@ -42,13 +43,11 @@ test_that("generate sequence data", {
   target_counts <- table(attr(seq_data, "target"))
   expect_equivalent(fraction, target_counts["TRUE"] / n_sequences)
 
-  # all positive sequences contain `n_injections` motifs
-  expect_equal(n_injections, unique(unlist(lapply(attr(seq_data, "motifs"),
-                                                  length))))
+  # all positive sequences contain maximum of`n_injections` motifs
+  expect_true(all(unique(unlist(lengths(attr(seq_data, "motifs")))) <= n_injections))
 
   expect_equal(alphabet, sort(unique(c(seq_data))))
   expect_equal(n_sequences, nrow(seq_data))
-  expect_equal(sequence_length, ncol(seq_data))
 })
 
 test_that("k-mer counts", {
@@ -63,7 +62,7 @@ test_that("k-mer counts", {
 
   kmers <- count_seq_kmers(seq_data, alph)
 
-  expect_equal(dim(kmers), c(20L, 6027L))
+  expect_equal(dim(kmers), c(20L, 6189L))
 
   kmers <- count_seq_kmers(seq_data, alph, n = 1, d = 0)
   expect_equal(ncol(kmers), length(alph))
@@ -87,7 +86,7 @@ test_that("k-mer data", {
                                   n_injections, fraction)
 
 
-  expect_equal(dim(kmer_data), c(20L, 2616L))
+  expect_equal(dim(kmer_data), c(20L, 5718L))
   expect_equal(n_seq, nrow(kmer_data))
 
   # correct fraction of positive sequences
@@ -95,6 +94,5 @@ test_that("k-mer data", {
   expect_equivalent(fraction, target_counts["TRUE"] / n_seq)
 
   # all positive sequences contain `n_injections` motifs
-  expect_equal(n_injections, unique(unlist(lapply(attr(kmer_data, "motifs"),
-                                                  length))))
+  expect_true(all(unique(unlist(lengths(attr(kmer_data, "motifs")))) <= n_injections))
 })

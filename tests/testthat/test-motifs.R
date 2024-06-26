@@ -1,5 +1,6 @@
 library(kmerFilters)
 library(testthat)
+
 context("Motif generation")
 
 test_that("generate single motif", {
@@ -20,6 +21,7 @@ test_that("generate single motif", {
   motif <- generate_motif(alphabet, n, d, weights)
   expect_equal(motif, c("b", "_", "_", "a"))
 })
+
 
 test_that("checkmate assertions", {
 
