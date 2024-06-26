@@ -19,11 +19,12 @@ generate_motif(alphabet, n, d, motifProbs = NULL)
 motif built on a given alphabet
 }
 \description{
-Function generates random motif based on a given alphabet.
+This function generates random motif based on a given alphabet.
 The maximum range of a motif equals `n + d`.
 }
 \examples{
 generate_motif(1:4, n = 2, d = 0)
 generate_motif(c("a", "b", "c"), n = 6, d = 1)
 generate_motif(1:4, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
+
 }

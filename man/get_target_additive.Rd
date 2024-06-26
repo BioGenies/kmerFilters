@@ -47,7 +47,8 @@ n_seq <- 20
 sequence_length <- 20
 alph <- letters[1:4]
 motifs <- generate_motifs(alph, 4, 4, 4, 6)
-results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, n_injections = 4)
+results <- generate_kmer_data(n_seq, sequence_length, alph,
+                              motifs, n_injections = 4)
 get_target_additive(results)
 
 }

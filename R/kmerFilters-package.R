@@ -1,12 +1,12 @@
-#' @title kmerFilters
-#' @description 
-#' kmerFilters is an extensive comparative study
-#' of popular filtering techniques applied on k-mer data.
-#' 
-#' @author Jakub Kała
-#' 
+#' kmerFilters
+#'
 #' @aliases kmerFilters
-#' 
+#'
 #' @import checkmate
-#' @export
-NULL
+#'
+#' @name kmerFilters
+#'
+
+if(getRversion() >= "2.15.1")
+    utils::globalVariables(c('TARGET.GROUP', 'ACP', 'AMP', 'ID', 'SEQUENCE',
+                             'NA_frac'))

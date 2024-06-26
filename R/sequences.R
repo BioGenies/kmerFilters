@@ -1,33 +1,39 @@
-#' generates sequence of elements from alphabet with replacement
-#' @param alphabet elements used to build sequence
-#' @param sequence_length length of generated sample sequence
-#' @param seqProbs alphabet probabilites for sequences
-#' @return randomly generated sequence
-#' @export
+#' Sampling from alphabet
+#'
+#' This function generates sequence of elements from alphabet with replacement
+#'
+#' @inheritParams generate_kmer_data
+#'
+#' @return randomly generated sequences
+#'
 #' @examples
 #' generate_sequence(5, 1L:4)
 #' generate_sequence(10, c("a", "b", "c"))
 #' generate_sequence(10, c("a", "b", "c"), c(0.6, 0.2, 0.2))
+#'
+#' @export
+
 generate_sequence <- function(sequence_length, alphabet, seqProbs = NULL){
     sample(alphabet, size = sequence_length, replace = TRUE, prob = seqProbs)
 }
 
-#' function generates sequences (both positive & negative)
-#' @param n_seq number of sequences to be generated
-#' @param sequence_length sequence length
-#' @param alphabet elements used to build sequence
-#' @param motifs list of motifs
-#' @param n_injections number of motifs injected to each positive sequence
-#' @param fraction of positive sequences
-#' @param seqProbs alphabet probabilites for sequences
-#' @return generated sequences
-#' @export
+#' Sequences generation
+#'
+#' This function generates sequences (both positive & negative).
+#'
+#' @inheritParams generate_kmer_data
+#'
+#' @return generated sequences with motifs injected
+#'
 #' @examples
 #' n_seq <- 20
 #' sequence_length <- 10
 #' alph <- 1L:4
 #' motifs <- generate_motifs(alph, 3, 3, 3, 2)
 #' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
+#'
+#' @export
+
 generate_sequence_data <- function(n_seq,
                                    sequence_length,
                                    alphabet,
@@ -37,14 +43,13 @@ generate_sequence_data <- function(n_seq,
                                    seqProbs = NULL
 ) {
 
-    n_pos <- round(fraction*n_seq, 0)
+    n_pos <- round(fraction * n_seq, 0)
 
     list_of_motifs <- list()
     list_of_masks <- list()
     list_of_motifs_ids <- list()
 
     max_injection <- n_injections
-
     n_injections <- sample(1:n_injections, n_pos, replace = TRUE)
 
     target <- logical(n_seq)
@@ -54,9 +59,7 @@ generate_sequence_data <- function(n_seq,
     for (i in 1:n_pos) {
 
         motifs_ids <- sample(1:length(motifs), n_injections[i])
-
         selected_motifs <- motifs[motifs_ids]
-
         new_seq <- add_motifs(selected_motifs,
                               generate_sequence(sequence_length,
                                                 alphabet, seqProbs))
@@ -68,7 +71,8 @@ generate_sequence_data <- function(n_seq,
 
     for (i in 1:(n_seq - n_pos)) {
         sequences[n_pos + i, ] <- generate_sequence(sequence_length,
-                                                    alphabet, seqProbs)
+                                                    alphabet,
+                                                    seqProbs)
     }
     attr(sequences, "max_injection") <- max_injection
     attr(sequences, "motifs_ids") <- list_of_motifs_ids
@@ -78,27 +82,32 @@ generate_sequence_data <- function(n_seq,
     sequences
 }
 
-#' wrapper for seqR counters
+#' Counting kmers
+#'
+#' This function is a wrapper for seqR counters
+#'
 #' @importFrom seqR count_kmers count_multimers
+#'
 #' @inheritParams generate_motifs
 #' @param sequences input data for k-mer counting
-#' @export
-#' @example
+#'
+#' @examples
 #' n_seq <- 20
 #' sequence_length <- 10
 #' alph <- letters[1:6]
-#' motifs <- generate_motifs(alph, 2, 3, 3, 2)
+#' motifs <- generate_motifs(alph, 3, 3, 3, 2)
 #' seq_data <- generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
 #' count_seq_kmers(seq_data, alph)
+#'
+#' @export
+
 count_seq_kmers <- function(sequences, alphabet, n = 4, d = 6) {
 
     sequences <- apply(sequences, 1, function(x) paste(x, collapse=""))
 
     if (n == 1) {
-
         test_res <- count_kmers(sequences, 1, alphabet,
                                 with_kmer_counts = FALSE)
-
     } else {
         # element & gaps' positions for count_multigrams
         ns <- c()
@@ -118,30 +127,35 @@ count_seq_kmers <- function(sequences, alphabet, n = 4, d = 6) {
                                     with_kmer_counts = FALSE)
 
     }
-
     test_res
 }
 
-#' function counts n-grams in given sequences
+#' K-mer data generation
+#'
+#' This function generates sequences with provided motifs and constructs k-mer
+#' representation table based on this data.
 #'
 #' @param n_seq number of sequences to be generated
 #' @param sequence_length sequence length
 #' @param alphabet elements used to build sequence
 #' @param motifs list of motifs
-#' @param n_injections number of motifs injected to each positive sequence
+#' @param n_injections maximal number of motifs injected to each positive
+#' sequence (from 1 to \code{n_injections} will be injected)
 #' @param fraction fraction of positive sequences
-#' @param seqProbs alphabet probabilites for sequences
+#' @param seqProbs alphabet probabilities for sequences
 #' @param n maximum number of alphabet elements in n-gram
 #' @param d maximum number of gaps in n-gram
 #'
 #' @return generated sequences
-#' @export
+#'
 #' @examples
 #' n_seq <- 20
 #' sequence_length <- 20
 #' alph <- letters[1:4]
 #' motifs <- generate_motifs(alph, 3, 3, 4, 6)
 #' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
+#'
+#' @export
 
 generate_kmer_data <- function(n_seq,
                                sequence_length,
@@ -177,10 +191,12 @@ generate_kmer_data <- function(n_seq,
 }
 
 
-#' Interactions model noise
+#' Interaction model noise
 #'
 #' This function samples target variable according to the binomial model with
 #' interactions
+#'
+#' @importFrom stats runif
 #'
 #' @param kmer_dat output of \code{\link{generate_kmer_data}}
 #' @param probs an increasing vector of probabilities of success corresponding
@@ -214,7 +230,8 @@ generate_kmer_data <- function(n_seq,
 #' sequence_length <- 20
 #' alph <- letters[1:4]
 #' motifs <- generate_motifs(alph, 4, 4, 4, 6)
-#' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, n_injections = 4)
+#' results <- generate_kmer_data(n_seq, sequence_length, alph,
+#'                               motifs, n_injections = 4)
 #' get_target_interactions(results)
 #'
 #' @export
@@ -283,7 +300,8 @@ get_target_interactions <- function(kmer_dat,
 #' sequence_length <- 20
 #' alph <- letters[1:4]
 #' motifs <- generate_motifs(alph, 4, 4, 4, 6)
-#' results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, n_injections = 4)
+#' results <- generate_kmer_data(n_seq, sequence_length, alph,
+#'                               motifs, n_injections = 4)
 #' get_target_additive(results)
 #'
 #' @export
@@ -293,6 +311,7 @@ get_target_additive <- function(kmer_dat,
                                 zero_weight = NULL) {
     target <- attr(kmer_dat, "target")
     ids <- attr(kmer_dat, "motifs_ids")
+    motifs_set <- attr(kmer_dat, "motifs_set")
 
     if(is.null(weights))
         weights <- runif(length(motifs_set))
@@ -312,12 +331,13 @@ get_target_additive <- function(kmer_dat,
 }
 
 
-#' Sample from binomial distribution with vector of probabilities
+#' Binomial sampling
 #'
 #' This function samples from binomial distribution using a vector of
 #' probabilities.
 #'
 #' @importFrom purrr map
+#' @importFrom stats rbinom
 #'
 #' @param probs a vector of probabilities
 #'
@@ -328,6 +348,7 @@ get_target_additive <- function(kmer_dat,
 #' probs <- runif(100)
 #' rbinom_vec(probs)
 #'
+#' @export
 
 rbinom_vec <- function(probs) {
     if(any(probs >= 1 | probs <= 0))

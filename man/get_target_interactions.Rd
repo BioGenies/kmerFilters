@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences.R
 \name{get_target_interactions}
 \alias{get_target_interactions}
-\title{Interactions model noise}
+\title{Interaction model noise}
 \usage{
 get_target_interactions(kmer_dat, probs = NULL, zero_prob = 0.1)
 }
@@ -46,7 +46,8 @@ n_seq <- 20
 sequence_length <- 20
 alph <- letters[1:4]
 motifs <- generate_motifs(alph, 4, 4, 4, 6)
-results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, n_injections = 4)
+results <- generate_kmer_data(n_seq, sequence_length, alph,
+                              motifs, n_injections = 4)
 get_target_interactions(results)
 
 }

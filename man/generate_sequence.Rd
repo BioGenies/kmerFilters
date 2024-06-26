@@ -2,25 +2,26 @@
 % Please edit documentation in R/sequences.R
 \name{generate_sequence}
 \alias{generate_sequence}
-\title{generates sequence of elements from alphabet with replacement}
+\title{Sampling from alphabet}
 \usage{
 generate_sequence(sequence_length, alphabet, seqProbs = NULL)
 }
 \arguments{
-\item{sequence_length}{length of generated sample sequence}
+\item{sequence_length}{sequence length}
 
 \item{alphabet}{elements used to build sequence}
 
-\item{seqProbs}{alphabet probabilites for sequences}
+\item{seqProbs}{alphabet probabilities for sequences}
 }
 \value{
-randomly generated sequence
+randomly generated sequences
 }
 \description{
-generates sequence of elements from alphabet with replacement
+This function generates sequence of elements from alphabet with replacement
 }
 \examples{
 generate_sequence(5, 1L:4)
 generate_sequence(10, c("a", "b", "c"))
 generate_sequence(10, c("a", "b", "c"), c(0.6, 0.2, 0.2))
+
 }

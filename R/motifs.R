@@ -1,17 +1,22 @@
 #' Random motifs generator
 #'
-#' Function generates random motif based on a given alphabet.
+#' This function generates random motif based on a given alphabet.
 #' The maximum range of a motif equals `n + d`.
+#'
 #' @param alphabet elements used to generate a motif
 #' @param n maximum number of alphabet elements
 #' @param d number of possible gaps
 #' @param motifProbs alphabet elements' probabilites
+#'
 #' @return motif built on a given alphabet
-#' @export
+#'
 #' @examples
 #' generate_motif(1:4, n = 2, d = 0)
 #' generate_motif(c("a", "b", "c"), n = 6, d = 1)
 #' generate_motif(1:4, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
+#'
+#' @export
+
 generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
 
   checkmate::assert_number(n)
@@ -40,7 +45,6 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
       motif <- c(motif, contiguous_motif[i], rep("_", gap[1, i]))
     }
     motif <- c(motif, contiguous_motif[length(contiguous_motif)])
-
   }
 
   motif
@@ -48,11 +52,13 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
 
 #' Motif to a sequence injection
 #'
-#' this function injects motifs to a sequence
+#' This function injects motifs to a sequence
+#'
 #' @param motifs list of motifs to be injected
 #' @param sequence vector of alphabet elements
+#'
 #' @return list(sequence, motifs, masks)
-#' @export
+#'
 #' @examples
 #' # simple injection
 #' add_motifs(list(c(1, "_", 1), c(1, 1)), c(2, 2, 3, 4))
@@ -61,6 +67,9 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
 #' motifs <- generate_motifs(alph, 2, 2, n = 4, d = 6)
 #' example_sequence <- sample(alph, size = 10, replace = TRUE)
 #' add_motifs(motifs, example_sequence)
+#'
+#' @export
+
 add_motifs <- function(motifs, sequence) {
   sequence_len <- length(sequence)
 
@@ -71,7 +80,6 @@ add_motifs <- function(motifs, sequence) {
   motifs_grid <- motifs_grid[sample(1:nrow(motifs_grid)), , drop = FALSE]
 
   for (i in 1:nrow(motifs_grid)) {
-
     list_of_masks <- list()
     injected_sequence <- sequence
     injected_positions <- logical(length(sequence))
@@ -111,16 +119,21 @@ add_motifs <- function(motifs, sequence) {
 
 #' Validate if given set of motifs can occur in a sequence at the same time
 #'
-#' function validates if given motifs can be injected to a sequence of given length
+#' This function validates if given motifs can be injected to a sequence of
+#' given length
+#'
 #' @param motifs list of motifs we are checking
 #' @param sequence_length length of sequence we want to inject
 #' @return logical value if such injection is possible
-#' @export
+#'
 #' @examples
 #' set.seed(42)
 #' motifs <- generate_motifs(1:4, n_motifs = 2, n_injections = 2, n = 3, d = 3)
 #' validate_motifs(motifs, 7)
 #' validate_motifs(motifs, 9)
+#'
+#' @export
+
 validate_motifs <- function(motifs, sequence_length) {
   result <- tryCatch(add_motifs(motifs, rep("*", sequence_length)),
                      error = function(dummy) FALSE)
@@ -129,9 +142,10 @@ validate_motifs <- function(motifs, sequence_length) {
 
 #' Function generates list of motifs
 #'
-#' generate multiple motifs from alphabet
+#' Thios function generates multiple motifs from alphabet
 #'
 #' @importFrom utils combn
+#'
 #' @inheritParams generate_motif
 #' @param n_motifs number of motifs to generate
 #' @param n_injections number of injections (for validation purposes:
@@ -140,11 +154,15 @@ validate_motifs <- function(motifs, sequence_length) {
 #' @param validate if true, returns a set of motifs that can be injected
 #'  to a sequence of length 10
 #' @param sequence_length length of a sequence that must contain all motifs
+#'
 #' @return list of generated motifs
-#' @export
+#'
 #' @examples
 #' generate_motifs(1:4, 5, 3, n = 6, d = 6)
 #' generate_motifs(1:4, 5, 3, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
+#'
+#' @export
+
 generate_motifs <- function(alphabet,
                             n_motifs,
                             n_injections,

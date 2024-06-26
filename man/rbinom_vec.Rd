@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences.R
 \name{rbinom_vec}
 \alias{rbinom_vec}
-\title{Sample from binomial distribution with vector of probabilities}
+\title{Binomial sampling}
 \usage{
 rbinom_vec(probs)
 }
@@ -18,7 +18,7 @@ This function samples from binomial distribution using a vector of
 probabilities.
 }
 \examples{
-probs <- runif(10)
+probs <- runif(100)
 rbinom_vec(probs)
 
 }

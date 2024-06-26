@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences.R
 \name{count_seq_kmers}
 \alias{count_seq_kmers}
-\title{wrapper for seqR counters}
+\title{Counting kmers}
 \usage{
 count_seq_kmers(sequences, alphabet, n = 4, d = 6)
 }
@@ -16,5 +16,14 @@ count_seq_kmers(sequences, alphabet, n = 4, d = 6)
 \item{d}{number of possible gaps}
 }
 \description{
-wrapper for seqR counters
+This function is a wrapper for seqR counters
+}
+\examples{
+n_seq <- 20
+sequence_length <- 10
+alph <- letters[1:6]
+motifs <- generate_motifs(alph, 3, 3, 3, 2)
+seq_data <- generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
+count_seq_kmers(seq_data, alph)
+
 }

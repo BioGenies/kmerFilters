@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences.R
 \name{generate_kmer_data}
 \alias{generate_kmer_data}
-\title{function counts n-grams in given sequences}
+\title{K-mer data generation}
 \usage{
 generate_kmer_data(
   n_seq,
@@ -25,11 +25,12 @@ generate_kmer_data(
 
 \item{motifs}{list of motifs}
 
-\item{n_injections}{number of motifs injected to each positive sequence}
+\item{n_injections}{maximal number of motifs injected to each positive
+sequence (from 1 to \code{n_injections} will be injected)}
 
 \item{fraction}{fraction of positive sequences}
 
-\item{seqProbs}{alphabet probabilites for sequences}
+\item{seqProbs}{alphabet probabilities for sequences}
 
 \item{n}{maximum number of alphabet elements in n-gram}
 
@@ -39,7 +40,8 @@ generate_kmer_data(
 generated sequences
 }
 \description{
-function counts n-grams in given sequences
+This function generates sequences with provided motifs and constructs k-mer
+representation table based on this data.
 }
 \examples{
 n_seq <- 20
@@ -47,4 +49,5 @@ sequence_length <- 20
 alph <- letters[1:4]
 motifs <- generate_motifs(alph, 3, 3, 4, 6)
 results <- generate_kmer_data(n_seq, sequence_length, alph, motifs, 1)
+
 }
