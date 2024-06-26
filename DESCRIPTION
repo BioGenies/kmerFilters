@@ -10,10 +10,11 @@ License: GPL (>= 3)
 Imports:
   checkmate (>= 2.0.0),
   seqR,
+  purrr,
   progress
 Suggests:
     covr,
     testthat (>= 3.1.0)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.1
