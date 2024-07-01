@@ -44,7 +44,9 @@ test_that("generate sequence data", {
     expect_equivalent(fraction, target_counts["TRUE"] / n_sequences)
 
     # all positive sequences contain maximum of`n_injections` motifs
-    expect_true(all(unique(unlist(lengths(attr(seq_data, "motifs")))) <= n_injections))
+    expect_true(
+        all(unique(unlist(lengths(attr(seq_data, "motifs")))) <= n_injections)
+    )
 
     expect_equal(alphabet, sort(unique(c(seq_data))))
     expect_equal(n_sequences, nrow(seq_data))
@@ -94,7 +96,9 @@ test_that("k-mer data", {
     expect_equivalent(fraction, target_counts["TRUE"] / n_seq)
 
     # all positive sequences contain `n_injections` motifs
-    expect_true(all(unique(unlist(lengths(attr(kmer_data, "motifs")))) <= n_injections))
+    expect_true(
+        all(unique(unlist(lengths(attr(kmer_data, "motifs")))) <= n_injections)
+    )
 })
 
 
