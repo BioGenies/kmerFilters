@@ -270,7 +270,7 @@ get_target_interactions <- function(kmer_dat,
 #' @param weights a vector of weights of motifs' impact on the outcome. The
 #' length of \code{weights} should be the same as the number of motifs provided
 #' during sequences generation (it is the \code{motifs} parameter in the
-#' \code{\link{generate_kmer_data}} function). If \code{weights} oarameter is
+#' \code{\link{generate_kmer_data}} function). If \code{weights} parameter is
 #' \code{NULL}, then weights will be sampled from the uniform distribution on
 #' 0-1 interval. The probability of success for target sampling will be
 #' calculated based on the formula provided in details section. Default to

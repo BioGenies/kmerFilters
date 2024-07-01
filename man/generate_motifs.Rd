@@ -39,7 +39,7 @@ to a sequence of length 10}
 list of generated motifs
 }
 \description{
-Thios function generates multiple motifs from alphabet
+This function generates multiple motifs from alphabet
 }
 \examples{
 generate_motifs(1:4, 5, 3, n = 6, d = 6)
