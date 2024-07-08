@@ -191,9 +191,9 @@ generate_kmer_data <- function(n_seq,
 }
 
 
-#' Interaction model noise
+#' Logistic regression with interactions response
 #'
-#' This function samples target variable according to the binomial model with
+#' This function samples target variable according to the logiistic model with
 #' interactions
 #'
 #' @importFrom stats runif
@@ -261,12 +261,13 @@ get_target_interactions <- function(kmer_dat,
     rbinom_vec(target_probs)
 }
 
-#' Additive model noise
+#' Logistic regression response
 #'
-#' This function samples target variable according to the binomial model with
+#' This function samples target variable according to the logistic model with
 #' additive impact
 #'
-#' @param kmer_dat output of \code{\link{generate_kmer_data}}
+#' @inheritParams get_target_interactions
+#'
 #' @param weights a vector of weights of motifs' impact on the outcome. The
 #' length of \code{weights} should be the same as the number of motifs provided
 #' during sequences generation (it is the \code{motifs} parameter in the
@@ -364,4 +365,35 @@ rbinom_vec <- function(probs) {
 }
 
 
+#' Logic regression noise
+#'
+#' This function samples target variable according to the logic regression
+#' model (assuming that the occurrence of certain combinations of motifs affects
+#' the feature). In the case of logical models, simulating a binary variable
+#' involves defining logical conditions that determine the variable's value
+#' based on motifs, e.g., the binary variable takes the value 1 if certain l
+#' ogical criteria are met, and 0 if these criteria are not met.
+#'
+#' @inheritParams get_target_interactions
+#'
+#' @param weights a vector of weights of considered logic expression based on
+#' available motifs. The length of \code{weights} should be the same as the
+#' provided number  of expressions to use \code{n_exp}. If \code{weights}
+#' parameter is \code{NULL}, then weights will be sampled from the uniform
+#' distribution on 0-1 interval. The probability of success for target sampling
+#' will be calculated based on the formula provided in details section. Default
+#' to \code{NULL}.
+#' @param n_exp
+#'
+#'
+#' @export
 
+# rbinom_vec <- function(probs) {
+#     if(any(probs >= 1 | probs <= 0))
+#         stop("Provided probabilities should be greater or equal to 0 and less
+#              or equal to 1!")
+#
+#     as.integer(unlist(
+#         purrr::map(probs, function(ith_prob) rbinom(1, 1, prob = ith_prob)))
+#     )
+# }
