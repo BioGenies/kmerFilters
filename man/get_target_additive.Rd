@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences.R
 \name{get_target_additive}
 \alias{get_target_additive}
-\title{Additive model noise}
+\title{Logistic regression response}
 \usage{
 get_target_additive(kmer_dat, weights = NULL, zero_weight = NULL)
 }
@@ -26,7 +26,7 @@ calculated based on the formula provided in details section. Default to
 a binary vector of target variable sampled based on additive model.
 }
 \description{
-This function samples target variable according to the binomial model with
+This function samples target variable according to the logistic model with
 additive impact
 }
 \details{

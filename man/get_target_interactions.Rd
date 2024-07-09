@@ -2,43 +2,38 @@
 % Please edit documentation in R/sequences.R
 \name{get_target_interactions}
 \alias{get_target_interactions}
-\title{Interaction model noise}
+\title{Logistic regression with interactions}
 \usage{
-get_target_interactions(kmer_dat, probs = NULL, zero_prob = 0.1)
+get_target_interactions(kmer_dat, zero_weight = NULL)
 }
 \arguments{
 \item{kmer_dat}{output of \code{\link{generate_kmer_data}}}
 
-\item{probs}{an increasing vector of probabilities of success corresponding
-to concurrent occurrence of n motifs in a sequence, where n denotes a number
-between \code{1} and \code{n_injections}. This vector should have exactly
-\code{n_injections} of elements from 0-1 interval. For example, when
-\code{n_injections} equals \code{2}, the vector of probabilities should have
-two elements, for example, a vector \code{c(0.7, 0.8)} means that we assume
-the probability of success equal to \code{0.7} when one motif occurs in a
-sequence and \code{0.8} when two motifs occur. The default value is
-\code{NULL} meaning that the probabilities will be calculated (See details).}
-
-\item{zero_prob}{a single value denoting the probability of success in the
-case when no motifs occur in the sequence. Default to \code{0.1}.}
+\item{zero_weight}{a single value denoting the weight of no-motifs case. If
+\code{NULL}, then we sample the weight from the uniform distribution on the
+[-2, -1] interval. Default to \code{NULL}.}
 }
 \value{
 a binary vector of target variable sampled based on interaction model
 and provided/calculated probabilities.
 }
 \description{
-This function samples target variable according to the binomial model with
+This function samples target variable according to the logiistic model with
 interactions
 }
 \details{
-This function assumes the following interaction binomial model:
+approach is based on logistic regression with interactions indicating that
+the effect of one predictor depends on the value of another predictor. Let's
+define maximum number of motifs per sequence \eqn{k = \max\lbrace k_i, i = 1,
+\ldots, n\rbrace}. Let \eqn{w_{1}, \ldots, w_{k}} denote weights of single
+effects. Namely:
 
-\eqn{g(EY) = w_0 + w_1 (X_{m_1} + X_{m_2} + \ldots + X_{m_k}) +
-w_2 \left(\sum_{i = 1}^{k-1}\sum_{j = i + 1}^{k} X_{m_i}X_{m_j}\right) +
-\ldots + w_m X_{m_1}\ldots X_{m_m}}
+\eqn{g(EY) = w_0 + \sum_{i = 1}^{k} w_{i} X_{m_i} +
+\left(\sum_{i = 1}^{k-1}\sum_{j = i + 1}^{k} w_{ij} X_{m_i}X_{m_j}\right) +
+\ldots + w_{1\ldots k} X_{m_1}\ldots X_{m_k}}
 
 In the case when \code{probs} is \code{NULL} we calculate the probabilities
-based on the formula \eqn{ exp(x_i)/(1 + exp(x_i))} where xi denotes the
+based on the formula \eqn{ exp(x_i)/(1 + exp(x_i))} where \eqn{x_i} denotes the
 number of motifs in ith sequence.
 }
 \examples{

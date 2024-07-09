@@ -30,7 +30,7 @@ generate_sequence <- function(sequence_length, alphabet, seqProbs = NULL){
 #' sequence_length <- 10
 #' alph <- 1L:4
 #' motifs <- generate_motifs(alph, 3, 3, 3, 2)
-#' generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
+#' generate_sequence_data(n_seq, sequence_length, alph, motifs, 3)
 #'
 #' @export
 
@@ -45,26 +45,24 @@ generate_sequence_data <- function(n_seq,
 
     n_pos <- round(fraction * n_seq, 0)
 
-    list_of_motifs <- list()
     list_of_masks <- list()
-    list_of_motifs_ids <- list()
 
     max_injection <- n_injections
     n_injections <- sample(1:n_injections, n_pos, replace = TRUE)
 
     target <- logical(n_seq)
     target[1:n_pos] <- TRUE
+    motifs_map <- matrix(0, nrow = n_seq, ncol = length(motifs))
     sequences <- matrix(nrow = n_seq, ncol = sequence_length)
 
     for (i in 1:n_pos) {
 
         motifs_ids <- sample(1:length(motifs), n_injections[i])
+        motifs_map[i, motifs_ids] <- 1
         selected_motifs <- motifs[motifs_ids]
         new_seq <- add_motifs(selected_motifs,
                               generate_sequence(sequence_length,
                                                 alphabet, seqProbs))
-        list_of_motifs_ids[[i]] <- motifs_ids
-        list_of_motifs[[i]] <- attr(new_seq, "motifs")
         list_of_masks[[i]] <- attr(new_seq, "masks")
         sequences[i, ] <- new_seq
     }
@@ -75,8 +73,7 @@ generate_sequence_data <- function(n_seq,
                                                     seqProbs)
     }
     attr(sequences, "max_injection") <- max_injection
-    attr(sequences, "motifs_ids") <- list_of_motifs_ids
-    attr(sequences, "motifs") <- list_of_motifs
+    attr(sequences, "motifs_map") <- motifs_map
     attr(sequences, "masks") <- list_of_masks
     attr(sequences, "target") <- target
     sequences
@@ -183,15 +180,14 @@ generate_kmer_data <- function(n_seq,
                                           ncol = ncol(test_dat))
     attr(test_res, "max_injection") <- attr(test_dat, "max_injection")
     attr(test_res, "motifs_set") <- motifs
-    attr(test_res, "motifs_ids") <- attr(test_dat, "motifs_ids")
-    attr(test_res, "motifs") <- attr(test_dat, "motifs")
+    attr(test_res, "motifs_map") <- attr(test_dat, "motifs_map")
     attr(test_res, "masks") <- attr(test_dat, "masks")
     attr(test_res, "target") <- attr(test_dat, "target")
     test_res
 }
 
 
-#' Logistic regression with interactions response
+#' Logistic regression with interactions
 #'
 #' This function samples target variable according to the logiistic model with
 #' interactions
@@ -199,30 +195,26 @@ generate_kmer_data <- function(n_seq,
 #' @importFrom stats runif
 #'
 #' @param kmer_dat output of \code{\link{generate_kmer_data}}
-#' @param probs an increasing vector of probabilities of success corresponding
-#' to concurrent occurrence of n motifs in a sequence, where n denotes a number
-#' between \code{1} and \code{n_injections}. This vector should have exactly
-#' \code{n_injections} of elements from 0-1 interval. For example, when
-#' \code{n_injections} equals \code{2}, the vector of probabilities should have
-#' two elements, for example, a vector \code{c(0.7, 0.8)} means that we assume
-#' the probability of success equal to \code{0.7} when one motif occurs in a
-#' sequence and \code{0.8} when two motifs occur. The default value is
-#' \code{NULL} meaning that the probabilities will be calculated (See details).
-#' @param zero_prob a single value denoting the probability of success in the
-#' case when no motifs occur in the sequence. Default to \code{0.1}.
+#' @param zero_weight a single value denoting the weight of no-motifs case. If
+#' \code{NULL}, then we sample the weight from the uniform distribution on the
+#' [-2, -1] interval. Default to \code{NULL}.
 #'
 #' @return a binary vector of target variable sampled based on interaction model
 #' and provided/calculated probabilities.
 #'
 #' @details
-#' This function assumes the following interaction binomial model:
+#' approach is based on logistic regression with interactions indicating that
+#' the effect of one predictor depends on the value of another predictor. Let's
+#' define maximum number of motifs per sequence \eqn{k = \max\lbrace k_i, i = 1,
+#' \ldots, n\rbrace}. Let \eqn{w_{1}, \ldots, w_{k}} denote weights of single
+#' effects. Namely:
 #'
-#' \eqn{g(EY) = w_0 + w_1 (X_{m_1} + X_{m_2} + \ldots + X_{m_k}) +
-#' w_2 \left(\sum_{i = 1}^{k-1}\sum_{j = i + 1}^{k} X_{m_i}X_{m_j}\right) +
-#' \ldots + w_m X_{m_1}\ldots X_{m_m}}
+#' \eqn{g(EY) = w_0 + \sum_{i = 1}^{k} w_{i} X_{m_i} +
+#' \left(\sum_{i = 1}^{k-1}\sum_{j = i + 1}^{k} w_{ij} X_{m_i}X_{m_j}\right) +
+#' \ldots + w_{1\ldots k} X_{m_1}\ldots X_{m_k}}
 #'
 #' In the case when \code{probs} is \code{NULL} we calculate the probabilities
-#' based on the formula \eqn{ exp(x_i)/(1 + exp(x_i))} where xi denotes the
+#' based on the formula \eqn{ exp(x_i)/(1 + exp(x_i))} where \eqn{x_i} denotes the
 #' number of motifs in ith sequence.
 #'
 #' @examples
@@ -237,28 +229,34 @@ generate_kmer_data <- function(n_seq,
 #' @export
 
 get_target_interactions <- function(kmer_dat,
-                                    probs = NULL,
-                                    zero_prob = 0.1) {
+                                    zero_weight = NULL) {
 
-    if(length(probs) != attr(kmer_dat, "max_injection") & !is.null(probs))
-        stop("The length of prob vector should equal the max_injection number!")
-    if(!is.null(probs) & !all(probs <= 1 & probs >= 0))
-        stop("The provided probabilities should be less than 1 and greated than 0.")
-    if(is.unsorted(probs))
-        stop("The vector of probabilities should be increasing.")
-
-    motifs_counts <- lengths(attr(kmer_dat, "motifs"))
     target <- attr(kmer_dat, "target")
-    target_probs <- target
+    n_motifs <- length(attr(kmer_dat, "motifs_set"))
+    motifs_map <- attr(kmer_dat, "motifs_map")
 
-    target_probs[target == 0] <- zero_prob
+    # be careful, the following code is too dummy (but working though)
+    dummy_df <- as.data.frame(motifs_map)
+    n_seq <- nrow(dummy_df)
+    dummier_names <- paste0(colnames(dummy_df), collapse = "*")
 
-    if(is.null(probs))
-        target_probs[target != 0] <- exp(motifs_counts)/(1 + exp(motifs_counts))
-    else
-        target_probs[target != 0] <- probs[motifs_counts]
+    formula <- paste0(" runif(", n_seq, ") ~ ", dummier_names)
+    model <- lm(formula, data = dummy_df)
+    interactions_matrix <- model.matrix(model)
 
-    rbinom_vec(target_probs)
+    weights <- runif(ncol(interactions_matrix))
+
+    if(is.null(zero_weight))
+        zero_weight <- runif(1, -2, -1)
+
+    target_weights <- interactions_matrix %*% weights
+
+    target[target] <- target_weights[target]
+    target[!target] <- zero_weight
+
+    probs <- exp(target)/(1 + exp(target))
+
+    rbinom_vec(probs)
 }
 
 #' Logistic regression response
@@ -276,9 +274,6 @@ get_target_interactions <- function(kmer_dat,
 #' 0-1 interval. The probability of success for target sampling will be
 #' calculated based on the formula provided in details section. Default to
 #' \code{NULL}.
-#' @param zero_weight a single value denoting the weight of no-motifs case. If
-#' \code{NULL}, then we sample the weight from the uniform distribution on the
-#' [-2, -1] interval. Default to \code{NULL}.
 #'
 #' @return a binary vector of target variable sampled based on additive model.
 #'
@@ -314,7 +309,7 @@ get_target_additive <- function(kmer_dat,
         stop("The length of weights vector should equal number of motifs!")
 
     target <- attr(kmer_dat, "target")
-    ids <- attr(kmer_dat, "motifs_ids")
+    motifs_map <- attr(kmer_dat, "motifs_map")
     motifs_set <- attr(kmer_dat, "motifs_set")
 
     if(is.null(weights))
@@ -322,11 +317,124 @@ get_target_additive <- function(kmer_dat,
     if(is.null(zero_weight))
         zero_weight <- runif(1, -2, -1)
 
-    target_weights <- sapply(ids, function(ith_motifs) {
-        sum(weights[ith_motifs])
-    })
+    target_weights <- motifs_map %*% weights
 
-    target[target] <- target_weights
+    target[target] <- target_weights[target]
+    target[!target] <- zero_weight
+
+    probs <- exp(target)/(1 + exp(target))
+
+    rbinom_vec(probs)
+}
+
+
+
+#' Logic regression noise
+#'
+#' This function samples target variable according to the logic regression
+#' model (assuming that the occurrence of certain combinations of motifs affects
+#' the feature). In the case of logical models, simulating a binary variable
+#' involves defining logical conditions that determine the variable's value
+#' based on motifs, e.g., the binary variable takes the value 1 if certain l
+#' ogical criteria are met, and 0 if these criteria are not met.
+#'
+#' @inheritParams get_target_interactions
+#'
+#' @param weights a vector of weights of considered logic expression based on
+#' available motifs. The length of \code{weights} should be the same as the
+#' provided number  of expressions to use \code{n_exp}. If \code{weights}
+#' parameter is \code{NULL}, then weights will be sampled from the uniform
+#' distribution on 0-1 interval. The probability of success for target sampling
+#' will be calculated based on the formula provided in details section. Default
+#' to \code{NULL}.
+#'
+#' @param random a logical. Indicating whether expressions have to be generated
+#' randomly. Default to \code{TRUE}.
+#'
+#' @param n_exp number of random logic expressions to create. It is used only
+#' when \code{random} equals \code{TRUE}.
+#'
+#' @param max_exp_depth a maximum number of motifs used in a logic expression.
+#' Default to 3.
+#'
+#' @param expressions a matrix of binary variables corresponding to custom
+#' logic expressions. It's dimension should be related to the length of
+#' \code{weights} vector if it's provided. Default to \code{NULL}.
+#'
+#' @details
+#' Here, we consider new variables, \eqn{L_1, \ldots, L_l} where each of them
+#' is a logic expression based on a subset of motifs \eqn{m_1, \ldots, m_m}. For
+#' example,
+#'
+#' \eqn{L_1(m_1, m_2, m_3) = (X_{m_1} \land X_{m_2}) \lor X_{m_3}.}
+#'
+#' Each variable \eqn{L_i} obtains its own weight in the model. Our model is
+#' following:
+#'
+#' \eqn{g(EY) = w_0 + \sum_{i = 1}^{l} w_i L_i.}
+#'
+#' @examples
+#' n_seq <- 20
+#' sequence_length <- 20
+#' alph <- letters[1:4]
+#' motifs <- generate_motifs(alph, 4, 4, 4, 6)
+#' results <- generate_kmer_data(n_seq, sequence_length, alph,
+#'                               motifs, n_injections = 4)
+#' get_target_logic(results)
+#'
+#' @export
+
+
+get_target_logic <- function(kmer_dat,
+                             random = TRUE,
+                             zero_weight = NULL,
+                             weights = NULL,
+                             n_exp = NULL,
+                             max_exp_depth = NULL,
+                             expressions = NULL) {
+
+    motifs_set <- attr(kmer_dat, "motifs_set")
+    motifs_map <- attr(kmer_dat, "motifs_map")
+    target <- attr(kmer_dat, "target")
+
+    if((!is.null(max_exp_depth) && max_exp_depth < 2) | length(motifs_set) < 2)
+        stop("You need at least 2 motifs to create a logic expression.")
+
+    if(is.null(n_exp))
+        n_exp <- min(length(motifs_set) - 1, 3)
+    if(is.null(max_exp_depth))
+        max_exp_depth <- min(length(motifs_set) - 1, 3)
+    if(is.null(weights))
+        weights <- runif(n_exp)
+    if(is.null(zero_weight))
+        zero_weight <- runif(1, -2, -1)
+
+    if(!is.null(expressions)) {
+        if(length(weights) != ncol(expressions))
+            stop("You have to provide weight for each column
+                 from expressions matrix!")
+        else
+            target_weights <- expressions %*% weights
+    } else {
+
+        expressions_motifs <- sapply(1:n_exp, function(ith_exp) {
+            depth <- sample(2:max_exp_depth, 1)
+            sample_motifs_ids <- sample(1:length(motifs_set), depth,
+                                        replace = FALSE)
+            operator <- sample(c("&", "|"), depth - 1, replace = TRUE)
+
+            expr <- paste0(paste0(" motifs_map[, %i] ",
+                                  sep = operator,
+                                  collapse = ""), " motifs_map[, %i] ")
+            expr_params <- c(list(expr), as.list(sample_motifs_ids))
+
+            as.numeric(eval(parse(text = do.call(sprintf, expr_params))))
+        })
+    }
+
+    target_weights <- expressions_motifs %*% weights
+
+    target[target] <- target_weights[target]
     target[!target] <- zero_weight
 
     probs <- exp(target)/(1 + exp(target))
@@ -364,36 +472,3 @@ rbinom_vec <- function(probs) {
     )
 }
 
-
-#' Logic regression noise
-#'
-#' This function samples target variable according to the logic regression
-#' model (assuming that the occurrence of certain combinations of motifs affects
-#' the feature). In the case of logical models, simulating a binary variable
-#' involves defining logical conditions that determine the variable's value
-#' based on motifs, e.g., the binary variable takes the value 1 if certain l
-#' ogical criteria are met, and 0 if these criteria are not met.
-#'
-#' @inheritParams get_target_interactions
-#'
-#' @param weights a vector of weights of considered logic expression based on
-#' available motifs. The length of \code{weights} should be the same as the
-#' provided number  of expressions to use \code{n_exp}. If \code{weights}
-#' parameter is \code{NULL}, then weights will be sampled from the uniform
-#' distribution on 0-1 interval. The probability of success for target sampling
-#' will be calculated based on the formula provided in details section. Default
-#' to \code{NULL}.
-#' @param n_exp
-#'
-#'
-#' @export
-
-# rbinom_vec <- function(probs) {
-#     if(any(probs >= 1 | probs <= 0))
-#         stop("Provided probabilities should be greater or equal to 0 and less
-#              or equal to 1!")
-#
-#     as.integer(unlist(
-#         purrr::map(probs, function(ith_prob) rbinom(1, 1, prob = ith_prob)))
-#     )
-# }

@@ -111,44 +111,11 @@ test_that("Interaction model works", {
     alph <- letters[1:4]
     motifs <- generate_motifs(alph, 4, 4, 4, 6)
     results <- generate_kmer_data(n_seq, sequence_length, alph,
-                                  motifs, n_injections = 2)
-    expect_identical(
-        c(1L, 0L, 1L, 1L, 1L, 1L, 1L, 0L, 1L, 1L, 0L, 0L, 1L, 0L,
-          0L, 0L, 0L, 0L, 0L, 0L), get_target_interactions(results)
-    )
-})
-
-
-test_that("Interaction model works", {
-
-    set.seed(1)
-
-    n_seq <- 20
-    sequence_length <- 20
-    alph <- letters[1:4]
-    motifs <- generate_motifs(alph, 4, 4, 4, 6)
-    results <- generate_kmer_data(n_seq, sequence_length, alph,
                                   motifs, n_injections = 3)
     expect_identical(
-        c(1L, 0L, 0L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 0L, 0L, 0L, 0L,
-          0L, 0L, 0L, 0L, 1L), get_target_interactions(results)
+        c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 0L, 0L, 0L, 1L,
+          1L, 1L, 0L, 0L, 0L), get_target_interactions(results)
     )
-
-    expect_identical(
-        c(1L, 1L, 0L, 1L, 0L, 0L, 0L, 1L, 1L, 1L, 0L, 0L, 1L, 1L, 0L,
-          0L, 0L, 0L, 0L, 0L),
-        get_target_interactions(results, c(0.7, 0.8, 0.9))
-    )
-
-    expect_error(get_target_interactions(results, c(0.9, 0.8, 0.9)),
-                 "The vector of probabilities should be increasing.")
-
-    #test if conditions work
-    expect_error(get_target_interactions(results, probs = 0.1),
-                 "The length of prob vector should equal")
-
-    expect_error(get_target_interactions(results, probs = 1:3),
-                 "The provided probabilities should be less than 1")
 })
 
 
@@ -171,6 +138,23 @@ test_that("Additive model works", {
     #test if conditions work
     expect_error(get_target_additive(results, weights = 0.1),
                  "The length of weights vector should equal number of motifs!")
+})
+
+
+test_that("Logic model works", {
+
+    set.seed(1)
+
+    n_seq <- 20
+    sequence_length <- 20
+    alph <- letters[1:4]
+    motifs <- generate_motifs(alph, 4, 4, 4, 6)
+    results <- generate_kmer_data(n_seq, sequence_length, alph,
+                                  motifs, n_injections = 3)
+    expect_identical(
+        c(0L, 0L, 1L, 1L, 1L, 0L, 1L, 0L, 0L, 1L, 0L, 0L, 0L, 1L, 0L,
+          1L, 0L, 0L, 0L, 1L), get_target_logic(results)
+    )
 })
 
 

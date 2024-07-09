@@ -41,6 +41,6 @@ n_seq <- 20
 sequence_length <- 10
 alph <- 1L:4
 motifs <- generate_motifs(alph, 3, 3, 3, 2)
-generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
+generate_sequence_data(n_seq, sequence_length, alph, motifs, 3)
 
 }
