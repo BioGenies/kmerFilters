@@ -15,7 +15,7 @@ add_motifs(motifs, sequence)
 list(sequence, motifs, masks)
 }
 \description{
-this function injects motifs to a sequence
+This function injects motifs to a sequence
 }
 \examples{
 # simple injection
@@ -25,4 +25,5 @@ alph <- as.character(1L:4)
 motifs <- generate_motifs(alph, 2, 2, n = 4, d = 6)
 example_sequence <- sample(alph, size = 10, replace = TRUE)
 add_motifs(motifs, example_sequence)
+
 }

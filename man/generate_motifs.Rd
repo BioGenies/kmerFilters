@@ -39,9 +39,10 @@ to a sequence of length 10}
 list of generated motifs
 }
 \description{
-generate multiple motifs from alphabet
+This function generates multiple motifs from alphabet
 }
 \examples{
 generate_motifs(1:4, 5, 3, n = 6, d = 6)
 generate_motifs(1:4, 5, 3, n = 6, d = 2, motifProbs = c(0.7, 0.1, 0.1, 0.1))
+
 }

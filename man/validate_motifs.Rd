@@ -15,11 +15,13 @@ validate_motifs(motifs, sequence_length)
 logical value if such injection is possible
 }
 \description{
-function validates if given motifs can be injected to a sequence of given length
+This function validates if given motifs can be injected to a sequence of
+given length
 }
 \examples{
 set.seed(42)
 motifs <- generate_motifs(1:4, n_motifs = 2, n_injections = 2, n = 3, d = 3)
 validate_motifs(motifs, 7)
 validate_motifs(motifs, 9)
+
 }

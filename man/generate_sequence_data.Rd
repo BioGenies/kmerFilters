@@ -2,7 +2,7 @@
 % Please edit documentation in R/sequences.R
 \name{generate_sequence_data}
 \alias{generate_sequence_data}
-\title{function generates sequences (both positive & negative)}
+\title{Sequences generation}
 \usage{
 generate_sequence_data(
   n_seq,
@@ -23,22 +23,24 @@ generate_sequence_data(
 
 \item{motifs}{list of motifs}
 
-\item{n_injections}{number of motifs injected to each positive sequence}
+\item{n_injections}{maximal number of motifs injected to each positive
+sequence (from 1 to \code{n_injections} will be injected)}
 
-\item{fraction}{of positive sequences}
+\item{fraction}{fraction of positive sequences}
 
-\item{seqProbs}{alphabet probabilites for sequences}
+\item{seqProbs}{alphabet probabilities for sequences}
 }
 \value{
-generated sequences
+generated sequences with motifs injected
 }
 \description{
-function generates sequences (both positive & negative)
+This function generates sequences (both positive & negative).
 }
 \examples{
 n_seq <- 20
 sequence_length <- 10
 alph <- 1L:4
 motifs <- generate_motifs(alph, 3, 3, 3, 2)
-generate_sequence_data(n_seq, sequence_length, alph, motifs, 1)
+generate_sequence_data(n_seq, sequence_length, alph, motifs, 3)
+
 }

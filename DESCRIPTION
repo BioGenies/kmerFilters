@@ -1,19 +1,37 @@
 Package: kmerFilters
 Type: Package
-Title: k-mers filtering techniques benchmark
+Title: Simulation of K-mer Data Based on Protein Sequences
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors@R: c(
+          person("Michał", "Burdukiewicz", ,
+               email = "michalburdukiewicz@gmail.com",
+               comment = c(ORCID = "0000-0001-8926-582X"),
+               role = c("aut", "ctb")),
+          person("Krystyna", "Grzesiak", 
+               email = "krygrz11@gmail.com", 
+               comment = c(ORCID = "0000-0003-2581-7722"),
+               role = c("aut", "cre")),
+          person("Jakub", "Kała", 
+               email = "kalajakub96@gmail.com",
+               comment = c(ORCID = "0000-0002-7187-6988"),
+               role = c("aut", "ctb"))
+        )
+Description: This package is designed for the simulation of k-mer data. It 
+             generates synthetic k-mer sequences, which are crucial for various 
+             bioinformatics analyses. The package allows users to customize 
+             parameters to mimic different biological scenarios. It is 
+             especially useful for testing algorithms and validating 
+             computational models in proteomics.
 License: GPL (>= 3)
 Imports:
   checkmate (>= 2.0.0),
   seqR,
-  progress
+  purrr
 Suggests:
     covr,
+    spelling,
     testthat (>= 3.1.0)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2
+Language: en-US
