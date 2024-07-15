@@ -34,7 +34,7 @@ Our package provides fast and efficient generation of synthetic k-mer datasets w
 - additive impact of custom interactions (logical expressions using motifs).
 
 
-### How to install
+## How to install
 
 You can install the latest version from GitHub:
 
@@ -43,7 +43,9 @@ You can install the latest version from GitHub:
 devtools::install_github("BioGenies/kmerFilters")
 ```
 
-### How to use
+## Examples of usage
+
+### How to simulate data
 
 You can use the `generate_motifs` function for motifs generation. For example:
 
@@ -79,16 +81,18 @@ Using obtained data you can choose how to generate a response variable. We provi
 - `get_target_interactions()`,
 - `get_target_logic()`.
 
-For example:
+For example, the following code:
 
 ```{r}
 get_target_additive(results)
 ```
 
+creates a binary response variable based on the logistic regression model assumptions.
+
+### How to filter
 
 
-
-### Contributing
+## Contributing
 
 Contributions to kmerFilters are welcome! If you have suggestions for new features, improvements, or bug fixes, please submit an issue or pull request on GitHub.
 
