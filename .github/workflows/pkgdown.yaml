@@ -36,7 +36,7 @@ jobs:
       - name: Install seqR
         run: |
           renv::restore()
-          install.packages("pkgdown")
+          install.packages(c("pkgdown", "devtools"))
           devtools::build()
         shell: Rscript {0}
 
