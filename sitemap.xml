@@ -1,0 +1,20 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/add_motifs.html</loc></url>
+<url><loc>/reference/count_seq_kmers.html</loc></url>
+<url><loc>/reference/generate_kmer_data.html</loc></url>
+<url><loc>/reference/generate_motif.html</loc></url>
+<url><loc>/reference/generate_motifs.html</loc></url>
+<url><loc>/reference/generate_sequence.html</loc></url>
+<url><loc>/reference/generate_sequence_data.html</loc></url>
+<url><loc>/reference/get_target_additive.html</loc></url>
+<url><loc>/reference/get_target_interactions.html</loc></url>
+<url><loc>/reference/get_target_logic.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/kmerFilters.html</loc></url>
+<url><loc>/reference/rbinom_vec.html</loc></url>
+<url><loc>/reference/validate_motifs.html</loc></url>
+</urlset>
+
