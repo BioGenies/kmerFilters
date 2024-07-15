@@ -56,10 +56,113 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="kmerfilters">kmerFilters<a class="anchor" aria-label="anchor" href="#kmerfilters"></a>
+<div class="page-header"><h1 id="kmerfilters--r-package-for-k-mer-data-simulation-and-filtering">kmerFilters : R Package for k-mer Data Simulation and Filtering<a class="anchor" aria-label="anchor" href="#kmerfilters--r-package-for-k-mer-data-simulation-and-filtering"></a>
 </h1></div>
 <!-- badges: start -->
 
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>The kmerFilters is an R package providing tools for simulating k-mer data and benchmarking various filtering techniques. It is designed to assist researchers and practitioners in evaluating and comparing different approaches for preprocessing sequence data, particularly for applications such as protein function prediction.</p>
+</div>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
+</h2>
+<p>Our package provides fast and efficient generation of synthetic k-mer datasets with customizable parameters, including sequence length, number of sequences, k-mer size and motifs impact. The latest embraces modelling the response variable in discrete or continuous way depending on few biological cases, such as</p>
+<ul>
+<li><p>additive impact of each motif,</p></li>
+<li><p>additive impact of interactions of motifs,</p></li>
+<li><p>additive impact of custom interactions (logical expressions using motifs).</p></li>
+</ul>
+<div class="section level3">
+<h3 id="how-to-install">How to install<a class="anchor" aria-label="anchor" href="#how-to-install"></a>
+</h3>
+<p>You can install the latest version from GitHub:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install.packages("devtools")</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"BioGenies/kmerFilters"</span>)</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="how-to-use">How to use<a class="anchor" aria-label="anchor" href="#how-to-use"></a>
+</h3>
+<p>You can use the <code>generate_motifs</code> function for motifs generation. For example:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kmerFilters</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">alph</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
+<span><span class="va">n_injections</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
+<span></span>
+<span><span class="va">motifs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/generate_motifs.html">generate_motifs</a></span><span class="op">(</span>alphabet <span class="op">=</span> <span class="va">alph</span>, </span>
+<span>                          n_motifs <span class="op">=</span> <span class="fl">4</span>, </span>
+<span>                          n_injections <span class="op">=</span> <span class="fl">4</span>, </span>
+<span>                          n <span class="op">=</span> <span class="fl">4</span>, </span>
+<span>                          d <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">motifs</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [1] "d" "_" "_" "_" "_" "_" "d"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [1] "b" "_" "_" "_" "_" "_" "a"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt;  [1] "b" "_" "_" "d" "_" "_" "_" "_" "d" "b"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; [1] "c" "_" "d" "_" "c"</span></span></code></pre></div>
+<p>Using simulated motifs we can simulate positive and negative sequences and consrtuct a k-mer feature space:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/generate_kmer_data.html">generate_kmer_data</a></span><span class="op">(</span>n_seq <span class="op">=</span> <span class="fl">20</span>, </span>
+<span>                              sequence_length <span class="op">=</span> <span class="fl">20</span>, </span>
+<span>                              alphabet <span class="op">=</span> <span class="va">alph</span>,</span>
+<span>                              motifs <span class="op">=</span> <span class="va">motifs</span>, </span>
+<span>                              n_injections <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="va">results</span></span>
+<span><span class="co">#&gt; 20 x 15169 sparse Matrix of class "dgCMatrix"</span></span>
+<span><span class="co">#&gt;   [[ suppressing 33 column names 'a', 'd', 'b' ... ]]</span></span>
+<span><span class="co">#&gt;                                                                               </span></span>
+<span><span class="co">#&gt;  [1,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [2,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 1 1 . 1 1 1 1 1 . 1 1 1 . . 1 1 ......</span></span>
+<span><span class="co">#&gt;  [3,] 1 1 1 1 1 1 1 1 . . 1 1 1 1 . 1 . 1 . . 1 1 1 . 1 . . 1 1 1 1 1 . ......</span></span>
+<span><span class="co">#&gt;  [4,] 1 1 1 1 1 1 1 1 1 . 1 . 1 . 1 1 . 1 1 1 1 . 1 1 1 1 1 . . 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [5,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . 1 1 1 1 . . 1 1 1 . . 1 1 . ......</span></span>
+<span><span class="co">#&gt;  [6,] 1 1 1 1 1 . 1 1 1 . 1 1 1 . 1 1 1 1 . . 1 . 1 1 . . 1 1 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [7,] 1 1 1 1 1 1 1 1 1 . 1 . 1 1 . 1 . . 1 . 1 1 1 . 1 . . 1 . 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt;  [8,] 1 1 1 1 1 . 1 1 1 1 1 1 . 1 . 1 . 1 1 1 1 1 1 1 1 . 1 . . 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [9,] 1 1 1 1 . . 1 1 1 1 . . 1 . 1 . . 1 1 1 . . 1 1 . 1 1 1 1 1 . . 1 ......</span></span>
+<span><span class="co">#&gt; [10,] 1 1 1 1 1 . 1 1 1 . 1 1 1 1 . 1 1 . . . 1 1 1 1 . 1 1 . . . 1 1 . ......</span></span>
+<span><span class="co">#&gt; [11,] 1 1 1 1 1 1 1 1 1 . 1 . 1 1 1 1 1 . . 1 1 1 1 . . . 1 1 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt; [12,] 1 1 1 1 . . 1 1 1 1 1 1 1 1 . 1 . 1 1 1 . 1 1 1 1 1 1 1 1 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt; [13,] 1 1 1 1 1 1 . 1 . . 1 1 . . 1 1 1 1 1 . 1 . . 1 1 . 1 . 1 . 1 1 1 ......</span></span>
+<span><span class="co">#&gt; [14,] 1 1 1 1 1 1 . 1 . 1 . 1 1 1 1 . . 1 1 . 1 1 . 1 . 1 . 1 . 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt; [15,] 1 1 1 1 1 1 . 1 1 . . 1 1 . 1 . 1 1 1 1 . . . 1 1 1 1 1 1 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt; [16,] 1 1 1 1 . 1 1 1 . 1 1 . 1 . 1 . 1 1 1 1 . 1 . 1 1 1 1 1 1 1 . 1 1 ......</span></span>
+<span><span class="co">#&gt; [17,] 1 1 1 1 . 1 . 1 1 1 . 1 1 . . 1 1 1 1 1 1 . 1 1 1 . . 1 1 . . . 1 ......</span></span>
+<span><span class="co">#&gt; [18,] 1 1 1 1 1 . 1 1 . . 1 . 1 1 1 . 1 1 . . 1 . 1 . . 1 1 . 1 1 . 1 1 ......</span></span>
+<span><span class="co">#&gt; [19,] 1 1 1 1 1 1 . . 1 1 1 1 . 1 1 1 . 1 . . 1 1 1 . . . . . 1 . 1 . . ......</span></span>
+<span><span class="co">#&gt; [20,] 1 1 1 1 1 . 1 1 1 1 1 1 . . 1 1 1 1 1 . 1 1 1 . 1 . . 1 1 1 1 . . ......</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  .....suppressing 15136 columns in show(); maybe adjust 'options(max.print= *, width = *)'</span></span>
+<span><span class="co">#&gt;  ..............................</span></span></code></pre></div>
+<p>Using obtained data you can choose how to generate a response variable. We provide three functions for that:</p>
+<ul>
+<li>
+<code><a href="reference/get_target_additive.html">get_target_additive()</a></code>,</li>
+<li>
+<code><a href="reference/get_target_interactions.html">get_target_interactions()</a></code>,</li>
+<li>
+<code><a href="reference/get_target_logic.html">get_target_logic()</a></code>.</li>
+</ul>
+<p>For example:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_target_additive.html">get_target_additive</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] 1 1 0 1 1 1 0 1 0 0 0 0 0 0 0 0 1 0 0 0</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h3>
+<p>Contributions to kmerFilters are welcome! If you have suggestions for new features, improvements, or bug fixes, please submit an issue or pull request on GitHub.</p>
+</div>
+</div>
 </div>
   </div>
 
