@@ -1,0 +1,94 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# kmerFilters : R Package for k-mer Data Simulation and Filtering
+
+<!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/jakubkala/kmerFilters/branch/main/graph/badge.svg)](https://codecov.io/gh/jakubkala/kmerFilters?branch=main)
+<!-- badges: end -->
+
+## Overview 
+
+The kmerFilters is an R package providing tools for simulating k-mer data and benchmarking various filtering techniques. It is designed to assist researchers and practitioners in evaluating and comparing different approaches for preprocessing sequence data, particularly for applications such as protein function prediction.
+
+## Features
+
+Our package provides fast and efficient generation of synthetic k-mer datasets with customizable parameters, including sequence length, number of sequences, k-mer size and motifs impact. The latest embraces modelling the response variable in discrete or continuous way depending on few biological cases, such as
+
+- additive impact of each motif,
+
+- additive impact of interactions of motifs,
+
+- additive impact of custom interactions (logical expressions using motifs).
+
+
+### How to install
+
+You can install the latest version from GitHub:
+
+```
+# install.packages("devtools")
+devtools::install_github("BioGenies/kmerFilters")
+```
+
+### How to use
+
+You can use the `generate_motifs` function for motifs generation. For example:
+
+```{r}
+library(kmerFilters)
+
+alph <- letters[1:4]
+n_injections <- 4
+
+motifs <- generate_motifs(alphabet = alph, 
+                          n_motifs = 4, 
+                          n_injections = 4, 
+                          n = 4, 
+                          d = 6)
+
+motifs
+```
+
+Using simulated motifs we can simulate positive and negative sequences and consrtuct a k-mer feature space:
+
+```{r}
+results <- generate_kmer_data(n_seq = 20, 
+                              sequence_length = 20, 
+                              alphabet = alph,
+                              motifs = motifs, 
+                              n_injections = 4)
+results
+```
+
+Using obtained data you can choose how to generate a response variable. We provide three functions for that:
+
+- `get_target_additive()`,
+- `get_target_interactions()`,
+- `get_target_logic()`.
+
+For example:
+
+```{r}
+get_target_additive(results)
+```
+
+
+
+
+### Contributing
+
+Contributions to kmerFilters are welcome! If you have suggestions for new features, improvements, or bug fixes, please submit an issue or pull request on GitHub.
+
