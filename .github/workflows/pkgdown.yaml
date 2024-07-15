@@ -37,7 +37,7 @@ jobs:
         run: |
           renv::restore()
           install.packages(c("pkgdown", "devtools"))
-          devtools::build()
+          devtools::install()
         shell: Rscript {0}
 
       - name: Build site
