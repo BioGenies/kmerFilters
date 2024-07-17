@@ -23,20 +23,14 @@ knitr::opts_chunk$set(
 
 We generate $n$ sequences $s_1, \ldots, s_n$ of length $N$ based on real frequences of amino acids on full alphabet.
 
-\begin{table}[!h]
-    \centering
-    \begin{tabular}{cccccccccc}
-\texttt{A} & \texttt{L} & \texttt{A} & \texttt{V} & \texttt{P} & \texttt{H} & \texttt{G} & \texttt{K} & \texttt{T} & \texttt{F} \\
-\texttt{S} & \texttt{L} & \texttt{Q} & \texttt{W} & \texttt{E} & \texttt{P} & \texttt{V} & \texttt{L} & \texttt{D} & \texttt{T} \\
-\texttt{R} & \texttt{I} & \texttt{F} & \texttt{N} & \texttt{N} & \texttt{V} & \texttt{Q} & \texttt{G} & \texttt{A} & \texttt{A} \\
-\texttt{G} & \texttt{C} & \texttt{S} & \texttt{D} & \texttt{G} & \texttt{Y} & \texttt{D} & \texttt{Q} & \texttt{T} & \texttt{R} \\
-\texttt{Y} & \texttt{L} & \texttt{R} & \texttt{R} & \texttt{S} & \texttt{R} & \texttt{P} & \texttt{D} & \texttt{A} & \texttt{V} \\
-\texttt{N} & \texttt{V} & \texttt{S} & \texttt{M} & \texttt{M} & \texttt{T} & \texttt{R} & \texttt{G} & \texttt{D} & \texttt{I} \\
+| exttt{A}   | \texttt{L} | \texttt{A} | \texttt{V} | \texttt{P} | \texttt{H} | \texttt{G} | \texttt{K} | \texttt{T} | \texttt{F} |
+|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|
+| \texttt{S} | \texttt{L} | \texttt{Q} | \texttt{W} | \texttt{E} | \texttt{P} | \texttt{V} | \texttt{L} | \texttt{D} | \texttt{T} |
+| \texttt{R} | \texttt{I} | \texttt{F} | \texttt{N} | \texttt{N} | \texttt{V} | \texttt{Q} | \texttt{G} | \texttt{A} | \texttt{A} |
+| \texttt{G} | \texttt{C} | \texttt{S} | \texttt{D} | \texttt{G} | \texttt{Y} | \texttt{D} | \texttt{Q} | \texttt{T} | \texttt{R} |
+| \texttt{Y} | \texttt{L} | \texttt{R} | \texttt{R} | \texttt{S} | \texttt{R} | \texttt{P} | \texttt{D} | \texttt{A} | \texttt{V} |
+| \texttt{N} | \texttt{V} | \texttt{S} | \texttt{M} | \texttt{M} | \texttt{T} | \texttt{R} | \texttt{G} | \texttt{D} | \texttt{I} |
 
-    \end{tabular}
-    \caption{Example sequences of length 10}
-    \label{tab:my_label}
-\end{table}
 
 \section{Motif generation}
 
