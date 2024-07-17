@@ -3,6 +3,7 @@
 #' @aliases kmerFilters
 #'
 #' @import checkmate
+#' @importFrom stats lm model.matrix
 #'
 #' @name kmerFilters
 #'

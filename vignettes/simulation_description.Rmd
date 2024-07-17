@@ -1,25 +1,20 @@
-%VignetteIndexEntry{Using Yadayada}
-%VignetteEngine{R.rsp::tex}
+---
+title: "Simulation - example usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example_simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
-\documentclass{article}
-\usepackage{graphicx}
-\usepackage{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{bbm}
-\usepackage{amsmath}
-\usepackage[table]{xcolor}
-\usepackage{url}
-\geometry{
- a4paper,
- total={160mm,247mm},
- left=25mm,
- top=25mm,
-}
-
-\title{Simulation scheme}
-\date{}
-
-\begin{document}
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 5,
+  fig.align = 'center'
+)
+```
 
 
 \maketitle
@@ -149,13 +144,7 @@ $$g(EY) = w_0 + \sum_{i = 1}^{k} w_{i} X_{m_i} + \left(\sum_{i = 1}^{k-1}\sum_{j
 
 \subsection{Logic regression}
 
-Here, we consider new variables, $L_1, \ldots, L_l$ where each of them is a logic expression based on a subset of motifs $m_1, \ldots, m_m$. For example, $$L_1(m_1, m_2, m_3) = (X_{m_1} \land X_{m_2}) \lor X_{m_3}.$$Each variable $L_i$ obtains its own weight in the model. Our model is following:
+Here, we consider new variables, $L_1, \ldots, L_l$ where each of them is a logic expression based on a subset of motifs $m_1, \ldots, m_m$. For example, $$L_1(m_1, m_2, m_3) = (X_{m_1} \land X_{m_2}) \lor X_{m_3}.$$ Each variable $L_i$ obtains its own weight in the model. Our model is following:
 
  $$g(EY) = w_0 + \sum_{i = 1}^{l} w_i L_i.$$
 
-
-
-
-
-
-\end{document}
