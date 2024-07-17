@@ -34,6 +34,13 @@ Our package provides fast and efficient generation of synthetic k-mer datasets w
 - additive impact of custom interactions (logical expressions using motifs).
 
 
+To learn more, please visit: https://biogenies.info/kmerFilters/
+
+Specific resources:
+
+ - [Simulation description](https://biogenies.info/kmerFilters/articles/simulation_description.html)
+
+
 ## How to install
 
 You can install the latest version from GitHub:
