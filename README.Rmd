@@ -21,7 +21,10 @@ knitr::opts_chunk$set(
 
 ## Overview 
 
-The kmerFilters is an R package providing tools for simulating k-mer data and benchmarking various filtering techniques. It is designed to assist researchers and practitioners in evaluating and comparing different approaches for preprocessing sequence data, particularly for applications such as protein function prediction.
+k-mers (n-grams) refer to k-length substrings derived from longer sequences, which can be continuous (representing a block of subsequent residues) or discontinuous (where the wildcards representing the gaps between residues are allowed). In biological applications, k-mers are used for various purposes, including genome assembly, sequence alignment, motif discovery, variant calling, phylogenetics, and CRISPR target identification. Due to the vast number of variables introduced by k-mer notation, we need tools to filter the variables.
+
+In this package we provide tools for simulating k-mer data and benchmarking various filtering techniques. It is designed to assist researchers and practitioners in evaluating and comparing different approaches for preprocessing sequence data, particularly for applications such as protein function prediction.
+
 
 ## Features
 
