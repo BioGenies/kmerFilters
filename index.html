@@ -75,7 +75,8 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The kmerFilters is an R package providing tools for simulating k-mer data and benchmarking various filtering techniques. It is designed to assist researchers and practitioners in evaluating and comparing different approaches for preprocessing sequence data, particularly for applications such as protein function prediction.</p>
+<p>k-mers (n-grams) refer to k-length substrings derived from longer sequences, which can be continuous (representing a block of subsequent residues) or discontinuous (where the wildcards representing the gaps between residues are allowed). In biological applications, k-mers are used for various purposes, including genome assembly, sequence alignment, motif discovery, variant calling, phylogenetics, and CRISPR target identification. Due to the vast number of variables introduced by k-mer notation, we need tools to filter the variables.</p>
+<p>In this package we provide tools for simulating k-mer data and benchmarking various filtering techniques. It is designed to assist researchers and practitioners in evaluating and comparing different approaches for preprocessing sequence data, particularly for applications such as protein function prediction.</p>
 </div>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
@@ -120,16 +121,16 @@
 <span></span>
 <span><span class="va">motifs</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; [1] "d" "_" "c" "_" "_" "_" "d"</span></span>
+<span><span class="co">#&gt; [1] "d" "_" "_" "_" "_" "_" "b"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt;  [1] "d" "_" "_" "_" "_" "d" "_" "a" "_" "d"</span></span>
+<span><span class="co">#&gt; [1] "c" "_" "_" "d" "c"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt; [1] "a" "_" "_" "d"</span></span>
+<span><span class="co">#&gt; [1] "b" "_" "c" "_" "_" "c"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt; [1] "c" "_" "d" "_" "_" "a"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "c" "_" "_" "b" "_" "_" "c"</span></span></code></pre></div>
 <p>Using simulated motifs we can simulate positive and negative sequences and consrtuct a k-mer feature space:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/generate_kmer_data.html">generate_kmer_data</a></span><span class="op">(</span>n_seq <span class="op">=</span> <span class="fl">20</span>, </span>
@@ -138,31 +139,31 @@
 <span>                              motifs <span class="op">=</span> <span class="va">motifs</span>, </span>
 <span>                              n_injections <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">results</span></span>
-<span><span class="co">#&gt; 20 x 14659 sparse Matrix of class "dgCMatrix"</span></span>
+<span><span class="co">#&gt; 20 x 14940 sparse Matrix of class "dgCMatrix"</span></span>
 <span><span class="co">#&gt;   [[ suppressing 33 column names 'a', 'd', 'b' ... ]]</span></span>
 <span><span class="co">#&gt;                                                                               </span></span>
-<span><span class="co">#&gt;  [1,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . 1 1 1 1 1 1 1 1 1 1 1 . . ......</span></span>
-<span><span class="co">#&gt;  [2,] 1 1 1 1 1 1 1 . 1 1 1 1 1 1 . . . 1 1 1 1 1 1 1 1 . 1 1 . 1 . 1 1 ......</span></span>
-<span><span class="co">#&gt;  [3,] 1 1 1 1 1 1 . 1 . 1 1 1 1 1 1 . . . . 1 1 1 1 1 1 . . 1 . 1 . 1 1 ......</span></span>
-<span><span class="co">#&gt;  [4,] 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 . 1 1 . . 1 1 1 1 1 . 1 1 . 1 . 1 1 ......</span></span>
-<span><span class="co">#&gt;  [5,] 1 1 1 1 1 1 . . 1 1 . 1 1 1 1 1 1 . 1 . 1 1 1 . . 1 . 1 . 1 . . . ......</span></span>
-<span><span class="co">#&gt;  [6,] 1 1 1 1 1 1 1 1 1 . 1 1 1 1 1 1 1 . . . 1 1 1 1 1 1 . . 1 1 . . 1 ......</span></span>
-<span><span class="co">#&gt;  [7,] 1 1 1 1 1 1 1 . 1 1 1 1 . 1 1 . . . . . 1 1 1 . 1 . . 1 . 1 . . 1 ......</span></span>
-<span><span class="co">#&gt;  [8,] 1 1 1 1 1 1 1 . . 1 1 1 . 1 1 . . 1 1 . 1 1 1 . 1 . 1 1 1 1 . . 1 ......</span></span>
-<span><span class="co">#&gt;  [9,] 1 1 1 1 . 1 1 1 1 1 1 1 1 1 1 1 1 . 1 . 1 1 1 . 1 1 . 1 1 1 . 1 . ......</span></span>
-<span><span class="co">#&gt; [10,] 1 1 1 1 1 1 . 1 1 1 . . . 1 1 1 1 . 1 1 1 1 . 1 1 . . 1 . 1 1 . 1 ......</span></span>
-<span><span class="co">#&gt; [11,] 1 1 1 1 1 1 . . 1 1 . 1 1 . 1 . 1 . 1 1 1 1 . . 1 1 1 . . 1 . . . ......</span></span>
-<span><span class="co">#&gt; [12,] 1 1 1 1 . . . 1 1 1 1 1 1 1 1 1 1 . . . 1 . 1 1 1 1 1 . 1 1 . 1 . ......</span></span>
-<span><span class="co">#&gt; [13,] 1 1 1 1 1 1 1 1 . 1 1 1 . 1 . . . 1 1 1 . 1 1 1 . . . 1 1 . . 1 1 ......</span></span>
-<span><span class="co">#&gt; [14,] 1 1 1 1 . . . 1 1 1 . 1 1 1 1 1 1 . 1 . 1 1 1 1 1 1 . 1 . . 1 1 1 ......</span></span>
-<span><span class="co">#&gt; [15,] 1 1 1 1 1 1 1 . . 1 1 1 . 1 1 1 . . 1 . . 1 . 1 1 . 1 1 . 1 1 1 1 ......</span></span>
-<span><span class="co">#&gt; [16,] 1 1 1 1 . . . 1 . 1 1 1 1 1 . 1 1 1 . 1 1 1 1 1 . 1 1 . 1 1 1 1 . ......</span></span>
-<span><span class="co">#&gt; [17,] 1 1 1 1 1 . . 1 1 . . 1 1 1 1 . . 1 1 1 . . 1 1 1 . 1 . 1 1 . 1 1 ......</span></span>
-<span><span class="co">#&gt; [18,] 1 1 1 1 1 . 1 1 1 1 1 1 1 1 1 . 1 1 1 1 . . . . 1 1 1 1 . 1 1 1 1 ......</span></span>
-<span><span class="co">#&gt; [19,] 1 1 1 1 . 1 1 1 . . 1 1 1 1 . 1 1 . 1 1 1 . . . 1 . . 1 1 . 1 1 1 ......</span></span>
-<span><span class="co">#&gt; [20,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 . . 1 1 . . 1 1 1 1 1 . 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [1,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 . ......</span></span>
+<span><span class="co">#&gt;  [2,] 1 1 1 1 . 1 1 1 1 1 1 1 1 1 1 1 1 . . . 1 1 . 1 1 1 1 1 . 1 . 1 1 ......</span></span>
+<span><span class="co">#&gt;  [3,] 1 1 1 1 . 1 . 1 . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 1 1 . 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [4,] 1 1 1 1 . 1 1 1 1 1 . 1 1 . 1 1 1 1 1 1 . 1 1 1 . 1 . 1 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [5,] 1 1 1 1 1 1 1 . 1 1 1 1 1 1 . 1 1 1 . . 1 1 1 . 1 1 . 1 1 1 1 1 . ......</span></span>
+<span><span class="co">#&gt;  [6,] 1 1 1 1 1 . 1 1 1 1 1 1 . 1 . 1 . 1 1 . 1 1 . 1 . . . 1 1 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt;  [7,] 1 1 1 1 1 1 . 1 1 . 1 1 1 1 1 1 . 1 1 1 . 1 1 . 1 1 . 1 1 1 1 . . ......</span></span>
+<span><span class="co">#&gt;  [8,] 1 1 1 1 1 . 1 . 1 1 1 1 . 1 . 1 1 . . . 1 . . 1 1 . 1 1 . 1 1 1 . ......</span></span>
+<span><span class="co">#&gt;  [9,] 1 1 1 1 1 1 . 1 1 1 1 1 1 1 . 1 . . 1 1 1 . . 1 1 . 1 1 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt; [10,] 1 1 1 1 1 1 1 1 . 1 1 1 1 . . . 1 1 . . 1 1 1 . 1 1 1 1 . 1 1 1 . ......</span></span>
+<span><span class="co">#&gt; [11,] 1 1 1 1 . . . 1 . 1 . 1 1 1 1 1 1 1 1 . 1 1 1 1 1 1 1 1 1 . 1 . . ......</span></span>
+<span><span class="co">#&gt; [12,] 1 1 1 1 1 1 1 . . 1 1 1 1 1 1 1 1 . 1 . 1 1 . . 1 1 1 1 . 1 1 1 . ......</span></span>
+<span><span class="co">#&gt; [13,] 1 1 1 1 1 1 1 . 1 1 . 1 . 1 1 . 1 1 1 1 1 1 . . . 1 . 1 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt; [14,] 1 1 1 1 1 . 1 1 1 . 1 1 1 1 1 1 . . 1 1 1 1 1 1 . 1 1 1 1 1 . 1 . ......</span></span>
+<span><span class="co">#&gt; [15,] 1 1 . 1 1 1 . 1 . 1 1 . 1 . . . 1 . 1 1 1 . 1 . 1 . 1 . 1 1 . 1 1 ......</span></span>
+<span><span class="co">#&gt; [16,] 1 1 1 1 . 1 1 . 1 1 . 1 . 1 . 1 1 1 1 . 1 . 1 . . 1 . 1 . 1 1 . . ......</span></span>
+<span><span class="co">#&gt; [17,] 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 . . 1 1 . 1 1 1 1 1 1 . . 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt; [18,] 1 1 1 1 1 1 1 1 1 1 . 1 1 . 1 . . 1 1 1 1 1 . 1 . 1 . 1 1 1 . 1 1 ......</span></span>
+<span><span class="co">#&gt; [19,] 1 1 1 1 . . 1 1 . 1 . 1 1 1 1 1 1 1 1 1 . 1 . 1 . . . 1 1 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt; [20,] 1 1 1 1 1 . 1 1 1 . 1 1 1 1 1 1 . 1 1 1 1 1 . . . 1 1 1 1 1 1 . 1 ......</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;  .....suppressing 14626 columns in show(); maybe adjust 'options(max.print= *, width = *)'</span></span>
+<span><span class="co">#&gt;  .....suppressing 14907 columns in show(); maybe adjust 'options(max.print= *, width = *)'</span></span>
 <span><span class="co">#&gt;  ..............................</span></span></code></pre></div>
 <p>Using obtained data you can choose how to generate a response variable. We provide three functions for that:</p>
 <ul>
@@ -176,7 +177,7 @@
 <p>For example, the following code:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/get_target_additive.html">get_target_additive</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] 1 1 1 1 1 1 1 0 1 1 0 1 0 0 0 0 1 0 0 0</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] 0 1 1 1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0</span></span></code></pre></div>
 <p>creates a binary response variable based on the logistic regression model assumptions.</p>
 </div>
 <div class="section level3">
