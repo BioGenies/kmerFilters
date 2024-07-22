@@ -1,5 +1,5 @@
 ---
-title: "Simulation - example usage"
+title: "Motif injection and sequences' labels."
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Example_simulation}
