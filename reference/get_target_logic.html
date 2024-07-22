@@ -71,7 +71,8 @@ ogical criteria are met, and 0 if these criteria are not met.</p>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_exp <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  max_exp_depth <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  expressions <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  expressions <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  binary <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -116,8 +117,14 @@ Default to 3.</p></dd>
 
 <dt id="arg-expressions">expressions<a class="anchor" aria-label="anchor" href="#arg-expressions"></a></dt>
 <dd><p>a matrix of binary variables corresponding to custom
-logic expressions. It's dimension should be related to the length of
-<code>weights</code> vector if it's provided. Default to <code>NULL</code>.</p></dd>
+logic expressions. You can create them based on motifs. It's dimension should
+be related to the length of <code>weights</code> vector if it's provided. Default
+to <code>NULL</code>. If <code>NULL</code>, random logic expressions will be created.</p></dd>
+
+
+<dt id="arg-binary">binary<a class="anchor" aria-label="anchor" href="#arg-binary"></a></dt>
+<dd><p>logical, indicating whether the produced target variable should
+be binary or continuous.</p></dd>
 
 </dl></div>
     <div id="details">

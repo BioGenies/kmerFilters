@@ -56,7 +56,12 @@ additive impact</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_target_additive</span><span class="op">(</span><span class="va">kmer_dat</span>, weights <span class="op">=</span> <span class="cn">NULL</span>, zero_weight <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_target_additive</span><span class="op">(</span></span>
+<span>  <span class="va">kmer_dat</span>,</span>
+<span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  zero_weight <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  binary <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -82,6 +87,11 @@ calculated based on the formula provided in details section. Default to
 <dd><p>a single value denoting the weight of no-motifs case. If
 <code>NULL</code>, then we sample the weight from the uniform distribution on the
 [-2, -1] interval. Default to <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-binary">binary<a class="anchor" aria-label="anchor" href="#arg-binary"></a></dt>
+<dd><p>logical, indicating whether the produced target variable should
+be binary or continuous.</p></dd>
 
 </dl></div>
     <div id="value">
