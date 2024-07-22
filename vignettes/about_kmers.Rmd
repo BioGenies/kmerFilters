@@ -124,7 +124,7 @@ For example
 ```{r}
 get_target_additive(kmer_dat)
 ```
-For more details about target sampling see 
+For more details about target sampling see [vignette](https://biogenies.info/kmerFilters/articles/simulation_description.html).
 
 
 
