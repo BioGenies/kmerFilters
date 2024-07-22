@@ -7,6 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -19,20 +21,31 @@ knitr::opts_chunk$set(
 
 \maketitle
 
-\section{Sequence data simulation}
+## Sequence data simulation
 
 We generate $n$ sequences $s_1, \ldots, s_n$ of length $N$ based on real frequences of amino acids on full alphabet.
 
-| exttt{A}   | \texttt{L} | \texttt{A} | \texttt{V} | \texttt{P} | \texttt{H} | \texttt{G} | \texttt{K} | \texttt{T} | \texttt{F} |
-|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|
-| \texttt{S} | \texttt{L} | \texttt{Q} | \texttt{W} | \texttt{E} | \texttt{P} | \texttt{V} | \texttt{L} | \texttt{D} | \texttt{T} |
-| \texttt{R} | \texttt{I} | \texttt{F} | \texttt{N} | \texttt{N} | \texttt{V} | \texttt{Q} | \texttt{G} | \texttt{A} | \texttt{A} |
-| \texttt{G} | \texttt{C} | \texttt{S} | \texttt{D} | \texttt{G} | \texttt{Y} | \texttt{D} | \texttt{Q} | \texttt{T} | \texttt{R} |
-| \texttt{Y} | \texttt{L} | \texttt{R} | \texttt{R} | \texttt{S} | \texttt{R} | \texttt{P} | \texttt{D} | \texttt{A} | \texttt{V} |
-| \texttt{N} | \texttt{V} | \texttt{S} | \texttt{M} | \texttt{M} | \texttt{T} | \texttt{R} | \texttt{G} | \texttt{D} | \texttt{I} |
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(kableExtra)
+
+letter_matrix <- matrix(c(
+  'A', 'L', 'A', 'V', 'P', 'H', 'G', 'K', 'T', 'F',
+  'S', 'L', 'Q', 'W', 'E', 'P', 'V', 'L', 'D', 'T',
+  'R', 'I', 'F', 'N', 'N', 'V', 'Q', 'G', 'A', 'A',
+  'G', 'C', 'S', 'D', 'G', 'Y', 'D', 'Q', 'T', 'R',
+  'Y', 'L', 'R', 'R', 'S', 'R', 'P', 'D', 'A', 'V',
+  'N', 'V', 'S', 'M', 'M', 'T', 'R', 'G', 'D', 'I'
+), nrow = 6, byrow = TRUE)
+
+letter_df <- as.data.frame(letter_matrix)
+
+kable_paper(kbl(letter_df, row.names = FALSE, col.names = NULL,
+                caption = "Example sequences of length 10."), full_width = F)
+```
 
 
-\section{Motif generation}
+
+## Motif generation
 
 We generate a set of $m$ motifs ($m_1, \ldots, m_m$) with the following parameters:
 
@@ -41,40 +54,52 @@ We generate a set of $m$ motifs ($m_1, \ldots, m_m$) with the following paramete
     \item $d_m$: denoting maximum number of gaps in motif
 \end{itemize}
 
-\begin{table}[!h]
-    \centering
-    \begin{tabular}{ccccccccc}
-\texttt{A} & \texttt{\_} & \texttt{\_} & \texttt{B} &  &  &  &     \\
-\texttt{Y} & \texttt{L} & \texttt{\_} & \texttt{G} & \texttt{\_} & \texttt{\_} & \texttt{D}  \\
-\texttt{N} & \texttt{\_} & \texttt{\_} & \texttt{\_} & \texttt{\_} & \texttt{M} &   \\
-\texttt{A} & \texttt{B} & \texttt{\_} & \texttt{T} &  &  &   \\
 
-    \end{tabular}
-    \caption{Example motifs}
-    \label{tab:motifs}
-\end{table}
+```{r, echo=FALSE}
 
-\section{Motif injection}
+motif_matrix <- matrix(c(
+  'A', '_', '_', 'B', '', '', '', '',
+  'Y', 'L', '_', 'G', '_', '_', 'D', '',
+  'N', '_', '_', '_', '_', 'M', '', '',
+  'A', 'B', '_', 'T', '', '', '', ''
+), nrow = 4, byrow = TRUE)
+
+motif_df <- as.data.frame(motif_matrix)
+
+kable_paper(
+    kbl(motif_df, row.names = FALSE, col.names = NULL,
+        caption = "Example motifs."), full_width = F
+)
+```
+
+
+## Motif injection
 
 We inject motif by replacing a randomly selected part of a sequence with this motif. For example:
 
-\begin{table}[!h]
-    \centering
-    \begin{tabular}{cccccccccc}
-\texttt{A} & \texttt{L} & \texttt{A} & \texttt{V} & \texttt{P} & \texttt{H} & \texttt{G} & \texttt{K} & \texttt{T} & \texttt{F} \\
-\texttt{S} & \texttt{L} & \texttt{Q} & \texttt{W} & \texttt{E} & \texttt{P} & \texttt{V} & \texttt{L} & \texttt{D} & \texttt{T} \\
-\texttt{R} & \texttt{I} & \texttt{F} & \texttt{N} & \texttt{N} & \texttt{V} & \texttt{Q} & \texttt{G} & \texttt{A} & \texttt{A} \\
-\rowcolor{green!25}
-\texttt{G} & \textbf{\texttt{A}} & \textbf{\texttt{B}} & \texttt{D} & \textbf{\texttt{T}} & \texttt{Y} & \texttt{D} & \texttt{Q} & \texttt{T} & \texttt{R} \\
-\rowcolor{green!25}
-\texttt{Y} & \texttt{L} & \texttt{R} & \texttt{R} & \texttt{S} & \texttt{R} & \textbf{\texttt{A}} & \textbf{\texttt{B}} & \texttt{A} & \textbf{\texttt{T}} \\
-\rowcolor{green!25}
-\texttt{N} & \texttt{V} & \textbf{\texttt{A}} & \textbf{\texttt{B}} & \texttt{M} & \textbf{\texttt{T}} & \texttt{R} & \texttt{G} & \texttt{D} & \texttt{I} \\
 
-    \end{tabular}
-    \caption{Example sequences of length 10 with addition of motif \texttt{AB\_T}}
-    \label{tab:my_label}
-\end{table}
+```{r, echo=FALSE}
+
+sequences_matrix <- matrix(c(
+  'A', 'L', 'A', 'V', 'P', 'H', 'G', 'K', 'T', 'F',
+  'S', 'L', 'Q', 'W', 'E', 'P', 'V', 'L', 'D', 'T',
+  'R', 'I', 'F', 'N', 'N', 'V', 'Q', 'G', 'A', 'A',
+  'G', 'A', 'B', 'D', 'T', 'Y', 'D', 'Q', 'T', 'R',
+  'Y', 'L', 'R', 'R', 'S', 'R', 'A', 'B', 'A', 'T',
+  'N', 'V', 'A', 'B', 'M', 'T', 'R', 'G', 'D', 'I'
+), nrow = 6, byrow = TRUE)
+
+sequences_df <- as.data.frame(sequences_matrix)
+
+kbl(sequences_df, col.names = NULL, row.names = FALSE, align = 'c', 
+      caption = "Example sequences of length 10 with addition of motif AB_T") |>
+  row_spec(4, background = "lightgreen") |>
+  row_spec(5, background = "lightgreen") |>
+  row_spec(6, background = "lightgreen") |>
+  kable_paper(full_width = F)
+
+```
+
 
 \noindent  We inject from $0$ to $k$ motifs to a single sequence according to the following procedure:
 
@@ -89,16 +114,9 @@ $$k_i \in \left\{\begin{array}{cl}
 
 \end{enumerate}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=1\linewidth]{figs/kmers.drawio.pdf}
-    \label{fig:scheme1}
-    \caption{Scheme of sequence data simulation.}
-\end{figure}
+![Simulation scheme.](./figs/injections.PNG){width=100%}
 
-
-
-\section{Target variable sampling}
+## Target variable sampling
 
 \noindent Let's define a random variable $X_K$ on a set of sequences $s_1, \ldots, s_n$ which describes whether a sequence $K$ is a subsequence of $s_i$. Namely, for any sequence $s_i$:
 
@@ -109,18 +127,10 @@ $$X_K(s_i) = \left\{\begin{array}{rl}
 
 \noindent where $K \subseteq s_2$ means that $K$ is a subsequence of $s_2$. For example
 
-$$X_{\texttt{AB}}(\texttt{ABCD}) = 1,$$
-$$X_{\texttt{A\_B}}(\texttt{ABCD}) = 0.$$
+$$X_{AB}(ABCD) = 1,$$
+$$X_{A\_B}(ABCD) = 0.$$
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\linewidth]{figs/models.pdf}
-    \label{fig:scheme1}
-    \caption{Probability of success for the fearure sampling.}
-\end{figure}
-
-
-\subsection{Logistic regression}
+### Logistic regression
 
 In this case we consider a standard logistic regression model where the joint effect of all motifs is the sum of their individual effects. Let $w_1, \ldots, w_m$ be weights related to motifs $m_1, \ldots, m_m$. Let $w_0$ be an effect for the sequences without motifs. Then, we can define an additive logistic model as follows:
 
@@ -130,15 +140,17 @@ We assume some particular values of $w_1, \ldots, w_m$ and calculate vector of p
 $$p = g^{-1}(w_0 + w_1 X_{m_1} + w_2 X_{m_2} + \ldots + w_m X_{m_m}).$$
 Having $p$ we simulate $y_i$ from binomial distribution $B(1, p_i)$.
 
-\subsection{Logistic regression with interactions}
+### Logistic regression with interactions
 
 Another approach is based on interactions indicating that the effect of one predictor depends on the value of another predictor. Let's define maximum number of motifs per sequence $k = \max\lbrace k_i, i = 1, \ldots, n\rbrace$. Let $w_{1}, \ldots, w_{k}$ denote weights of single effects. Namely:
 
 $$g(EY) = w_0 + \sum_{i = 1}^{k} w_{i} X_{m_i} + \left(\sum_{i = 1}^{k-1}\sum_{j = i + 1}^{k} w_{ij} X_{m_i}X_{m_j}\right) + \ldots + w_{1\ldots k} X_{m_1}\ldots X_{m_k}$$
 
-\subsection{Logic regression}
+### Logic regression
 
 Here, we consider new variables, $L_1, \ldots, L_l$ where each of them is a logic expression based on a subset of motifs $m_1, \ldots, m_m$. For example, $$L_1(m_1, m_2, m_3) = (X_{m_1} \land X_{m_2}) \lor X_{m_3}.$$ Each variable $L_i$ obtains its own weight in the model. Our model is following:
 
  $$g(EY) = w_0 + \sum_{i = 1}^{l} w_i L_i.$$
+
+
 
