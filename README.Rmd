@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # kmerFilters : R Package for k-mer Data Simulation and Filtering
 
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/jakubkala/kmerFilters/branch/main/graph/badge.svg)](https://codecov.io/gh/jakubkala/kmerFilters?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/BioGenies/kmerFilters/branch/main/graph/badge.svg)](https://app.codecov.io/gh/BioGenies/kmerFilters?branch=main)
 <!-- badges: end -->
 
 ## Overview 
