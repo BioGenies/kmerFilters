@@ -1,0 +1,133 @@
+---
+title: "Data sampling and data structure."
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example_simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(kmerFilters)
+```
+
+# What are k-mers?
+
+k-mers, or n-grams, are sequences of $k$ consecutive elements extracted from a larger sequence of letters. In the context of bioinformatics, k-mers refer to short DNA, RNA, or protein sequences. They are used to analyze biological sequences by breaking them down into manageable fragments, allowing researchers to identify patterns, mutations, and other genetic features. k-mers are valuable in various applications, including sequence alignment, genome assembly, and gene prediction. 
+
+In our package we generate some artificial sequences and count k-mers for them using the [seqr](https://github.com/slowikj/seqR) package. If you came here with your own data for analysis and do not wish to simulate artificial data, you can use the [seqr](https://github.com/slowikj/seqR) package to count k-mers in your sequences. Anyway, you can filter k-mers with methods contained in *kmerFilters*.
+
+# Data structure
+
+To generate data we first generate both positive and negative sequences and then count k-mers for them. Everything is done by two functions specified by the following parameters (for more see the documentation):
+
+- alphabet - set of letters for sampling,
+- sequence_length - length of sequence,
+- n_injections - maximum number of motifs to inject into a positive sequence.
+
+Let's create an example set of motifs
+
+```{r}
+set.seed(111)
+
+dna_alphabet <- c("A", "C", "T", "G")
+
+motifs <- generate_motifs(alphabet = dna_alphabet,     # alphabet
+                          n_motifs = 2,                # number of motifs
+                          n_injections = 1,            # number of injections
+                          n = 3,                       # number of letters
+                          d = 2)                       # number of possible gaps
+```
+
+
+Here, the result is a list of motifs for potential injection to positive sequences:
+
+```{r}
+motifs
+```
+
+Having motifs we can generate sequences and create a k-mer feature space:
+
+```{r}
+sequence_length <- 4
+
+kmer_dat <- generate_kmer_data(n_seq = 10, 
+                               sequence_length = sequence_length, 
+                               alph = dna_alphabet,
+                               motifs = motifs, 
+                               n_injections = 1,
+                               n = 2,
+                               d = 1)
+```
+The output of `generate_kmer_data` function is an object of the `dgCMatrix` class. It's a sparse matrix containing 0's and 1's where 1 denotes the occurrence of k-mer and 0 denotes no occurrence. The below numbers means that we obtained `r dim(kmer_dat)[1]` rows (sequences) and `r dim(kmer_dat)[2]` (found k-mers with maximum 2 letetrs and 1 gap):
+
+```{r}
+dim(kmer_dat)
+```
+
+
+We can easily access the k-mers using the following command:
+
+```{r}
+kmer_dat@Dimnames[[2]]
+```
+
+Each dot `.` between letters represents a potential gap. The numbers following the `_` symbol indicate the number of gaps associated with each dot. For example, `A.C_1` means exactly $\texttt{A_C}$ where $\texttt{_}$ means a gap. You can decode the names using [biogram](https://github.com/michbur/biogram) package as follows
+
+```{r}
+unname(biogram::decode_ngrams(kmer_dat@Dimnames[[2]]))
+```
+
+
+For a set of sequences each k-mer is a variable indicating whether given k-mer occurs in corresponding sequence. Here, we have `r dim(kmer_dat)[2]` k-mers:
+
+```{r}
+as.matrix(kmer_dat)
+```
+
+corresponding to the sequences:
+
+```{r}
+apply(attr(kmer_dat, "sequences"), 1, paste0, collapse = "")
+```
+
+
+# Target variable
+
+Here we will shortly describe the response variable. For the set of generated motifs 
+
+```{r}
+attr(kmer_dat, "motifs_set")
+```
+we create an object `motifs_map` which denotes which motif was injected to which sequence. In our example
+
+
+```{r}
+attr(kmer_dat, "motifs_map")
+```
+we can see that the motif `r paste0(attr(kmer_dat, "motifs_set")[[1]], collapse = "")` occurred
+`r colSums(attr(kmer_dat, "motifs_map"))[1]` times and `r paste0(attr(kmer_dat, "motifs_set")[[2]], collapse = "")` occurred `r colSums(attr(kmer_dat, "motifs_map"))[2]` time. The `target` attribute says whether given sequence contains at least one motif:
+
+```{r}
+attr(kmer_dat, "target")
+```
+A variable `target` says whether a sequence is positive or negative, however we might also consider some noise (false positively or negatively labeled sequences). To do so, we use the functions:
+
+- `get_target_additive`,
+- `get_target_interactions`,
+- `get_target_logic`.
+
+For example
+
+```{r}
+get_target_additive(kmer_dat)
+```
+For more details about target sampling see 
+
+
+
+
+
+
