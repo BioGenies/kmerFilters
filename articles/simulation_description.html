@@ -64,7 +64,8 @@
 
 
 
-      </header><div class="row">
+      </header><script src="simulation_description_files/kePrint-0.0.1/kePrint.js"></script><link href="simulation_description_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Simulation - example usage</h1>
@@ -77,6 +78,9 @@
 
     
     
+<div class="section level2">
+<h2 id="sequence-data-simulation">Sequence data simulation<a class="anchor" aria-label="anchor" href="#sequence-data-simulation"></a>
+</h2>
 <p>We generate
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
 sequences
@@ -84,106 +88,531 @@ sequences
 of length
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
 based on real frequences of amino acids on full alphabet.</p>
-<table style="width:100%;" class="table">
-<colgroup>
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-<col width="10%">
-</colgroup>
-<thead><tr class="header">
-<th>exttt{A}</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr></thead>
+<table class="table  lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<caption>
+Example sequences of length 10.
+</caption>
 <tbody>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+V
+</td>
+<td style="text-align:left;">
+P
+</td>
+<td style="text-align:left;">
+H
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+K
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:left;">
+F
+</td>
 </tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<tr>
+<td style="text-align:left;">
+S
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:left;">
+Q
+</td>
+<td style="text-align:left;">
+W
+</td>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:left;">
+P
+</td>
+<td style="text-align:left;">
+V
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+T
+</td>
 </tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<tr>
+<td style="text-align:left;">
+R
+</td>
+<td style="text-align:left;">
+I
+</td>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+V
+</td>
+<td style="text-align:left;">
+Q
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+A
+</td>
 </tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+S
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+Q
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:left;">
+R
+</td>
 </tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<tr>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:left;">
+R
+</td>
+<td style="text-align:left;">
+R
+</td>
+<td style="text-align:left;">
+S
+</td>
+<td style="text-align:left;">
+R
+</td>
+<td style="text-align:left;">
+P
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+V
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+V
+</td>
+<td style="text-align:left;">
+S
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:left;">
+R
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+I
+</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level2">
+<h2 id="motif-generation">Motif generation<a class="anchor" aria-label="anchor" href="#motif-generation"></a>
+</h2>
 <p>We generate a set of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
 motifs
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>m</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">m_1, \ldots, m_m</annotation></semantics></math>)
 with the following parameters:</p>
+<table class="table  lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<caption>
+Example motifs.
+</caption>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Y
+</td>
+<td style="text-align:left;">
+L
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+N
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+M
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+_
+</td>
+<td style="text-align:left;">
+T
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level2">
+<h2 id="motif-injection">Motif injection<a class="anchor" aria-label="anchor" href="#motif-injection"></a>
+</h2>
 <p>We inject motif by replacing a randomly selected part of a sequence
 with this motif. For example:</p>
+<table class="table  lightable-paper" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<caption>
+Example sequences of length 10 with addition of motif AB_T
+</caption>
+<tbody>
+<tr>
+<td style="text-align:center;">
+A
+</td>
+<td style="text-align:center;">
+L
+</td>
+<td style="text-align:center;">
+A
+</td>
+<td style="text-align:center;">
+V
+</td>
+<td style="text-align:center;">
+P
+</td>
+<td style="text-align:center;">
+H
+</td>
+<td style="text-align:center;">
+G
+</td>
+<td style="text-align:center;">
+K
+</td>
+<td style="text-align:center;">
+T
+</td>
+<td style="text-align:center;">
+F
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+S
+</td>
+<td style="text-align:center;">
+L
+</td>
+<td style="text-align:center;">
+Q
+</td>
+<td style="text-align:center;">
+W
+</td>
+<td style="text-align:center;">
+E
+</td>
+<td style="text-align:center;">
+P
+</td>
+<td style="text-align:center;">
+V
+</td>
+<td style="text-align:center;">
+L
+</td>
+<td style="text-align:center;">
+D
+</td>
+<td style="text-align:center;">
+T
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+R
+</td>
+<td style="text-align:center;">
+I
+</td>
+<td style="text-align:center;">
+F
+</td>
+<td style="text-align:center;">
+N
+</td>
+<td style="text-align:center;">
+N
+</td>
+<td style="text-align:center;">
+V
+</td>
+<td style="text-align:center;">
+Q
+</td>
+<td style="text-align:center;">
+G
+</td>
+<td style="text-align:center;">
+A
+</td>
+<td style="text-align:center;">
+A
+</td>
+</tr>
+<tr>
+<td style="text-align:center;background-color: lightgreen !important;">
+G
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+A
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+B
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+D
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+T
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+Y
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+D
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+Q
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+T
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+R
+</td>
+</tr>
+<tr>
+<td style="text-align:center;background-color: lightgreen !important;">
+Y
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+L
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+R
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+R
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+S
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+R
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+A
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+B
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+A
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+T
+</td>
+</tr>
+<tr>
+<td style="text-align:center;background-color: lightgreen !important;">
+N
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+V
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+A
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+B
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+M
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+T
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+R
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+G
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+D
+</td>
+<td style="text-align:center;background-color: lightgreen !important;">
+I
+</td>
+</tr>
+</tbody>
+</table>
 <p>We inject from
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
 to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
 motifs to a single sequence according to the following procedure:</p>
+<div class="float">
+<img src="figs/injections.PNG" style="width:100.0%" alt="Simulation scheme."><div class="figcaption">Simulation scheme.</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="target-variable-sampling">Target variable sampling<a class="anchor" aria-label="anchor" href="#target-variable-sampling"></a>
+</h2>
 <p>Let’s define a random variable
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mi>K</mi></msub><annotation encoding="application/x-tex">X_K</annotation></semantics></math>
 on a set of sequences
@@ -205,7 +634,10 @@ means that
 is a subsequence of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mn>2</mn></msub><annotation encoding="application/x-tex">s_2</annotation></semantics></math>.
 For example</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mtext mathvariant="monospace">𝙰𝙱</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="monospace">𝙰𝙱𝙲𝙳</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">X_{\texttt{AB}}(\texttt{ABCD}) = 1,</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mtext mathvariant="monospace">𝙰_𝙱</mtext></msub><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="monospace">𝙰𝙱𝙲𝙳</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">X_{\texttt{A\_B}}(\texttt{ABCD}) = 0.</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>A</mi><mi>B</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">X_{AB}(ABCD) = 1,</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>A</mi><mi>_</mi><mi>B</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mi>B</mi><mi>C</mi><mi>D</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">X_{A\_B}(ABCD) = 0.</annotation></semantics></math></p>
+<div class="section level3">
+<h3 id="logistic-regression">Logistic regression<a class="anchor" aria-label="anchor" href="#logistic-regression"></a>
+</h3>
 <p>In this case we consider a standard logistic regression model where
 the joint effect of all motifs is the sum of their individual effects.
 Let
@@ -229,6 +661,10 @@ we simulate
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>i</mi></msub><annotation encoding="application/x-tex">y_i</annotation></semantics></math>
 from binomial distribution
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><msub><mi>p</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">B(1, p_i)</annotation></semantics></math>.</p>
+</div>
+<div class="section level3">
+<h3 id="logistic-regression-with-interactions">Logistic regression with interactions<a class="anchor" aria-label="anchor" href="#logistic-regression-with-interactions"></a>
+</h3>
 <p>Another approach is based on interactions indicating that the effect
 of one predictor depends on the value of another predictor. Let’s define
 maximum number of motifs per sequence
@@ -237,6 +673,10 @@ Let
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>w</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">w_{1}, \ldots, w_{k}</annotation></semantics></math>
 denote weights of single effects. Namely:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>E</mi><mi>Y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>w</mi><mi>i</mi></msub><msub><mi>X</mi><msub><mi>m</mi><mi>i</mi></msub></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></munderover><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>i</mi><mo>+</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>w</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>X</mi><msub><mi>m</mi><mi>i</mi></msub></msub><msub><mi>X</mi><msub><mi>m</mi><mi>j</mi></msub></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>…</mi><mo>+</mo><msub><mi>w</mi><mrow><mn>1</mn><mi>…</mi><mi>k</mi></mrow></msub><msub><mi>X</mi><msub><mi>m</mi><mn>1</mn></msub></msub><mi>…</mi><msub><mi>X</mi><msub><mi>m</mi><mi>k</mi></msub></msub></mrow><annotation encoding="application/x-tex">g(EY) = w_0 + \sum_{i = 1}^{k} w_{i} X_{m_i} + \left(\sum_{i = 1}^{k-1}\sum_{j = i + 1}^{k} w_{ij} X_{m_i}X_{m_j}\right) + \ldots + w_{1\ldots k} X_{m_1}\ldots X_{m_k}</annotation></semantics></math></p>
+</div>
+<div class="section level3">
+<h3 id="logic-regression">Logic regression<a class="anchor" aria-label="anchor" href="#logic-regression"></a>
+</h3>
 <p>Here, we consider new variables,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>L</mi><mi>l</mi></msub></mrow><annotation encoding="application/x-tex">L_1, \ldots, L_l</annotation></semantics></math>
 where each of them is a logic expression based on a subset of motifs
@@ -247,6 +687,8 @@ Each variable
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>L</mi><mi>i</mi></msub><annotation encoding="application/x-tex">L_i</annotation></semantics></math>
 obtains its own weight in the model. Our model is following:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>E</mi><mi>Y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>w</mi><mn>0</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>l</mi></munderover><msub><mi>w</mi><mi>i</mi></msub><msub><mi>L</mi><mi>i</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">g(EY) = w_0 + \sum_{i = 1}^{l} w_i L_i.</annotation></semantics></math></p>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
