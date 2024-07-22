@@ -81,6 +81,20 @@
       ],
       "Hash": "a45594a00f5dbb073d5ec9f48592a08a"
     },
+    "Rdpack": {
+      "Package": "Rdpack",
+      "Version": "2.6",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "methods",
+        "rbibutils",
+        "tools",
+        "utils"
+      ],
+      "Hash": "3e1384ada5d3948b392e98b11434d972"
+    },
     "backports": {
       "Package": "backports",
       "Version": "1.5.0",
@@ -100,6 +114,27 @@
         "R"
       ],
       "Hash": "543776ae6848fde2f48ff3816d0628bc"
+    },
+    "biogram": {
+      "Package": "biogram",
+      "Version": "1.6.3",
+      "Source": "GitHub",
+      "Repository": "CRAN",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "biogram",
+      "RemoteUsername": "michbur",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "1e8612de57dae53191e8ab8c86bbee679a47ff9a",
+      "Requirements": [
+        "Matrix",
+        "R",
+        "combinat",
+        "entropy",
+        "partitions",
+        "slam"
+      ],
+      "Hash": "01227f7b8700c12f5b88c33539a3f5e8"
     },
     "brio": {
       "Package": "brio",
@@ -194,6 +229,13 @@
       ],
       "Hash": "f20c47fd52fae58b4e377c37bb8c335b"
     },
+    "combinat": {
+      "Package": "combinat",
+      "Version": "0.0-8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f0acb9dcb71a9cd9d5ae233c5035b1c5"
+    },
     "commonmark": {
       "Package": "commonmark",
       "Version": "1.9.1",
@@ -284,6 +326,16 @@
         "vctrs"
       ],
       "Hash": "fedd9d00c2944ff00a0e2696ccf048ec"
+    },
+    "entropy": {
+      "Package": "entropy",
+      "Version": "1.3.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "99df3344e9a4efeef32ff01ed94ff225"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -391,6 +443,17 @@
         "methods"
       ],
       "Hash": "e0b3a53876554bd45879e596cdb10a52"
+    },
+    "gmp": {
+      "Package": "gmp",
+      "Version": "0.7-4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "methods"
+      ],
+      "Hash": "eef7063b82c79405f4eb2de9a051a312"
     },
     "gtable": {
       "Package": "gtable",
@@ -567,6 +630,13 @@
       ],
       "Hash": "7ce2733a9826b3aeb1775d56fd305472"
     },
+    "mathjaxr": {
+      "Package": "mathjaxr",
+      "Version": "1.6-0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "87da6ccdcee6077a7d5719406bf3ae45"
+    },
     "memoise": {
       "Package": "memoise",
       "Version": "2.0.1",
@@ -629,6 +699,21 @@
         "utils"
       ],
       "Hash": "0984ce8da8da9ead8643c5cbbb60f83e"
+    },
+    "partitions": {
+      "Package": "partitions",
+      "Version": "1.10-7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "Rdpack",
+        "gmp",
+        "mathjaxr",
+        "polynom",
+        "sets"
+      ],
+      "Hash": "bc1dc076b0640525c330f28672d3b5b3"
     },
     "pillar": {
       "Package": "pillar",
@@ -694,6 +779,17 @@
       ],
       "Hash": "2ec30ffbeec83da57655b850cf2d3e0e"
     },
+    "polynom": {
+      "Package": "polynom",
+      "Version": "1.4-1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "graphics",
+        "stats"
+      ],
+      "Hash": "ceb5c2a59ba33d42d051285a3e8a5118"
+    },
     "praise": {
       "Package": "praise",
       "Version": "1.0.0",
@@ -749,6 +845,18 @@
         "R"
       ],
       "Hash": "5e3c5dc0b071b21fa128676560dbe94d"
+    },
+    "rbibutils": {
+      "Package": "rbibutils",
+      "Version": "2.2.16",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "tools",
+        "utils"
+      ],
+      "Hash": "8c06968e0a5b0209c5f34239b1302336"
     },
     "rematch2": {
       "Package": "rematch2",
@@ -875,16 +983,30 @@
       ],
       "Hash": "2949dcaedf4d22b578ecd469b617a176"
     },
+    "sets": {
+      "Package": "sets",
+      "Version": "1.0-25",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "grDevices",
+        "graphics",
+        "stats",
+        "utils"
+      ],
+      "Hash": "cf00a3c090a54979990af2e89506a1d3"
+    },
     "slam": {
       "Package": "slam",
-      "Version": "0.1-50",
+      "Version": "0.1-51",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "stats"
       ],
-      "Hash": "e25793551cbdb843154152e5ee88cbd6"
+      "Hash": "93d0bf2740adf7d41e909a76f1e1053c"
     },
     "spelling": {
       "Package": "spelling",
