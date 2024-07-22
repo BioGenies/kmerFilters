@@ -23,6 +23,13 @@ jobs:
         with:
           use-public-rspm: true
 
+      - name: Install seqR
+        run: |
+          renv::restore()
+          install.packages(c("pkgdown", "devtools"))
+          devtools::install()
+        shell: Rscript {0}
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::covr, any::xml2
