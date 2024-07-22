@@ -198,6 +198,8 @@ generate_kmer_data <- function(n_seq,
 #' @param zero_weight a single value denoting the weight of no-motifs case. If
 #' \code{NULL}, then we sample the weight from the uniform distribution on the
 #' [-2, -1] interval. Default to \code{NULL}.
+#' @param binary logical, indicating whether the produced target variable should
+#' be binary or continuous.
 #'
 #' @return a binary vector of target variable sampled based on interaction model
 #' and provided/calculated probabilities.
@@ -229,7 +231,8 @@ generate_kmer_data <- function(n_seq,
 #' @export
 
 get_target_interactions <- function(kmer_dat,
-                                    zero_weight = NULL) {
+                                    zero_weight = NULL,
+                                    binary = TRUE) {
 
     target <- attr(kmer_dat, "target")
     n_motifs <- length(attr(kmer_dat, "motifs_set"))
@@ -254,9 +257,12 @@ get_target_interactions <- function(kmer_dat,
     target[target] <- target_weights[target]
     target[!target] <- zero_weight
 
-    probs <- exp(target)/(1 + exp(target))
-
-    rbinom_vec(probs)
+    if(binary) {
+        probs <- exp(target)/(1 + exp(target))
+        rbinom_vec(probs)
+    } else {
+        target
+    }
 }
 
 #' Logistic regression response
@@ -303,7 +309,8 @@ get_target_interactions <- function(kmer_dat,
 
 get_target_additive <- function(kmer_dat,
                                 weights = NULL,
-                                zero_weight = NULL) {
+                                zero_weight = NULL,
+                                binary = TRUE) {
 
     if(length(weights) != length(attr(kmer_dat, "motifs_set")) & !is.null(weights))
         stop("The length of weights vector should equal number of motifs!")
@@ -322,9 +329,12 @@ get_target_additive <- function(kmer_dat,
     target[target] <- target_weights[target]
     target[!target] <- zero_weight
 
-    probs <- exp(target)/(1 + exp(target))
-
-    rbinom_vec(probs)
+    if(binary) {
+        probs <- exp(target)/(1 + exp(target))
+        rbinom_vec(probs)
+    } else {
+        target
+    }
 }
 
 
@@ -358,8 +368,9 @@ get_target_additive <- function(kmer_dat,
 #' Default to 3.
 #'
 #' @param expressions a matrix of binary variables corresponding to custom
-#' logic expressions. It's dimension should be related to the length of
-#' \code{weights} vector if it's provided. Default to \code{NULL}.
+#' logic expressions. You can create them based on motifs. It's dimension should
+#' be related to the length of \code{weights} vector if it's provided. Default
+#' to \code{NULL}. If \code{NULL}, random logic expressions will be created.
 #'
 #' @details
 #' Here, we consider new variables, \eqn{L_1, \ldots, L_l} where each of them
@@ -391,7 +402,8 @@ get_target_logic <- function(kmer_dat,
                              weights = NULL,
                              n_exp = NULL,
                              max_exp_depth = NULL,
-                             expressions = NULL) {
+                             expressions = NULL,
+                             binary = TRUE) {
 
     motifs_set <- attr(kmer_dat, "motifs_set")
     motifs_map <- attr(kmer_dat, "motifs_map")
@@ -405,7 +417,7 @@ get_target_logic <- function(kmer_dat,
     if(is.null(max_exp_depth))
         max_exp_depth <- min(length(motifs_set) - 1, 3)
     if(is.null(weights))
-        weights <- runif(n_exp)
+        weights <- runif(ifelse(is.null(expressions), n_exp, ncol(expressions)))
     if(is.null(zero_weight))
         zero_weight <- runif(1, -2, -1)
 
@@ -430,16 +442,19 @@ get_target_logic <- function(kmer_dat,
 
             as.numeric(eval(parse(text = do.call(sprintf, expr_params))))
         })
-    }
 
-    target_weights <- expressions_motifs %*% weights
+        target_weights <- expressions_motifs %*% weights
+    }
 
     target[target] <- target_weights[target]
     target[!target] <- zero_weight
 
-    probs <- exp(target)/(1 + exp(target))
-
-    rbinom_vec(probs)
+    if(binary) {
+        probs <- exp(target)/(1 + exp(target))
+        rbinom_vec(probs)
+    } else {
+        target
+    }
 }
 
 

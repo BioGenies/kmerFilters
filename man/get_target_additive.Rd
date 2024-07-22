@@ -4,7 +4,12 @@
 \alias{get_target_additive}
 \title{Logistic regression response}
 \usage{
-get_target_additive(kmer_dat, weights = NULL, zero_weight = NULL)
+get_target_additive(
+  kmer_dat,
+  weights = NULL,
+  zero_weight = NULL,
+  binary = TRUE
+)
 }
 \arguments{
 \item{kmer_dat}{output of \code{\link{generate_kmer_data}}}
@@ -21,6 +26,9 @@ calculated based on the formula provided in details section. Default to
 \item{zero_weight}{a single value denoting the weight of no-motifs case. If
 \code{NULL}, then we sample the weight from the uniform distribution on the
 [-2, -1] interval. Default to \code{NULL}.}
+
+\item{binary}{logical, indicating whether the produced target variable should
+be binary or continuous.}
 }
 \value{
 a binary vector of target variable sampled based on additive model.

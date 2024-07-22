@@ -4,7 +4,7 @@
 \alias{get_target_interactions}
 \title{Logistic regression with interactions}
 \usage{
-get_target_interactions(kmer_dat, zero_weight = NULL)
+get_target_interactions(kmer_dat, zero_weight = NULL, binary = TRUE)
 }
 \arguments{
 \item{kmer_dat}{output of \code{\link{generate_kmer_data}}}
@@ -12,6 +12,9 @@ get_target_interactions(kmer_dat, zero_weight = NULL)
 \item{zero_weight}{a single value denoting the weight of no-motifs case. If
 \code{NULL}, then we sample the weight from the uniform distribution on the
 [-2, -1] interval. Default to \code{NULL}.}
+
+\item{binary}{logical, indicating whether the produced target variable should
+be binary or continuous.}
 }
 \value{
 a binary vector of target variable sampled based on interaction model

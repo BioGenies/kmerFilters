@@ -11,7 +11,8 @@ get_target_logic(
   weights = NULL,
   n_exp = NULL,
   max_exp_depth = NULL,
-  expressions = NULL
+  expressions = NULL,
+  binary = TRUE
 )
 }
 \arguments{
@@ -39,8 +40,12 @@ when \code{random} equals \code{TRUE}.}
 Default to 3.}
 
 \item{expressions}{a matrix of binary variables corresponding to custom
-logic expressions. It's dimension should be related to the length of
-\code{weights} vector if it's provided. Default to \code{NULL}.}
+logic expressions. You can create them based on motifs. It's dimension should
+be related to the length of \code{weights} vector if it's provided. Default
+to \code{NULL}. If \code{NULL}, random logic expressions will be created.}
+
+\item{binary}{logical, indicating whether the produced target variable should
+be binary or continuous.}
 }
 \description{
 This function samples target variable according to the logic regression

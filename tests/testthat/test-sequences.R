@@ -116,6 +116,16 @@ test_that("Interaction model works", {
         c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 0L, 0L, 0L, 1L,
           1L, 1L, 0L, 0L, 0L), get_target_interactions(results)
     )
+
+    expect_equal(
+        c(3.2669325505849, 3.2669325505849, 0.824915252858773, 3.2669325505849,
+          0.824915252858773, 1.01497719204053, 0.745780731318519,
+          2.05459328205325, 1.16902287956327, 1.77926696231589,
+          -1.69982326356694, -1.69982326356694, -1.69982326356694,
+          -1.69982326356694, -1.69982326356694, -1.69982326356694,
+          -1.69982326356694, -1.69982326356694, -1.69982326356694,
+          -1.69982326356694), get_target_interactions(results, binary = FALSE)
+    )
 })
 
 
@@ -135,10 +145,16 @@ test_that("Additive model works", {
           0L, 0L, 0L, 0L, 1L), get_target_additive(results)
     )
 
-    #test if conditions work
+    expect_equal(
+        c(2.05890567833558, 2.05890567833558, 0.39565183990635),
+        get_target_additive(results, binary = FALSE)[1:3]
+    )
+
     expect_error(get_target_additive(results, weights = 0.1),
                  "The length of weights vector should equal number of motifs!")
 })
+
+
 
 
 test_that("Logic model works", {
@@ -155,18 +171,40 @@ test_that("Logic model works", {
         c(0L, 0L, 1L, 1L, 1L, 0L, 1L, 0L, 0L, 1L, 0L, 0L, 0L, 1L, 0L,
           1L, 0L, 0L, 0L, 1L), get_target_logic(results)
     )
+
+    expect_equal(
+        c(0.854367734864354, 0.854367734864354, 0.854367734864354,
+          0.854367734864354), get_target_logic(results, binary = FALSE)[1:4]
+    )
+
+    expressions = matrix(rbinom(n_seq*2, 1, .5), nrow = n_seq)
+
+    expect_error(
+        get_target_logic(results, expressions = expressions, weights = 1),
+        "You have to provide weight for each column"
+    )
+
+    expect_identical(
+        c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 1L, 0L, 0L, 0L, 0L, 0L, 0L,
+          0L, 0L, 0L, 0L, 0L),
+        get_target_logic(results, expressions = expressions, weights = c(1, 2))
+    )
+
+    motifs <- generate_motifs(alph, 1, 1, 4, 6)
+    results <- generate_kmer_data(n_seq, sequence_length, alph,
+                                  motifs, n_injections = 1)
+
+    expect_error(get_target_logic(results), "You need at least 2 motifs")
 })
 
 
 test_that("rbinom_vec works", {
 
     set.seed(1)
-
     probs <- runif(10)
 
     expect_identical(rbinom_vec(probs),
                      c(0L, 0L, 0L, 1L, 0L, 1L, 1L, 0L, 1L, 0L))
-
     expect_error(rbinom_vec(2),"Provided probabilities should be greater")
 })
 
