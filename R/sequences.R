@@ -175,6 +175,9 @@ generate_kmer_data <- function(n_seq,
 
     test_res <- count_seq_kmers(test_dat, alphabet, n, d)
 
+    test_res@Dimnames[[2]][1:length(alphabet)] <-
+        paste0(test_res@Dimnames[[2]][1:length(alphabet)], "_0")
+
     attr(test_res, "sequences") <- matrix(test_dat,
                                           nrow = nrow(test_dat),
                                           ncol = ncol(test_dat))
