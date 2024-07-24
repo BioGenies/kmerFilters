@@ -104,8 +104,14 @@
     },
     "FCBF": {
       "Package": "FCBF",
-      "Version": "2.10.0",
-      "Source": "Bioconductor",
+      "Version": "1.99.1",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "FCBF",
+      "RemoteUsername": "lubianat",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "51b96006c8655cb4d6e07ea45ea8b25fd415c9f1",
       "Requirements": [
         "R",
         "SummarizedExperiment",
@@ -116,7 +122,7 @@
         "pbapply",
         "stats"
       ],
-      "Hash": "d9f5837e9cefa059c8ca35a5a081729f"
+      "Hash": "978da110901fc7cc04bb62feeeab69a2"
     },
     "FSelectorRcpp": {
       "Package": "FSelectorRcpp",
