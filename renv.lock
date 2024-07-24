@@ -3,6 +3,26 @@
     "Version": "4.3.2",
     "Repositories": [
       {
+        "Name": "BioCsoft",
+        "URL": "https://bioconductor.org/packages/3.18/bioc"
+      },
+      {
+        "Name": "BioCann",
+        "URL": "https://bioconductor.org/packages/3.18/data/annotation"
+      },
+      {
+        "Name": "BioCexp",
+        "URL": "https://bioconductor.org/packages/3.18/data/experiment"
+      },
+      {
+        "Name": "BioCworkflows",
+        "URL": "https://bioconductor.org/packages/3.18/workflows"
+      },
+      {
+        "Name": "BioCbooks",
+        "URL": "https://bioconductor.org/packages/3.18/books"
+      },
+      {
         "Name": "CRAN",
         "URL": "https://cloud.r-project.org"
       }
@@ -83,14 +103,8 @@
     },
     "FCBF": {
       "Package": "FCBF",
-      "Version": "1.99.1",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "lubianat",
-      "RemoteRepo": "FCBF",
-      "RemoteRef": "master",
-      "RemoteSha": "51b96006c8655cb4d6e07ea45ea8b25fd415c9f1",
+      "Version": "2.10.0",
+      "Source": "Bioconductor",
       "Requirements": [
         "R",
         "SummarizedExperiment",
@@ -101,7 +115,7 @@
         "pbapply",
         "stats"
       ],
-      "Hash": "50418748b54c83f0eceab73cb79deb3c"
+      "Hash": "d9f5837e9cefa059c8ca35a5a081729f"
     },
     "FSelectorRcpp": {
       "Package": "FSelectorRcpp",
@@ -406,23 +420,16 @@
     "biogram": {
       "Package": "biogram",
       "Version": "1.6.3",
-      "Source": "GitHub",
+      "Source": "Repository",
       "Repository": "CRAN",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "biogram",
-      "RemoteUsername": "michbur",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "1e8612de57dae53191e8ab8c86bbee679a47ff9a",
       "Requirements": [
-        "Matrix",
         "R",
         "combinat",
         "entropy",
         "partitions",
         "slam"
       ],
-      "Hash": "01227f7b8700c12f5b88c33539a3f5e8"
+      "Hash": "16ad11ab1148293d81ef7ab4038880aa"
     },
     "bitops": {
       "Package": "bitops",
@@ -509,16 +516,6 @@
         "utils"
       ],
       "Hash": "b21916dd77a27642b447374a5d30ecf3"
-    },
-    "codetools": {
-      "Package": "codetools",
-      "Version": "0.2-19",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "c089a619a7fae175d149d89164f8c7d8"
     },
     "colorspace": {
       "Package": "colorspace",
