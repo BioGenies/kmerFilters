@@ -33,7 +33,7 @@ filter_quipt <- function(target, kmers, significance_level = 0.05, ...) {
 
     pvals <- biogram::test_features(target, kmers, ...)
 
-    names(quipt_res[which(pvals < significance_level)])
+    names(pvals[which(pvals < significance_level)])
 }
 
 
@@ -112,7 +112,7 @@ filter_fcbf <- function(target, kmers, thresh = 0.25) {
     kmers_names <- rownames(features)
 
     suppressMessages({
-        fcbf_results <- fcbf(features, target, minimum_su = minimum_su)
+        fcbf_results <- fcbf(features, target, minimum_su = thresh)
     })
 
     rownames(fcbf_results)

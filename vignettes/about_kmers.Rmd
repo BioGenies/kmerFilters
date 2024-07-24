@@ -2,7 +2,7 @@
 title: "Data sampling and data structure."
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example_simulation}
+  %\VignetteIndexEntry{about_kmers}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

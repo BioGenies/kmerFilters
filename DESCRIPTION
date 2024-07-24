@@ -24,8 +24,12 @@ Description: This package is designed for the simulation of k-mer data. It
              computational models in proteomics.
 License: GPL (>= 3)
 Imports:
+  biogram,
   checkmate (>= 2.0.0),
+  FCBF,
+  FSelectorRcpp,
   seqR,
+  praznik,
   purrr
 Suggests:
     covr,

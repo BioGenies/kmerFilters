@@ -2,7 +2,7 @@
 title: "Motif injection and sequences' labels."
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example_simulation}
+  %\VignetteIndexEntry{simulation_description}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
