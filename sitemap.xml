@@ -7,6 +7,11 @@
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/add_motifs.html</loc></url>
 <url><loc>/reference/count_seq_kmers.html</loc></url>
+<url><loc>/reference/filter_chisq.html</loc></url>
+<url><loc>/reference/filter_fcbf.html</loc></url>
+<url><loc>/reference/filter_ig.html</loc></url>
+<url><loc>/reference/filter_praznik.html</loc></url>
+<url><loc>/reference/filter_quipt.html</loc></url>
 <url><loc>/reference/generate_kmer_data.html</loc></url>
 <url><loc>/reference/generate_motif.html</loc></url>
 <url><loc>/reference/generate_motifs.html</loc></url>
