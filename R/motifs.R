@@ -80,6 +80,10 @@ add_motifs <- function(motifs, sequence) {
     motifs_grid <- expand.grid(maximum_motifs_positions)
     motifs_grid <- motifs_grid[sample(1:nrow(motifs_grid)), , drop = FALSE]
 
+    if(any(motifs_grid < 1)) {
+        stop("Some of positions are invalid!")
+    }
+
     for (i in 1:nrow(motifs_grid)) {
         list_of_masks <- list()
         injected_sequence <- sequence
