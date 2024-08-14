@@ -76,6 +76,7 @@ generate_sequence_data <- function(n_seq,
     attr(sequences, "motifs_map") <- motifs_map
     attr(sequences, "masks") <- list_of_masks
     attr(sequences, "target") <- target
+    attr(sequences, "motifs_set") <- motifs
     sequences
 }
 
@@ -182,7 +183,7 @@ generate_kmer_data <- function(n_seq,
                                           nrow = nrow(test_dat),
                                           ncol = ncol(test_dat))
     attr(test_res, "max_injection") <- attr(test_dat, "max_injection")
-    attr(test_res, "motifs_set") <- motifs
+    attr(test_res, "motifs_set") <- attr(test_dat, "motifs_set")
     attr(test_res, "motifs_map") <- attr(test_dat, "motifs_map")
     attr(test_res, "masks") <- attr(test_dat, "masks")
     attr(test_res, "target") <- attr(test_dat, "target")
