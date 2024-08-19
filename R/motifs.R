@@ -71,52 +71,122 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
 #'
 #' @export
 
-add_motifs <- function(motifs, sequence) {
+add_motifs <- function(motifs, sequence, max_attempts = 20) {
+
     sequence_len <- length(sequence)
 
-    #create grid of possible motifs' positions
+    # create list of possible motifs' positions
     maximum_motifs_positions <- lapply(motifs, function(x)
         seq(sequence_len - length(x) + 1))
-    motifs_grid <- expand.grid(maximum_motifs_positions)
-    motifs_grid <- motifs_grid[sample(1:nrow(motifs_grid)), , drop = FALSE]
 
-    for (i in 1:nrow(motifs_grid)) {
-        list_of_masks <- list()
-        injected_sequence <- sequence
-        injected_positions <- logical(length(sequence))
+    positions_to_sample <- maximum_motifs_positions
+    motifs_positions <- numeric(length(motifs))
+    attempt <- 1
+    ith_motif <- 1
 
-        for (j in 1:ncol(motifs_grid)) {
-            mask <- rep(FALSE, sequence_len)
-            new_injected_sequence <- injected_sequence
-            motif <- motifs[[j]]
-            ids <- 0:(length(motif) - 1)
-            ids <- ids[motif != "_"] + motifs_grid[i, j]
-            mask[ids] <- TRUE
-            new_injected_sequence[ids] <- motif[motif != "_"]
+    while(attempt <= max_attempts & ith_motif <= length(motifs)) {
+        dummy_ok <- TRUE
 
-            if (j == 1) {
-                injected_sequence <- new_injected_sequence
-                injected_positions <- mask
+        position <- sample(positions_to_sample[[ith_motif]], 1)
+        jth_motif <- 2
+
+        print(paste0("i", ith_motif))
+
+        while(jth_motif <= length(motifs)) {
+
+            print(paste0("j", jth_motif))
+
+            remained_positions <-
+                setdiff(positions_to_sample[[jth_motif]],
+                        (position - length(motifs[[jth_motif]]) + 1):(position + length(motifs[[ith_motif]]) - 1))
+
+            if(length(remained_positions) == 0) {
+
+                if(attempt == max_attempts)
+                    stop("Given motifs cannot be injected to a sequence!")
+
+                positions_to_sample <- maximum_motifs_positions
+                motifs_positions <- numeric(length(motifs))
+                ith_motif <<- 1
+                jth_motif <<- 2
+
+                attempt <- attempt + 1
+                print(paste0("attempt", attempt))
+                dummy_ok <- FALSE
+                break()
             } else {
-                if (all(injected_sequence[injected_positions] ==
-                        new_injected_sequence[injected_positions])){
-                    injected_sequence <- new_injected_sequence
-                    injected_positions <- (injected_positions | mask)
-                } else {
-                    break
-                }
+                positions_to_sample[[jth_motif]] <- remained_positions
             }
 
-            list_of_masks[[j]] <- mask
-
-            if (j == ncol(motifs_grid)){
-                attr(injected_sequence, "motifs") <- motifs
-                attr(injected_sequence, "masks") <- list_of_masks
-                return(injected_sequence)
-            }
+            jth_motif <- jth_motif + 1
         }
+
+        if(!dummy_ok)
+            next()
+
+        motifs_positions[ith_motif] <- position
+        ith_motif <- ith_motif + 1
     }
-    stop("Given motifs cannot be injected to a sequence!")
+
+    list_of_masks <- list()
+
+    for(i in 1:length(motifs)) {
+        mask <- rep(FALSE, sequence_len)
+        motif <- motifs[[j]]
+        motif_ids <- motifs_positions[i]:(motifs_positions[i] + length(motif) - 1)
+        motif_ids <- setdiff(motif_ids, motif_ids[motif == "_"])
+
+        mask[motif_ids] <- TRUE
+        list_of_masks[[i]] <- mask
+
+        sequence[motif_ids] <- motif[motif != "_"]
+    }
+
+    attr(sequence, "motifs") <- motifs
+    attr(sequence, "masks") <- list_of_masks
+
+    sequence
+
+    # motifs_grid <- expand.grid(maximum_motifs_positions)
+    # motifs_grid <- motifs_grid[sample(1:nrow(motifs_grid)), , drop = FALSE]
+    #
+    # for (i in 1:nrow(motifs_grid)) {
+    #     list_of_masks <- list()
+    #     injected_sequence <- sequence
+    #     injected_positions <- logical(length(sequence))
+    #
+    #     for (j in 1:ncol(motifs_grid)) {
+    #         mask <- rep(FALSE, sequence_len)
+    #         new_injected_sequence <- injected_sequence
+    #         motif <- motifs[[j]]
+    #         ids <- 0:(length(motif) - 1)
+    #         ids <- ids[motif != "_"] + motifs_grid[i, j]
+    #         mask[ids] <- TRUE
+    #         new_injected_sequence[ids] <- motif[motif != "_"]
+    #
+    #         if (j == 1) {
+    #             injected_sequence <- new_injected_sequence
+    #             injected_positions <- mask
+    #         } else {
+    #             if (all(injected_sequence[injected_positions] ==
+    #                     new_injected_sequence[injected_positions])){
+    #                 injected_sequence <- new_injected_sequence
+    #                 injected_positions <- (injected_positions | mask)
+    #             } else {
+    #                 break
+    #             }
+    #         }
+    #
+    #         list_of_masks[[j]] <- mask
+    #
+    #         if (j == ncol(motifs_grid)){
+    #             attr(injected_sequence, "motifs") <- motifs
+    #             attr(injected_sequence, "masks") <- list_of_masks
+    #             return(injected_sequence)
+    #         }
+    #     }
+    # }
+    # stop("Given motifs cannot be injected to a sequence!")
 }
 
 #' Validate if given set of motifs can occur in a sequence at the same time
