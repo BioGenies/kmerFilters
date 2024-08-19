@@ -86,15 +86,10 @@ add_motifs <- function(motifs, sequence, max_attempts = 20) {
 
     while(attempt <= max_attempts & ith_motif <= length(motifs)) {
         dummy_ok <- TRUE
-
         position <- sample(positions_to_sample[[ith_motif]], 1)
         jth_motif <- 2
 
-        print(paste0("i", ith_motif))
-
         while(jth_motif <= length(motifs)) {
-
-            print(paste0("j", jth_motif))
 
             remained_positions <-
                 setdiff(positions_to_sample[[jth_motif]],
