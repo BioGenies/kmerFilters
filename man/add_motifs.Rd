@@ -4,7 +4,7 @@
 \alias{add_motifs}
 \title{Motif to a sequence injection}
 \usage{
-add_motifs(motifs, sequence)
+add_motifs(motifs, sequence, max_attempts = 20)
 }
 \arguments{
 \item{motifs}{list of motifs to be injected}

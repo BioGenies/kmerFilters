@@ -79,21 +79,10 @@ add_motifs <- function(motifs, sequence, max_attempts = 20) {
     maximum_motifs_positions <- lapply(motifs, function(x)
         seq(sequence_len - length(x) + 1))
 
-<<<<<<< HEAD
     positions_to_sample <- maximum_motifs_positions
     motifs_positions <- numeric(length(motifs))
     attempt <- 1
     ith_motif <- 1
-=======
-    if(any(motifs_grid < 1)) {
-        stop("Some of positions are invalid!")
-    }
-
-    for (i in 1:nrow(motifs_grid)) {
-        list_of_masks <- list()
-        injected_sequence <- sequence
-        injected_positions <- logical(length(sequence))
->>>>>>> 4d3e3ed55070425b5635338c4a6b18bc4f41fb1e
 
     while(attempt <= max_attempts & ith_motif <= length(motifs)) {
         dummy_ok <- TRUE
