@@ -127,7 +127,7 @@ add_motifs <- function(motifs, sequence, max_attempts = 20) {
 
     for(i in 1:length(motifs)) {
         mask <- rep(FALSE, sequence_len)
-        motif <- motifs[[j]]
+        motif <- motifs[[i]]
         motif_ids <- motifs_positions[i]:(motifs_positions[i] + length(motif) - 1)
         motif_ids <- setdiff(motif_ids, motif_ids[motif == "_"])
 
