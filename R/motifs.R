@@ -96,7 +96,7 @@ add_motifs <- function(motifs, sequence) {
     for(iter in na.omit(iterations)) {
 
         if(length(iterations) == 1)
-            motifs_grid <- data.frame(1:iter)
+            motifs_grid <- data.frame(unlist(maximum_motifs_positions))
         else
             motifs_grid <- t(sapply(1:iter, function(i){
                 nextElem(prod_generator)
