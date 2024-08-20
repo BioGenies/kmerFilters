@@ -95,7 +95,12 @@ add_motifs <- function(motifs, sequence) {
 
     for(iter in na.omit(iterations)) {
 
-        motifs_grid <- t(sapply(1:iter, function(i){nextElem(prod_generator)}))
+        if(length(iterations) == 1)
+            motifs_grid <- data.frame(1:iter)
+        else
+            motifs_grid <- t(sapply(1:iter, function(i){
+                nextElem(prod_generator)
+            }))
 
         for (i in 1:nrow(motifs_grid)) {
             list_of_masks <- list()
