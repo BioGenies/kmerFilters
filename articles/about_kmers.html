@@ -148,17 +148,17 @@ space:</p>
 of the <code>dgCMatrix</code> class. It’s a sparse matrix containing 0’s
 and 1’s where 1 denotes the occurrence of k-mer and 0 denotes no
 occurrence. The below numbers means that we obtained 10 rows (sequences)
-and 29 (found k-mers with maximum 2 letetrs and 1 gap):</p>
+and 28 (found k-mers with maximum 2 letetrs and 1 gap):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">kmer_dat</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 10 29</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 10 28</span></span></code></pre>
 <p>We can easily access the k-mers using the following command:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kmer_dat</span><span class="op">@</span><span class="va">Dimnames</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "C_0"   "A_0"   "G_0"   "T_0"   "A.G_0" "G.T_0" "C.A_0" "T.G_0" "T.T_0"</span></span>
-<span><span class="co">## [10] "T.A_0" "A.T_0" "T.C_0" "C.G_0" "A.A_0" "A.C_0" "G.C_0" "G.A_0" "C.C_0"</span></span>
-<span><span class="co">## [19] "A.T_1" "C.G_1" "G.T_1" "T.T_1" "G.A_1" "T.C_1" "A.G_1" "A.C_1" "G.G_1"</span></span>
-<span><span class="co">## [28] "C.A_1" "A.A_1"</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] "G_0"   "T_0"   "C_0"   "A_0"   "T.G_0" "G.T_0" "T.T_0" "T.A_0" "A.C_0"</span></span>
+<span><span class="co">## [10] "C.T_0" "C.G_0" "G.C_0" "G.G_0" "G.A_0" "A.A_0" "T.C_0" "A.T_0" "T.G_1"</span></span>
+<span><span class="co">## [19] "T.T_1" "G.G_1" "A.T_1" "C.A_1" "G.A_1" "G.T_1" "C.C_1" "C.G_1" "T.A_1"</span></span>
+<span><span class="co">## [28] "T.C_1"</span></span></code></pre>
 <p>Each dot <code>.</code> between letters represents a potential gap.
 The numbers following the <code>_</code> symbol indicate the number of
 gaps associated with each dot. For example, <code>A.C_1</code> means
@@ -170,51 +170,51 @@ means a gap. You can decode the names using <a href="https://github.com/michbur/
 follows</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="fu">biogram</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/biogram/man/decode_ngrams.html" class="external-link">decode_ngrams</a></span><span class="op">(</span><span class="va">kmer_dat</span><span class="op">@</span><span class="va">Dimnames</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "C"   "A"   "G"   "T"   "AG"  "GT"  "CA"  "TG"  "TT"  "TA"  "AT"  "TC" </span></span>
-<span><span class="co">## [13] "CG"  "AA"  "AC"  "GC"  "GA"  "CC"  "A_T" "C_G" "G_T" "T_T" "G_A" "T_C"</span></span>
-<span><span class="co">## [25] "A_G" "A_C" "G_G" "C_A" "A_A"</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] "G"   "T"   "C"   "A"   "TG"  "GT"  "TT"  "TA"  "AC"  "CT"  "CG"  "GC" </span></span>
+<span><span class="co">## [13] "GG"  "GA"  "AA"  "TC"  "AT"  "T_G" "T_T" "G_G" "A_T" "C_A" "G_A" "G_T"</span></span>
+<span><span class="co">## [25] "C_C" "C_G" "T_A" "T_C"</span></span></code></pre>
 <p>For a set of sequences each k-mer is a variable indicating whether
-given k-mer occurs in corresponding sequence. Here, we have 29
+given k-mer occurs in corresponding sequence. Here, we have 28
 k-mers:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">kmer_dat</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##       C_0 A_0 G_0 T_0 A.G_0 G.T_0 C.A_0 T.G_0 T.T_0 T.A_0 A.T_0 T.C_0 C.G_0</span></span>
-<span><span class="co">##  [1,]   1   1   1   1     1     1     1     0     0     0     0     0     0</span></span>
-<span><span class="co">##  [2,]   0   0   1   1     0     1     0     1     1     0     0     0     0</span></span>
-<span><span class="co">##  [3,]   0   0   1   1     0     1     0     1     1     0     0     0     0</span></span>
-<span><span class="co">##  [4,]   0   1   1   1     1     1     0     0     0     1     0     0     0</span></span>
-<span><span class="co">##  [5,]   1   1   0   1     0     0     0     0     1     0     1     1     0</span></span>
-<span><span class="co">##  [6,]   1   1   1   0     0     0     0     0     0     0     0     0     1</span></span>
-<span><span class="co">##  [7,]   1   1   1   0     1     0     0     0     0     0     0     0     0</span></span>
-<span><span class="co">##  [8,]   1   1   1   0     0     0     0     0     0     0     0     0     1</span></span>
-<span><span class="co">##  [9,]   0   1   0   1     0     0     0     0     0     1     1     0     0</span></span>
-<span><span class="co">## [10,]   0   1   1   0     0     0     0     0     0     0     0     0     0</span></span>
-<span><span class="co">##       A.A_0 A.C_0 G.C_0 G.A_0 C.C_0 A.T_1 C.G_1 G.T_1 T.T_1 G.A_1 T.C_1 A.G_1</span></span>
-<span><span class="co">##  [1,]     0     0     0     0     0     1     1     0     0     0     0     0</span></span>
-<span><span class="co">##  [2,]     0     0     0     0     0     0     0     1     1     0     0     0</span></span>
-<span><span class="co">##  [3,]     0     0     0     0     0     0     0     1     1     0     0     0</span></span>
-<span><span class="co">##  [4,]     0     0     0     0     0     1     0     0     0     1     0     0</span></span>
-<span><span class="co">##  [5,]     0     0     0     0     0     1     0     0     0     0     1     0</span></span>
-<span><span class="co">##  [6,]     1     1     0     0     0     0     0     0     0     0     0     1</span></span>
-<span><span class="co">##  [7,]     0     0     1     1     0     0     0     0     0     0     0     0</span></span>
-<span><span class="co">##  [8,]     0     0     0     1     1     0     1     0     0     0     0     0</span></span>
-<span><span class="co">##  [9,]     0     0     0     0     0     0     0     0     1     0     0     0</span></span>
-<span><span class="co">## [10,]     1     0     0     1     0     0     0     0     0     1     0     0</span></span>
-<span><span class="co">##       A.C_1 G.G_1 C.A_1 A.A_1</span></span>
-<span><span class="co">##  [1,]     0     0     0     0</span></span>
-<span><span class="co">##  [2,]     0     0     0     0</span></span>
-<span><span class="co">##  [3,]     0     0     0     0</span></span>
-<span><span class="co">##  [4,]     0     0     0     0</span></span>
-<span><span class="co">##  [5,]     0     0     0     0</span></span>
-<span><span class="co">##  [6,]     1     0     0     0</span></span>
-<span><span class="co">##  [7,]     1     1     0     0</span></span>
-<span><span class="co">##  [8,]     0     0     1     0</span></span>
-<span><span class="co">##  [9,]     0     0     0     1</span></span>
-<span><span class="co">## [10,]     0     0     0     1</span></span></code></pre>
+<pre><code><span><span class="co">##       G_0 T_0 C_0 A_0 T.G_0 G.T_0 T.T_0 T.A_0 A.C_0 C.T_0 C.G_0 G.C_0 G.G_0</span></span>
+<span><span class="co">##  [1,]   1   1   0   0     1     1     1     0     0     0     0     0     0</span></span>
+<span><span class="co">##  [2,]   1   1   0   0     1     1     0     0     0     0     0     0     0</span></span>
+<span><span class="co">##  [3,]   1   1   0   0     1     1     0     0     0     0     0     0     0</span></span>
+<span><span class="co">##  [4,]   0   1   1   1     0     0     0     1     1     1     0     0     0</span></span>
+<span><span class="co">##  [5,]   1   1   0   1     1     1     0     1     0     0     0     0     0</span></span>
+<span><span class="co">##  [6,]   1   1   1   0     0     0     0     0     0     1     1     1     0</span></span>
+<span><span class="co">##  [7,]   1   0   0   1     0     0     0     0     0     0     0     0     1</span></span>
+<span><span class="co">##  [8,]   1   1   1   0     1     0     0     0     0     1     0     0     0</span></span>
+<span><span class="co">##  [9,]   1   1   0   1     0     0     0     0     0     0     0     0     0</span></span>
+<span><span class="co">## [10,]   0   1   1   1     0     0     1     1     1     0     0     0     0</span></span>
+<span><span class="co">##       G.A_0 A.A_0 T.C_0 A.T_0 T.G_1 T.T_1 G.G_1 A.T_1 C.A_1 G.A_1 G.T_1 C.C_1</span></span>
+<span><span class="co">##  [1,]     0     0     0     0     1     1     0     0     0     0     0     0</span></span>
+<span><span class="co">##  [2,]     0     0     0     0     0     1     1     0     0     0     0     0</span></span>
+<span><span class="co">##  [3,]     0     0     0     0     0     1     1     0     0     0     0     0</span></span>
+<span><span class="co">##  [4,]     0     0     0     0     0     0     0     1     1     0     0     0</span></span>
+<span><span class="co">##  [5,]     0     0     0     0     0     1     0     0     0     1     0     0</span></span>
+<span><span class="co">##  [6,]     0     0     0     0     0     0     0     0     0     0     1     1</span></span>
+<span><span class="co">##  [7,]     1     1     0     0     0     0     0     0     0     1     0     0</span></span>
+<span><span class="co">##  [8,]     0     0     1     0     0     1     0     0     0     0     0     0</span></span>
+<span><span class="co">##  [9,]     1     1     0     1     0     0     0     1     0     1     0     0</span></span>
+<span><span class="co">## [10,]     0     0     0     0     0     0     0     0     0     0     0     0</span></span>
+<span><span class="co">##       C.G_1 T.A_1 T.C_1</span></span>
+<span><span class="co">##  [1,]     0     0     0</span></span>
+<span><span class="co">##  [2,]     0     0     0</span></span>
+<span><span class="co">##  [3,]     0     0     0</span></span>
+<span><span class="co">##  [4,]     0     0     0</span></span>
+<span><span class="co">##  [5,]     0     0     0</span></span>
+<span><span class="co">##  [6,]     0     0     0</span></span>
+<span><span class="co">##  [7,]     0     0     0</span></span>
+<span><span class="co">##  [8,]     1     0     0</span></span>
+<span><span class="co">##  [9,]     0     0     0</span></span>
+<span><span class="co">## [10,]     0     1     1</span></span></code></pre>
 <p>corresponding to the sequences:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">kmer_dat</span>, <span class="st">"sequences"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">paste0</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] "CAGT" "TGTT" "TGTT" "AGTA" "ATTC" "AACG" "GAGC" "CCGA" "ATAT" "GAAA"</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] "TTGT" "GTGT" "TGTG" "ACTA" "TGTA" "CGCT" "GGAA" "TCTG" "GAAT" "TTAC"</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="target-variable">Target variable<a class="anchor" aria-label="anchor" href="#target-variable"></a>
@@ -233,17 +233,17 @@ was injected to which sequence. In our example</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">kmer_dat</span>, <span class="st">"motifs_map"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       [,1] [,2]</span></span>
-<span><span class="co">##  [1,]    0    1</span></span>
+<span><span class="co">##  [1,]    1    0</span></span>
 <span><span class="co">##  [2,]    1    0</span></span>
 <span><span class="co">##  [3,]    1    0</span></span>
 <span><span class="co">##  [4,]    0    1</span></span>
-<span><span class="co">##  [5,]    0    1</span></span>
+<span><span class="co">##  [5,]    1    0</span></span>
 <span><span class="co">##  [6,]    0    0</span></span>
 <span><span class="co">##  [7,]    0    0</span></span>
 <span><span class="co">##  [8,]    0    0</span></span>
 <span><span class="co">##  [9,]    0    0</span></span>
 <span><span class="co">## [10,]    0    0</span></span></code></pre>
-<p>we can see that the motif TGT occurred 2 times and A_T occurred 3
+<p>we can see that the motif TGT occurred 4 times and A_T occurred 1
 time. The <code>target</code> attribute says whether given sequence
 contains at least one motif:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -263,7 +263,7 @@ negatively labeled sequences). To do so, we use the functions:</p>
 <p>For example</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_target_additive.html">get_target_additive</a></span><span class="op">(</span><span class="va">kmer_dat</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##  [1] 1 1 0 1 1 1 0 0 0 1</span></span></code></pre>
+<pre><code><span><span class="co">##  [1] 1 0 1 0 1 1 1 0 0 1</span></span></code></pre>
 <p>For more details about target sampling see <a href="https://biogenies.info/kmerFilters/articles/simulation_description.html" class="external-link">vignette</a>.</p>
 </div>
   </div>
