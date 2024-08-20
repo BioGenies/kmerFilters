@@ -28,6 +28,7 @@ Imports:
   checkmate (>= 2.0.0),
   FCBF,
   FSelectorRcpp,
+  iterators,
   itertools,
   seqR,
   praznik,

@@ -56,6 +56,7 @@ generate_motif <- function(alphabet, n, d, motifProbs = NULL) {
 #' This function injects motifs to a sequence
 #'
 #' @import itertools
+#' @importFrom iterators nextElem
 #'
 #' @param motifs list of motifs to be injected
 #' @param sequence vector of alphabet elements
