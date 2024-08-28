@@ -1,3 +1,40 @@
+
+#' Simple motifs check
+#'
+#' This function check if at least one of provided motifs is contained in the
+#' provided sequence.
+#'
+#' @inheritParams generate_kmer_data
+#' @param sequence a vector of characters
+#'
+#' @return randomly generated sequences
+#'
+#' @examples
+#' alph <- 1:4
+#' motifs <- generate_motifs(alph, 3, 3, 3, 2)
+#' sequence <- sample(alph,  100, replace = TRUE)
+#' contains_motif(sequence, motifs)
+#'
+#' @export
+
+contains_motif <- function(sequence, motifs) {
+
+    sequence <- paste0(sequence, collapse = "")
+
+    for(i in 1:length(motifs)) {
+        ith_motif <- motifs[[i]]
+        ith_motif[ith_motif == "_"] <- "."
+        ith_motif <- paste0(ith_motif, collapse = "")
+
+        find_motifs <- regexec(ith_motif, sequence)[[1]]
+
+        if(find_motifs != -1)
+            return(TRUE)
+    }
+    FALSE
+}
+
+
 #' Sampling from alphabet
 #'
 #' This function generates sequence of elements from alphabet with replacement
@@ -7,14 +44,58 @@
 #' @return randomly generated sequences
 #'
 #' @examples
-#' generate_sequence(5, 1L:4)
-#' generate_sequence(10, c("a", "b", "c"))
-#' generate_sequence(10, c("a", "b", "c"), c(0.6, 0.2, 0.2))
+#' set.seed(2)
+#' alph <- 1:4
+#' motifs <- generate_motifs(alph, 3, 3, 3, 2)
+#' generate_negative_sequence(5, alph, motifs)
+#' generate_negative_sequence(10, c("a", "b", "c"), motifs)
+#' generate_negative_sequence(10, c("a", "b", "c"), c(0.6, 0.2, 0.2), motifs)
 #'
 #' @export
 
-generate_sequence <- function(sequence_length, alphabet, seqProbs = NULL){
-    sample(alphabet, size = sequence_length, replace = TRUE, prob = seqProbs)
+generate_negative_sequence <- function(sequence_length,
+                                       alphabet,
+                                       motifs,
+                                       seqProbs = NULL,
+                                       attempts = 100){
+
+    candidate <- sample(alphabet, size = sequence_length,
+                        replace = TRUE, prob = seqProbs)
+
+    if(contains_motif(candidate, motifs)) {
+
+        mask <- rep(FALSE, sequence_length)
+
+        for(i in 1:length(motifs)) {
+            ith_motif <- motifs[[i]]
+            ith_motif[ith_motif == "_"] <- "."
+            ith_motif <- paste0(ith_motif, collapse = "")
+
+            found_motifs <- gregexpr(ith_motif, paste0(candidate, collapse = ""))[[1]]
+
+            if(length(found_motifs) == 1 && found_motifs == -1) {
+                next
+            } else {
+                motifs_ids <- as.vector(
+                    sapply(found_motifs, function(x) x:(x + nchar(ith_motif) - 1))
+                )
+                mask[motifs_ids] <- TRUE
+            }
+        }
+
+        attempt <- 1
+
+        while (contains_motif(candidate, motifs) & attempt <= attempts) {
+            attempt <- attempt + 1
+            candidate[mask] <- sample(candidate[mask])
+        }
+
+        if(attempt == attempts)
+            stop(paste0("It was impossible to generate negative sequence under
+                 provided assumptions within ", attempts, " attempts."))
+    }
+
+    candidate
 }
 
 #' Sequences generation
@@ -60,17 +141,18 @@ generate_sequence_data <- function(n_seq,
         motifs_ids <- sample(1:length(motifs), n_injections[i])
         motifs_map[i, motifs_ids] <- 1
         selected_motifs <- motifs[motifs_ids]
+
         new_seq <- add_motifs(selected_motifs,
-                              generate_sequence(sequence_length,
-                                                alphabet, seqProbs))
+                              generate_negative_sequence(sequence_length,
+                                                         alphabet, seqProbs))
         list_of_masks[[i]] <- attr(new_seq, "masks")
         sequences[i, ] <- new_seq
     }
 
     for (i in 1:(n_seq - n_pos)) {
-        sequences[n_pos + i, ] <- generate_sequence(sequence_length,
-                                                    alphabet,
-                                                    seqProbs)
+        sequences[n_pos + i, ] <- generate_negative_sequence(sequence_length,
+                                                             alphabet,
+                                                             seqProbs)
     }
     attr(sequences, "max_injection") <- max_injection
     attr(sequences, "motifs_map") <- motifs_map
