@@ -219,3 +219,56 @@ filter_praznik <- function(target, kmers, method, thresh) {
 }
 
 
+
+#' Stepwise information criteria based filtering
+#'
+#' This function is filtering method based on Information Criteria
+#'
+#' @importFrom bigstep stepwise
+#' @importFrom bigstep prepare_data
+#' @importFrom bigstep aic
+#' @importFrom bigstep maic
+#' @importFrom bigstep maic2
+#' @importFrom bigstep bic
+#' @importFrom bigstep mbic
+#' @importFrom bigstep mbic2
+#'
+#' @inheritParams filter_quipt
+#'
+#' @param ic character name of information criterium. One of "aic", "maic",
+#' "bic", "maic2", "mbic", "mbic2". See bigstep package for more information.
+#'
+#' @param reduce a numeric value from (0, 1) interval. Denotes significance
+#' level for preliminary reduction before execution of stepwise procedure.
+#' Default to 0.2.
+#'
+#' @return a character vector of names of selected kmers
+#'
+#' @details
+#' This function uses bigstep package.
+#'
+#' @examples
+#' n_seq <- 200
+#' sequence_length <- 200
+#' alph <- letters[1:20]
+#' motifs <- generate_motifs(alph, 4, 4, 4, 6)
+#' kmers <- generate_kmer_data(n_seq, sequence_length, alph,
+#'                             motifs, n_injections = 4)
+#' target <- get_target_additive(kmers)
+#' filter_ic(target, kmers, "mbic2", 0.2)
+#'
+#' @export
+
+filter_ic <- function(target, kmers, ic = "mbic2", reduce = 0.1) {
+
+    ic <- match.arg(ic, c("aic", "maic", "bic", "maic2", "mbic", "mbic2"))
+
+    dat <- prepare_data(target, as.matrix(kmers))
+    dat <- reduce_matrix(dat, minpv = reduce)
+    candidates_ids <- dat[["candidates"]]
+
+    res_ic <- stepwise(dat, crit = get(ic))
+
+}
+
+
