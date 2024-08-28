@@ -81,7 +81,7 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># simple injection</span></span></span>
 <span class="r-in"><span><span class="fu">add_motifs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"_"</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1" "2" "1" "4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1" "2" "1" "1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"motifs")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"motifs")[[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1" "_" "1"</span>
@@ -93,12 +93,15 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"masks")[[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  TRUE FALSE  TRUE FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"masks")[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE  TRUE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># little bit more interesting</span></span></span>
 <span class="r-in"><span><span class="va">alph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">motifs</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_motifs.html">generate_motifs</a></span><span class="op">(</span><span class="va">alph</span>, <span class="fl">2</span>, <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">4</span>, d <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">example_sequence</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">alph</span>, size <span class="op">=</span> <span class="fl">10</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">add_motifs</span><span class="op">(</span><span class="va">motifs</span>, <span class="va">example_sequence</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "3" "2" "3" "1" "1" "4" "1" "2" "2" "2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "3" "1" "3" "1" "1" "4" "1" "2" "3" "2"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"motifs")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"motifs")[[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "3" "_" "3" "_" "_" "4" "_" "_" "_" "2"</span>
@@ -109,6 +112,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"masks")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"masks")[[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  TRUE FALSE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"masks")[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
