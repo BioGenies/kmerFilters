@@ -3,18 +3,23 @@ library(testthat)
 
 context("Sequence generation")
 
-test_that("generate single sequence", {
 
+test_that("generate single sequence", {
     set.seed(42)
-    seq <- generate_sequence(5, 1L:4)
-    expect_equal(seq, c(1L, 1L, 1L, 1L, 2L))
+
+    motifs <- generate_motifs(1:4, 3, 1, n = 4, d = 6)
+    sequence <- generate_negative_sequence(5, 1L:4, motifs)
+    expect_equal(sequence, c(3L, 2L, 1L, 2L, 4L))
 })
 
 test_that("sequence probabilites", {
+    set.seed(42)
     seqProbs <- runif(6)
     seqProbs <- seqProbs / sum(seqProbs)
 
-    long_sequence <- generate_sequence(10e6, 1:6, seqProbs)
+    motifs <- generate_motifs(1:4, 3, 1, n = 4, d = 6)
+
+    long_sequence <- generate_negative_sequence(10e5, 1:6, motifs, seqProbs)
     seqFreqs <- c(table(long_sequence) / length(long_sequence))
     names(seqFreqs) <- NULL
     expect_equal(seqProbs, c(seqFreqs), tolerance = 10e-4)
@@ -64,7 +69,7 @@ test_that("k-mer counts", {
 
     kmers <- count_seq_kmers(seq_data, alph)
 
-    expect_equal(dim(kmers), c(20L, 6189L))
+    expect_equal(dim(kmers), c(20L, 6201L))
 
     kmers <- count_seq_kmers(seq_data, alph, n = 1, d = 0)
     expect_equal(ncol(kmers), length(alph))
@@ -87,8 +92,7 @@ test_that("k-mer data", {
     kmer_data <- generate_kmer_data(n_seq, sequence_length, alph, motifs,
                                     n_injections, fraction)
 
-
-    expect_equal(dim(kmer_data), c(20L, 5718L))
+    expect_equal(dim(kmer_data), c(20L, 5022L))
     expect_equal(n_seq, nrow(kmer_data))
 
     # correct fraction of positive sequences
@@ -113,18 +117,17 @@ test_that("Interaction model works", {
     results <- generate_kmer_data(n_seq, sequence_length, alph,
                                   motifs, n_injections = 3)
     expect_identical(
-        c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 0L, 0L, 0L, 1L,
-          1L, 1L, 0L, 0L, 0L), get_target_interactions(results)
+        c(1L, 1L, 1L, 0L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 1L, 0L, 0L, 0L,
+          0L, 0L, 1L, 0L, 0L), get_target_interactions(results)
     )
 
     expect_equal(
-        c(3.2669325505849, 3.2669325505849, 0.824915252858773, 3.2669325505849,
-          0.824915252858773, 1.01497719204053, 0.745780731318519,
-          2.05459328205325, 1.16902287956327, 1.77926696231589,
-          -1.69982326356694, -1.69982326356694, -1.69982326356694,
-          -1.69982326356694, -1.69982326356694, -1.69982326356694,
-          -1.69982326356694, -1.69982326356694, -1.69982326356694,
-          -1.69982326356694), get_target_interactions(results, binary = FALSE)
+        c(2.3877928876318, 4.19229120924138, 2.12166230170988, 0.988599377218634,
+          4.47515172231942, 1.58585822791792, 1.17262414400466, 0.266789596760646,
+          4.73356275283732, 2.3877928876318, -1.03832712979056, -1.03832712979056,
+          -1.03832712979056, -1.03832712979056, -1.03832712979056, -1.03832712979056,
+          -1.03832712979056, -1.03832712979056, -1.03832712979056, -1.03832712979056
+        ), get_target_interactions(results, binary = FALSE)
     )
 })
 
@@ -141,12 +144,12 @@ test_that("Additive model works", {
     results <- generate_kmer_data(n_seq, sequence_length, alph,
                                   motifs, n_injections = 3)
     expect_identical(
-        c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 0L, 0L, 1L, 0L, 1L,
-          0L, 0L, 0L, 0L, 1L), get_target_additive(results)
+        c(0L, 1L, 1L, 0L, 1L, 1L, 0L, 0L, 1L, 0L, 1L, 0L, 0L, 1L, 0L,
+          0L, 1L, 0L, 0L, 0L), get_target_additive(results)
     )
 
     expect_equal(
-        c(2.05890567833558, 2.05890567833558, 0.39565183990635),
+        c(0.675145752727985, 1.19026312511414, 1.00235199206509),
         get_target_additive(results, binary = FALSE)[1:3]
     )
 
@@ -168,13 +171,13 @@ test_that("Logic model works", {
     results <- generate_kmer_data(n_seq, sequence_length, alph,
                                   motifs, n_injections = 3)
     expect_identical(
-        c(0L, 0L, 1L, 1L, 1L, 0L, 1L, 0L, 0L, 1L, 0L, 0L, 0L, 1L, 0L,
-          1L, 0L, 0L, 0L, 1L), get_target_logic(results)
+        c(1L, 0L, 1L, 0L, 1L, 1L, 1L, 1L, 1L, 0L, 0L, 0L, 0L, 0L, 0L,
+          0L, 0L, 0L, 0L, 0L), get_target_logic(results)
     )
 
     expect_equal(
-        c(0.854367734864354, 0.854367734864354, 0.854367734864354,
-          0.854367734864354), get_target_logic(results, binary = FALSE)[1:4]
+        c(0.583639514865354, 1.4445967883803, 1.4445967883803, 0.583639514865354
+        ), get_target_logic(results, binary = FALSE)[1:4]
     )
 
     expressions = matrix(rbinom(n_seq*2, 1, .5), nrow = n_seq)
@@ -185,7 +188,7 @@ test_that("Logic model works", {
     )
 
     expect_identical(
-        c(1L, 1L, 1L, 1L, 1L, 1L, 1L, 0L, 1L, 0L, 0L, 0L, 0L, 0L, 0L,
+        c(0L, 1L, 0L, 1L, 1L, 1L, 0L, 1L, 1L, 1L, 0L, 0L, 1L, 0L, 0L,
           0L, 0L, 0L, 0L, 0L),
         get_target_logic(results, expressions = expressions, weights = c(1, 2))
     )
