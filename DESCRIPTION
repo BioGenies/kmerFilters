@@ -30,6 +30,7 @@ Imports:
   FSelectorRcpp,
   iterators,
   itertools,
+  Matrix,
   seqR,
   praznik,
   purrr

@@ -168,16 +168,12 @@ get_target_additive <- function(kmer_dat,
 #' distribution on 0-1 interval. The probability of success for target sampling
 #' will be calculated based on the formula provided in details section. Default
 #' to \code{NULL}.
-#'
 #' @param random a logical. Indicating whether expressions have to be generated
 #' randomly. Default to \code{TRUE}.
-#'
 #' @param n_exp number of random logic expressions to create. It is used only
 #' when \code{random} equals \code{TRUE}.
-#'
 #' @param max_exp_depth a maximum number of motifs used in a logic expression.
 #' Default to 3.
-#'
 #' @param expressions a matrix of binary variables corresponding to custom
 #' logic expressions. You can create them based on motifs. It's dimension should
 #' be related to the length of \code{weights} vector if it's provided. Default

@@ -4,7 +4,7 @@
 \alias{filter_ic}
 \title{Stepwise information criteria based filtering}
 \usage{
-filter_ic(target, kmers, ic = "mbic2", reduce = 0.2)
+filter_ic(target, kmers, ic = "mbic2", reduce = 0.1, threshold = 0.9)
 }
 \arguments{
 \item{target}{a numeric response variable}
@@ -31,7 +31,7 @@ This function uses bigstep package.
 \examples{
 n_seq <- 200
 sequence_length <- 200
-alph <- letters[1:4]
+alph <- letters[1:20]
 motifs <- generate_motifs(alph, 4, 4, 4, 6)
 kmers <- generate_kmer_data(n_seq, sequence_length, alph,
                             motifs, n_injections = 4)

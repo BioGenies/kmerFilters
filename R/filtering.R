@@ -232,15 +232,20 @@ filter_praznik <- function(target, kmers, method, thresh) {
 #' @importFrom bigstep bic
 #' @importFrom bigstep mbic
 #' @importFrom bigstep mbic2
+#' @importFrom Matrix colSums
 #'
 #' @inheritParams filter_quipt
 #'
 #' @param ic character name of information criterium. One of "aic", "maic",
 #' "bic", "maic2", "mbic", "mbic2". See bigstep package for more information.
-#'
 #' @param reduce a numeric value from (0, 1) interval. Denotes significance
 #' level for preliminary reduction before execution of stepwise procedure.
 #' Default to 0.2.
+#' @param attach_correlated a logical value indicating whether the highly
+#' correlated k-mers should be chosen.
+#' @param threshold a numeric threshold from 0 to 1 denoting a threshold for
+#' correlation coefficient when \code{attach_correlated} is TRUE. Ignored when
+#' \code{attach_correlated} is FALSE.
 #'
 #' @return a character vector of names of selected kmers
 #'
@@ -259,16 +264,54 @@ filter_praznik <- function(target, kmers, method, thresh) {
 #'
 #' @export
 
-filter_ic <- function(target, kmers, ic = "mbic2", reduce = 0.1) {
+filter_ic <- function(target, kmers, ic = "mbic2", reduce = 0.15,
+                      attach_correlated = TRUE, threshold = 0.9) {
 
     ic <- match.arg(ic, c("aic", "maic", "bic", "maic2", "mbic", "mbic2"))
 
     dat <- prepare_data(target, as.matrix(kmers))
     dat <- reduce_matrix(dat, minpv = reduce)
-    candidates_ids <- dat[["candidates"]]
 
-    res_ic <- stepwise(dat, crit = get(ic))
+    res_ic <- stepwise(dat, crit = get(ic))[["model"]]
 
+    chosen_kmers <- res_ic
+
+    if(attach_correlated) {
+        n <- nrow(kmers)
+        candidates_kmers <- kmers[, dat[["candidates"]]]
+        candidates_sums <- Matrix::colSums(candidates_kmers)
+
+        for(y_name in res_ic) {
+            xy <- Matrix::colSums(candidates_kmers * candidates_kmers[, y_name])
+            correlations <- sparse_cor(y_name, xy, candidates_sums, n)
+            chosen_kmers <- c(chosen_kmers, names(which(correlations >= threshold)))
+        }
+    }
+
+    unique(chosen_kmers)
 }
+
+#' Sparse correlation
+#'
+#' This function calculates correlation between one k-mer and a matrix of k-mers
+#' under sparsity assumption
+#'
+#' @param y_name a character name of reference k-mer
+#' @param xy a vector of sums of xy products (between y and x(s))
+#' @param candidates_sums a vector of sums of k-mers
+#' @param n a numeric number of observations
+#'
+#' @return a numeric vector of correlations between y and x's.
+#'
+
+sparse_cor <- function(y_name, xy, candidates_sums, n) {
+    nom <- n * xy - candidates_sums * candidates_sums[y_name]
+    denom <- sqrt(n * candidates_sums - candidates_sums^2) *
+        sqrt(n * candidates_sums[y_name] - candidates_sums[y_name]^2)
+
+    nom / denom
+}
+
+
 
 
