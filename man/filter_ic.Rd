@@ -4,7 +4,14 @@
 \alias{filter_ic}
 \title{Stepwise information criteria based filtering}
 \usage{
-filter_ic(target, kmers, ic = "mbic2", reduce = 0.1, threshold = 0.9)
+filter_ic(
+  target,
+  kmers,
+  ic = "mbic2",
+  reduce = 0.15,
+  attach_correlated = TRUE,
+  threshold = 0.9
+)
 }
 \arguments{
 \item{target}{a numeric response variable}
@@ -18,6 +25,13 @@ filter_ic(target, kmers, ic = "mbic2", reduce = 0.1, threshold = 0.9)
 \item{reduce}{a numeric value from (0, 1) interval. Denotes significance
 level for preliminary reduction before execution of stepwise procedure.
 Default to 0.2.}
+
+\item{attach_correlated}{a logical value indicating whether the highly
+correlated k-mers should be chosen.}
+
+\item{threshold}{a numeric threshold from 0 to 1 denoting a threshold for
+correlation coefficient when \code{attach_correlated} is TRUE. Ignored when
+\code{attach_correlated} is FALSE.}
 }
 \value{
 a character vector of names of selected kmers

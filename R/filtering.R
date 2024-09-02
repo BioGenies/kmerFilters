@@ -253,8 +253,8 @@ filter_praznik <- function(target, kmers, method, thresh) {
 #' This function uses bigstep package.
 #'
 #' @examples
-#' n_seq <- 200
-#' sequence_length <- 200
+#' n_seq <- 10
+#' sequence_length <- 10
 #' alph <- letters[1:20]
 #' motifs <- generate_motifs(alph, 4, 4, 4, 6)
 #' kmers <- generate_kmer_data(n_seq, sequence_length, alph,
