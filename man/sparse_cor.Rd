@@ -4,7 +4,7 @@
 \alias{sparse_cor}
 \title{Sparse correlation}
 \usage{
-sparse_cor(y_name, xy, candidates_sums)
+sparse_cor(y_name, xy, candidates_sums, n)
 }
 \arguments{
 \item{y_name}{a character name of reference k-mer}
@@ -12,6 +12,8 @@ sparse_cor(y_name, xy, candidates_sums)
 \item{xy}{a vector of sums of xy products (between y and x(s))}
 
 \item{candidates_sums}{a vector of sums of k-mers}
+
+\item{n}{a numeric number of observations}
 }
 \value{
 a numeric vector of correlations between y and x's.
