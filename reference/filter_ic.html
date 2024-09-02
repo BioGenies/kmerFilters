@@ -57,7 +57,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_ic</span><span class="op">(</span><span class="va">target</span>, <span class="va">kmers</span>, ic <span class="op">=</span> <span class="st">"mbic2"</span>, reduce <span class="op">=</span> <span class="fl">0.1</span>, threshold <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_ic</span><span class="op">(</span></span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">kmers</span>,</span>
+<span>  ic <span class="op">=</span> <span class="st">"mbic2"</span>,</span>
+<span>  reduce <span class="op">=</span> <span class="fl">0.15</span>,</span>
+<span>  attach_correlated <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="fl">0.9</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -82,6 +89,17 @@
 <dd><p>a numeric value from (0, 1) interval. Denotes significance
 level for preliminary reduction before execution of stepwise procedure.
 Default to 0.2.</p></dd>
+
+
+<dt id="arg-attach-correlated">attach_correlated<a class="anchor" aria-label="anchor" href="#arg-attach-correlated"></a></dt>
+<dd><p>a logical value indicating whether the highly
+correlated k-mers should be chosen.</p></dd>
+
+
+<dt id="arg-threshold">threshold<a class="anchor" aria-label="anchor" href="#arg-threshold"></a></dt>
+<dd><p>a numeric threshold from 0 to 1 denoting a threshold for
+correlation coefficient when <code>attach_correlated</code> is TRUE. Ignored when
+<code>attach_correlated</code> is FALSE.</p></dd>
 
 </dl></div>
     <div id="value">
