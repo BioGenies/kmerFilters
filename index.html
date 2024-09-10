@@ -112,6 +112,8 @@
 <p>You can use the <code>generate_motifs</code> function for motifs generation. For example:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kmerFilters</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
+<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span></span>
 <span><span class="va">alph</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
 <span><span class="va">n_injections</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
@@ -124,49 +126,39 @@
 <span></span>
 <span><span class="va">motifs</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; [1] "d" "_" "_" "_" "_" "_" "b"</span></span>
+<span><span class="co">#&gt; [1] "b" "_" "_" "d"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; [1] "c" "_" "_" "d" "c"</span></span>
+<span><span class="co">#&gt; [1] "c" "_" "c" "a" "c"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt; [1] "b" "_" "c" "_" "_" "c"</span></span>
+<span><span class="co">#&gt; [1] "a" "_" "d"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt; [1] "c" "_" "_" "b" "_" "_" "c"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "c" "b" "_" "_" "_" "_" "b"</span></span></code></pre></div>
 <p>Using simulated motifs we can simulate positive and negative sequences and consrtuct a k-mer feature space:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/generate_kmer_data.html">generate_kmer_data</a></span><span class="op">(</span>n_seq <span class="op">=</span> <span class="fl">20</span>, </span>
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/generate_kmer_data.html">generate_kmer_data</a></span><span class="op">(</span>n_seq <span class="op">=</span> <span class="fl">200</span>, </span>
 <span>                              sequence_length <span class="op">=</span> <span class="fl">20</span>, </span>
 <span>                              alphabet <span class="op">=</span> <span class="va">alph</span>,</span>
 <span>                              motifs <span class="op">=</span> <span class="va">motifs</span>, </span>
 <span>                              n_injections <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="va">results</span></span>
-<span><span class="co">#&gt; 20 x 14940 sparse Matrix of class "dgCMatrix"</span></span>
-<span><span class="co">#&gt;   [[ suppressing 33 column names 'a', 'd', 'b' ... ]]</span></span>
+<span><span class="va">results</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span>
+<span><span class="co">#&gt; 10 x 23406 sparse Matrix of class "dgCMatrix"</span></span>
+<span><span class="co">#&gt;   [[ suppressing 33 column names 'a_0', 'd_0', 'b_0' ... ]]</span></span>
 <span><span class="co">#&gt;                                                                               </span></span>
-<span><span class="co">#&gt;  [1,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 . ......</span></span>
-<span><span class="co">#&gt;  [2,] 1 1 1 1 . 1 1 1 1 1 1 1 1 1 1 1 1 . . . 1 1 . 1 1 1 1 1 . 1 . 1 1 ......</span></span>
-<span><span class="co">#&gt;  [3,] 1 1 1 1 . 1 . 1 . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 1 1 . 1 1 1 ......</span></span>
-<span><span class="co">#&gt;  [4,] 1 1 1 1 . 1 1 1 1 1 . 1 1 . 1 1 1 1 1 1 . 1 1 1 . 1 . 1 1 1 1 1 1 ......</span></span>
-<span><span class="co">#&gt;  [5,] 1 1 1 1 1 1 1 . 1 1 1 1 1 1 . 1 1 1 . . 1 1 1 . 1 1 . 1 1 1 1 1 . ......</span></span>
-<span><span class="co">#&gt;  [6,] 1 1 1 1 1 . 1 1 1 1 1 1 . 1 . 1 . 1 1 . 1 1 . 1 . . . 1 1 1 1 . 1 ......</span></span>
-<span><span class="co">#&gt;  [7,] 1 1 1 1 1 1 . 1 1 . 1 1 1 1 1 1 . 1 1 1 . 1 1 . 1 1 . 1 1 1 1 . . ......</span></span>
-<span><span class="co">#&gt;  [8,] 1 1 1 1 1 . 1 . 1 1 1 1 . 1 . 1 1 . . . 1 . . 1 1 . 1 1 . 1 1 1 . ......</span></span>
-<span><span class="co">#&gt;  [9,] 1 1 1 1 1 1 . 1 1 1 1 1 1 1 . 1 . . 1 1 1 . . 1 1 . 1 1 1 1 1 1 1 ......</span></span>
-<span><span class="co">#&gt; [10,] 1 1 1 1 1 1 1 1 . 1 1 1 1 . . . 1 1 . . 1 1 1 . 1 1 1 1 . 1 1 1 . ......</span></span>
-<span><span class="co">#&gt; [11,] 1 1 1 1 . . . 1 . 1 . 1 1 1 1 1 1 1 1 . 1 1 1 1 1 1 1 1 1 . 1 . . ......</span></span>
-<span><span class="co">#&gt; [12,] 1 1 1 1 1 1 1 . . 1 1 1 1 1 1 1 1 . 1 . 1 1 . . 1 1 1 1 . 1 1 1 . ......</span></span>
-<span><span class="co">#&gt; [13,] 1 1 1 1 1 1 1 . 1 1 . 1 . 1 1 . 1 1 1 1 1 1 . . . 1 . 1 1 1 1 1 1 ......</span></span>
-<span><span class="co">#&gt; [14,] 1 1 1 1 1 . 1 1 1 . 1 1 1 1 1 1 . . 1 1 1 1 1 1 . 1 1 1 1 1 . 1 . ......</span></span>
-<span><span class="co">#&gt; [15,] 1 1 . 1 1 1 . 1 . 1 1 . 1 . . . 1 . 1 1 1 . 1 . 1 . 1 . 1 1 . 1 1 ......</span></span>
-<span><span class="co">#&gt; [16,] 1 1 1 1 . 1 1 . 1 1 . 1 . 1 . 1 1 1 1 . 1 . 1 . . 1 . 1 . 1 1 . . ......</span></span>
-<span><span class="co">#&gt; [17,] 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 . . 1 1 . 1 1 1 1 1 1 . . 1 1 1 1 1 ......</span></span>
-<span><span class="co">#&gt; [18,] 1 1 1 1 1 1 1 1 1 1 . 1 1 . 1 . . 1 1 1 1 1 . 1 . 1 . 1 1 1 . 1 1 ......</span></span>
-<span><span class="co">#&gt; [19,] 1 1 1 1 . . 1 1 . 1 . 1 1 1 1 1 1 1 1 1 . 1 . 1 . . . 1 1 1 1 . 1 ......</span></span>
-<span><span class="co">#&gt; [20,] 1 1 1 1 1 . 1 1 1 . 1 1 1 1 1 1 . 1 1 1 1 1 . . . 1 1 1 1 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt;  [1,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 1 ......</span></span>
+<span><span class="co">#&gt;  [2,] 1 1 1 1 . . 1 . . 1 . . 1 1 1 1 1 1 1 . . 1 1 1 . 1 . 1 1 . . 1 1 ......</span></span>
+<span><span class="co">#&gt;  [3,] 1 1 1 1 1 1 . 1 . 1 1 1 . . 1 . 1 1 1 1 1 1 . 1 1 . 1 1 . 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt;  [4,] 1 1 1 1 1 1 . 1 . 1 1 1 . 1 1 . 1 1 1 . 1 . 1 1 1 . . 1 1 1 1 1 . ......</span></span>
+<span><span class="co">#&gt;  [5,] 1 1 1 1 1 . 1 1 . 1 . 1 1 1 1 1 1 1 1 1 . . . 1 1 . 1 1 1 1 . 1 1 ......</span></span>
+<span><span class="co">#&gt;  [6,] 1 1 1 1 . . 1 . . 1 1 . 1 1 1 1 1 . 1 1 1 1 1 1 . 1 . 1 1 . . 1 1 ......</span></span>
+<span><span class="co">#&gt;  [7,] 1 1 1 1 1 . . 1 1 1 . 1 . 1 1 1 . 1 1 . 1 1 . 1 1 1 . 1 . 1 1 . 1 ......</span></span>
+<span><span class="co">#&gt;  [8,] 1 1 1 1 . 1 . . . 1 1 . 1 1 1 . 1 . 1 . . . 1 1 1 1 . 1 1 1 1 1 . ......</span></span>
+<span><span class="co">#&gt;  [9,] 1 1 1 1 1 1 1 . 1 1 1 1 . 1 1 1 1 . 1 . . . 1 1 1 . 1 1 1 1 1 1 . ......</span></span>
+<span><span class="co">#&gt; [10,] 1 1 1 1 1 1 . . . 1 1 1 . 1 1 1 1 1 1 . 1 . 1 1 1 1 1 1 1 1 1 1 1 ......</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;  .....suppressing 14907 columns in show(); maybe adjust 'options(max.print= *, width = *)'</span></span>
+<span><span class="co">#&gt;  .....suppressing 23373 columns in show(); maybe adjust options(max.print=, width=)</span></span>
 <span><span class="co">#&gt;  ..............................</span></span></code></pre></div>
 <p>Using obtained data you can choose how to generate a response variable. We provide three functions for that:</p>
 <ul>
@@ -179,13 +171,32 @@
 </ul>
 <p>For example, the following code:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/get_target_additive.html">get_target_additive</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] 0 1 1 1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">target</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_target_additive.html">get_target_additive</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="va">target</span></span>
+<span><span class="co">#&gt;   [1] 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 0 1 1 0 1 0 1 1 1 1 1 1 1</span></span>
+<span><span class="co">#&gt;  [38] 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 0 1 0 1 0 0 0 1 1 0 1 1 0</span></span>
+<span><span class="co">#&gt;  [75] 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 1 0 1 1 1 0 0 0 0 0 0 0 0 0 0 1</span></span>
+<span><span class="co">#&gt; [112] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
+<span><span class="co">#&gt; [149] 0 1 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0</span></span>
+<span><span class="co">#&gt; [186] 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1</span></span></code></pre></div>
 <p>creates a binary response variable based on the logistic regression model assumptions.</p>
 </div>
 <div class="section level3">
 <h3 id="how-to-filter">How to filter<a class="anchor" aria-label="anchor" href="#how-to-filter"></a>
 </h3>
+<p>We have implemented many filtering methods. You can list them easily using the function</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/list_filters.html">list_filters</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "filter_chisq"   "filter_fcbf"    "filter_ic"      "filter_ig"     </span></span>
+<span><span class="co">#&gt; [5] "filter_praznik" "filter_quipt"</span></span></code></pre></div>
+<p>Using k-mer space and target variable you can filter k-mers as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/filter_quipt.html">filter_quipt</a></span><span class="op">(</span><span class="va">target</span>, <span class="va">results</span>, significance_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "a.c_1"         "b.d_2"         "b.b_4"         "c.b_5"        </span></span>
+<span><span class="co">#&gt;  [5] "c.a.c_0.0"     "c.c.a_1.0"     "c.c.c_1.1"     "b.c.c_3.1"    </span></span>
+<span><span class="co">#&gt;  [9] "c.b.b_0.4"     "c.c.a.c_1.0.0" "d.c.c.a_0.1.0" "c.b.b.b_0.3.0"</span></span>
+<span><span class="co">#&gt; [13] "c.c.c.c_1.1.1" "b.c.c.c_1.1.1" "d.c.c.c_3.1.1" "b.c.b.b_0.2.1"</span></span>
+<span><span class="co">#&gt; [17] "b.c.b.b_0.3.1" "c.b.c.b_0.0.3"</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
