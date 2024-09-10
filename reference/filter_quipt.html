@@ -57,7 +57,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_quipt</span><span class="op">(</span><span class="va">target</span>, <span class="va">kmers</span>, significance_level <span class="op">=</span> <span class="fl">0.05</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_quipt</span><span class="op">(</span><span class="va">target</span>, <span class="va">kmers</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -73,18 +73,14 @@
 <code><a href="generate_kmer_data.html">generate_kmer_data</a></code> function.</p></dd>
 
 
-<dt id="arg-significance-level">significance_level<a class="anchor" aria-label="anchor" href="#arg-significance-level"></a></dt>
-<dd><p>a number from 0-1 interval denoting significance
-level for testing.</p></dd>
-
-
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>other arguments for <code><a href="https://rdrr.io/pkg/biogram/man/test_features.html" class="external-link">test_features</a></code> function.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a character vector of names of selected kmers</p>
+    <p>a numeric vector of named p-values corresponding to k-mers in the
+feature space.</p>
     </div>
     <div id="details">
     <h2>Details</h2>

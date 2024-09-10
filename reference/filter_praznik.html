@@ -59,7 +59,7 @@ for k-mer data.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_praznik</span><span class="op">(</span><span class="va">target</span>, <span class="va">kmers</span>, <span class="va">method</span>, <span class="va">thresh</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_praznik</span><span class="op">(</span><span class="va">target</span>, <span class="va">kmers</span>, <span class="va">method</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -78,10 +78,6 @@ for k-mer data.</p>
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>a character name of a filter type. One of "MIM", "MRMR", "JMI",
 "JMIM", "DISR", "NJMIM", "CMIM", "CMI". See details for more information.</p></dd>
-
-
-<dt id="arg-thresh">thresh<a class="anchor" aria-label="anchor" href="#arg-thresh"></a></dt>
-<dd><p>a threshold for corresponfing score.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -111,7 +107,7 @@ for k-mer data.</p>
 <span class="r-in"><span>                            <span class="va">motifs</span>, n_injections <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">target</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_target_additive.html">get_target_additive</a></span><span class="op">(</span><span class="va">kmers</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">filter_praznik</span><span class="op">(</span><span class="va">target</span>, <span class="va">kmers</span>, <span class="st">"infogain"</span>, <span class="fl">0.01</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in match.arg(method, praznik_methods):</span> 'arg' should be one of “MIM”, “MRMR”, “JMI”, “JMIM”, “DISR”, “NJMIM”, “CMIM”, “CMI”</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in filter_praznik(target, kmers, "infogain", 0.01):</span> unused argument (0.01)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
