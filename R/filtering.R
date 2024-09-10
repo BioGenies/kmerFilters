@@ -8,11 +8,10 @@
 #' @param target a numeric response variable
 #' @param kmers a matrix of kmers with named columns or an object obtained via
 #' \code{\link{generate_kmer_data}} function.
-#' @param significance_level a number from 0-1 interval denoting significance
-#' level for testing.
 #' @param ... other arguments for \code{\link[biogram]{test_features}} function.
 #'
-#' @return a character vector of names of selected kmers
+#' @return a numeric vector of named p-values corresponding to k-mers in the
+#' feature space.
 #'
 #' @details
 #' This function uses \code{\link[biogram]{test_features}}
@@ -29,11 +28,11 @@
 #'
 #' @export
 
-filter_quipt <- function(target, kmers, significance_level = 0.05, ...) {
+filter_quipt <- function(target, kmers, ...) {
 
     pvals <- biogram::test_features(target, kmers, ...)
 
-    names(pvals[which(pvals < significance_level)])
+    pvals
 }
 
 
@@ -45,7 +44,8 @@ filter_quipt <- function(target, kmers, significance_level = 0.05, ...) {
 #'
 #' @inheritParams filter_quipt
 #'
-#' @return a character vector of names of selected kmers
+#' @return a numeric vector of named p-values corresponding to k-mers in the
+#' feature space.
 #'
 #' @details
 #' This function uses \code{\link[stats]{chisq.test}}
@@ -62,9 +62,9 @@ filter_quipt <- function(target, kmers, significance_level = 0.05, ...) {
 #'
 #' @export
 
-filter_chisq <- function(target, kmers, significance_level = 0.05) {
+filter_chisq <- function(target, kmers) {
 
-    pvals <- unlist(lapply(1:ncol(kmers[, 1:10]), function(i) {
+    pvals <- unlist(lapply(1:ncol(kmers), function(i) {
 
         ith_kmer <- as.vector(kmers[, i])
         suppressWarnings({
@@ -74,7 +74,9 @@ filter_chisq <- function(target, kmers, significance_level = 0.05) {
         pval
     }))
 
-    colnames(kmers)[which(pvals < significance_level)]
+    names(pvals) <- colnames(kmers)
+
+    pvals
 }
 
 
@@ -131,9 +133,9 @@ filter_fcbf <- function(target, kmers, thresh = 0.25) {
 #' @param method a character name of a filter type. One of "infogain",
 #' "gainratio" or "symuncert". For more details see
 #' \code{\link[FSelectorRcpp]{information_gain}}.
-#' @param thresh a numeric threshold for variable selection.
 #'
-#' @return a character vector of names of selected kmers
+#' @return a numeric vector of named p-values corresponding to k-mers in the
+#' feature space.
 #'
 #' @details
 #' This function uses \code{\link[FSelectorRcpp]{information_gain}}
@@ -150,14 +152,18 @@ filter_fcbf <- function(target, kmers, thresh = 0.25) {
 #'
 #' @export
 
-filter_ig <- function(target, kmers, method, thresh) {
+filter_ig <- function(target, kmers, method) {
 
     method <- match.arg(method, c("infogain", "gainratio", "symuncert"))
 
     res <- information_gain(x = kmers, y = target, discIntegers = FALSE,
                             type = "gainratio")
 
-    res[["attributes"]][res[["importance"]] < thresh]
+    scores <- res[["importance"]]
+
+    names(scores) <- res[["attributes"]]
+
+    scores
 }
 
 
@@ -179,7 +185,6 @@ filter_ig <- function(target, kmers, method, thresh) {
 #'
 #' @param method a character name of a filter type. One of "MIM", "MRMR", "JMI",
 #' "JMIM", "DISR", "NJMIM", "CMIM", "CMI". See details for more information.
-#' @param thresh a threshold for corresponfing score.
 #'
 #' @return a character vector of names of selected kmers
 #'
@@ -206,7 +211,7 @@ filter_ig <- function(target, kmers, method, thresh) {
 #'
 #' @export
 
-filter_praznik <- function(target, kmers, method, thresh) {
+filter_praznik <- function(target, kmers, method) {
 
     praznik_methods <-
         c("MIM", "MRMR", "JMI", "JMIM", "DISR", "NJMIM", "CMIM", "CMI")
@@ -215,7 +220,7 @@ filter_praznik <- function(target, kmers, method, thresh) {
 
     res <-  get(method)(X = as.data.frame(as.matrix(kmers)), Y = target,
                         k = ncol(kmers))
-    names(res[["score"]])[res[["score"]] < thresh]
+    res[["score"]]
 }
 
 

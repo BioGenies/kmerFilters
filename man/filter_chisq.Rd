@@ -4,19 +4,17 @@
 \alias{filter_chisq}
 \title{Chi-squared independence test}
 \usage{
-filter_chisq(target, kmers, significance_level = 0.05)
+filter_chisq(target, kmers)
 }
 \arguments{
 \item{target}{a numeric response variable}
 
 \item{kmers}{a matrix of kmers with named columns or an object obtained via
 \code{\link{generate_kmer_data}} function.}
-
-\item{significance_level}{a number from 0-1 interval denoting significance
-level for testing.}
 }
 \value{
-a character vector of names of selected kmers
+a numeric vector of named p-values corresponding to k-mers in the
+feature space.
 }
 \description{
 This function is a wrapper over chi-squared independence test for k-mer data.

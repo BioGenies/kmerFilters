@@ -4,7 +4,7 @@
 \alias{filter_praznik}
 \title{Entropy-Based Feature Selection Algorithms}
 \usage{
-filter_praznik(target, kmers, method, thresh)
+filter_praznik(target, kmers, method)
 }
 \arguments{
 \item{target}{a numeric response variable}
@@ -14,8 +14,6 @@ filter_praznik(target, kmers, method, thresh)
 
 \item{method}{a character name of a filter type. One of "MIM", "MRMR", "JMI",
 "JMIM", "DISR", "NJMIM", "CMIM", "CMI". See details for more information.}
-
-\item{thresh}{a threshold for corresponfing score.}
 }
 \value{
 a character vector of names of selected kmers

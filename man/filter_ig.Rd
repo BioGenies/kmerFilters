@@ -4,7 +4,7 @@
 \alias{filter_ig}
 \title{Entropy-Based Feature Selection Algorithms}
 \usage{
-filter_ig(target, kmers, method, thresh)
+filter_ig(target, kmers, method)
 }
 \arguments{
 \item{target}{a numeric response variable}
@@ -15,11 +15,10 @@ filter_ig(target, kmers, method, thresh)
 \item{method}{a character name of a filter type. One of "infogain",
 "gainratio" or "symuncert". For more details see
 \code{\link[FSelectorRcpp]{information_gain}}.}
-
-\item{thresh}{a numeric threshold for variable selection.}
 }
 \value{
-a character vector of names of selected kmers
+a numeric vector of named p-values corresponding to k-mers in the
+feature space.
 }
 \description{
 This function is a wrapper over Entropy-Based Feature Selection Algorithms
