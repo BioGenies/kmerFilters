@@ -77,12 +77,12 @@ motifs
 Using simulated motifs we can simulate positive and negative sequences and consrtuct a k-mer feature space:
 
 ```{r}
-results <- generate_kmer_data(n_seq = 20, 
+results <- generate_kmer_data(n_seq = 200, 
                               sequence_length = 20, 
                               alphabet = alph,
                               motifs = motifs, 
                               n_injections = 4)
-results
+results[1:10, ]
 ```
 
 Using obtained data you can choose how to generate a response variable. We provide three functions for that:
@@ -94,12 +94,27 @@ Using obtained data you can choose how to generate a response variable. We provi
 For example, the following code:
 
 ```{r}
-get_target_additive(results)
+target <- get_target_additive(results)
+target
 ```
 
 creates a binary response variable based on the logistic regression model assumptions.
 
 ### How to filter
+
+We have implemented many filtering methods. You can list them easily using the function
+
+```{r}
+list_filters()
+```
+
+Using k-mer space and target variable you can filter k-mers as follows:
+
+```{r}
+filter_quipt(target, results, significance_level = 0.05)
+```
+
+
 
 
 ## Contributing

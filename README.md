@@ -64,6 +64,8 @@ example:
 
 ``` r
 library(kmerFilters)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 
 alph <- letters[1:4]
 n_injections <- 4
@@ -76,53 +78,43 @@ motifs <- generate_motifs(alphabet = alph,
 
 motifs
 #> [[1]]
-#> [1] "d" "_" "_" "_" "_" "_" "b"
+#> [1] "b" "_" "_" "d"
 #> 
 #> [[2]]
-#> [1] "c" "_" "_" "d" "c"
+#> [1] "c" "_" "c" "a" "c"
 #> 
 #> [[3]]
-#> [1] "b" "_" "c" "_" "_" "c"
+#> [1] "a" "_" "d"
 #> 
 #> [[4]]
-#> [1] "c" "_" "_" "b" "_" "_" "c"
+#> [1] "c" "b" "_" "_" "_" "_" "b"
 ```
 
 Using simulated motifs we can simulate positive and negative sequences
 and consrtuct a k-mer feature space:
 
 ``` r
-results <- generate_kmer_data(n_seq = 20, 
+results <- generate_kmer_data(n_seq = 200, 
                               sequence_length = 20, 
                               alphabet = alph,
                               motifs = motifs, 
                               n_injections = 4)
-results
-#> 20 x 14940 sparse Matrix of class "dgCMatrix"
-#>   [[ suppressing 33 column names 'a', 'd', 'b' ... ]]
+results[1:10, ]
+#> 10 x 23406 sparse Matrix of class "dgCMatrix"
+#>   [[ suppressing 33 column names 'a_0', 'd_0', 'b_0' ... ]]
 #>                                                                               
-#>  [1,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 . ......
-#>  [2,] 1 1 1 1 . 1 1 1 1 1 1 1 1 1 1 1 1 . . . 1 1 . 1 1 1 1 1 . 1 . 1 1 ......
-#>  [3,] 1 1 1 1 . 1 . 1 . . 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 1 1 . 1 1 1 ......
-#>  [4,] 1 1 1 1 . 1 1 1 1 1 . 1 1 . 1 1 1 1 1 1 . 1 1 1 . 1 . 1 1 1 1 1 1 ......
-#>  [5,] 1 1 1 1 1 1 1 . 1 1 1 1 1 1 . 1 1 1 . . 1 1 1 . 1 1 . 1 1 1 1 1 . ......
-#>  [6,] 1 1 1 1 1 . 1 1 1 1 1 1 . 1 . 1 . 1 1 . 1 1 . 1 . . . 1 1 1 1 . 1 ......
-#>  [7,] 1 1 1 1 1 1 . 1 1 . 1 1 1 1 1 1 . 1 1 1 . 1 1 . 1 1 . 1 1 1 1 . . ......
-#>  [8,] 1 1 1 1 1 . 1 . 1 1 1 1 . 1 . 1 1 . . . 1 . . 1 1 . 1 1 . 1 1 1 . ......
-#>  [9,] 1 1 1 1 1 1 . 1 1 1 1 1 1 1 . 1 . . 1 1 1 . . 1 1 . 1 1 1 1 1 1 1 ......
-#> [10,] 1 1 1 1 1 1 1 1 . 1 1 1 1 . . . 1 1 . . 1 1 1 . 1 1 1 1 . 1 1 1 . ......
-#> [11,] 1 1 1 1 . . . 1 . 1 . 1 1 1 1 1 1 1 1 . 1 1 1 1 1 1 1 1 1 . 1 . . ......
-#> [12,] 1 1 1 1 1 1 1 . . 1 1 1 1 1 1 1 1 . 1 . 1 1 . . 1 1 1 1 . 1 1 1 . ......
-#> [13,] 1 1 1 1 1 1 1 . 1 1 . 1 . 1 1 . 1 1 1 1 1 1 . . . 1 . 1 1 1 1 1 1 ......
-#> [14,] 1 1 1 1 1 . 1 1 1 . 1 1 1 1 1 1 . . 1 1 1 1 1 1 . 1 1 1 1 1 . 1 . ......
-#> [15,] 1 1 . 1 1 1 . 1 . 1 1 . 1 . . . 1 . 1 1 1 . 1 . 1 . 1 . 1 1 . 1 1 ......
-#> [16,] 1 1 1 1 . 1 1 . 1 1 . 1 . 1 . 1 1 1 1 . 1 . 1 . . 1 . 1 . 1 1 . . ......
-#> [17,] 1 1 1 1 1 1 1 1 1 1 1 1 . 1 1 . . 1 1 . 1 1 1 1 1 1 . . 1 1 1 1 1 ......
-#> [18,] 1 1 1 1 1 1 1 1 1 1 . 1 1 . 1 . . 1 1 1 1 1 . 1 . 1 . 1 1 1 . 1 1 ......
-#> [19,] 1 1 1 1 . . 1 1 . 1 . 1 1 1 1 1 1 1 1 1 . 1 . 1 . . . 1 1 1 1 . 1 ......
-#> [20,] 1 1 1 1 1 . 1 1 1 . 1 1 1 1 1 1 . 1 1 1 1 1 . . . 1 1 1 1 1 1 . 1 ......
+#>  [1,] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 . . . . . 1 1 1 1 1 1 1 1 1 1 1 1 1 ......
+#>  [2,] 1 1 1 1 . . 1 . . 1 . . 1 1 1 1 1 1 1 . . 1 1 1 . 1 . 1 1 . . 1 1 ......
+#>  [3,] 1 1 1 1 1 1 . 1 . 1 1 1 . . 1 . 1 1 1 1 1 1 . 1 1 . 1 1 . 1 1 . 1 ......
+#>  [4,] 1 1 1 1 1 1 . 1 . 1 1 1 . 1 1 . 1 1 1 . 1 . 1 1 1 . . 1 1 1 1 1 . ......
+#>  [5,] 1 1 1 1 1 . 1 1 . 1 . 1 1 1 1 1 1 1 1 1 . . . 1 1 . 1 1 1 1 . 1 1 ......
+#>  [6,] 1 1 1 1 . . 1 . . 1 1 . 1 1 1 1 1 . 1 1 1 1 1 1 . 1 . 1 1 . . 1 1 ......
+#>  [7,] 1 1 1 1 1 . . 1 1 1 . 1 . 1 1 1 . 1 1 . 1 1 . 1 1 1 . 1 . 1 1 . 1 ......
+#>  [8,] 1 1 1 1 . 1 . . . 1 1 . 1 1 1 . 1 . 1 . . . 1 1 1 1 . 1 1 1 1 1 . ......
+#>  [9,] 1 1 1 1 1 1 1 . 1 1 1 1 . 1 1 1 1 . 1 . . . 1 1 1 . 1 1 1 1 1 1 . ......
+#> [10,] 1 1 1 1 1 1 . . . 1 1 1 . 1 1 1 1 1 1 . 1 . 1 1 1 1 1 1 1 1 1 1 1 ......
 #> 
-#>  .....suppressing 14907 columns in show(); maybe adjust 'options(max.print= *, width = *)'
+#>  .....suppressing 23373 columns in show(); maybe adjust options(max.print=, width=)
 #>  ..............................
 ```
 
@@ -136,14 +128,40 @@ We provide three functions for that:
 For example, the following code:
 
 ``` r
-get_target_additive(results)
-#>  [1] 0 1 1 1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0
+target <- get_target_additive(results)
+target
+#>   [1] 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1 1 0 1 1 0 1 0 1 1 1 1 1 1 1
+#>  [38] 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 0 1 0 1 0 0 0 1 1 0 1 1 0
+#>  [75] 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 1 0 1 1 1 0 0 0 0 0 0 0 0 0 0 1
+#> [112] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0
+#> [149] 0 1 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0
+#> [186] 0 0 1 0 0 0 0 0 0 0 0 1 0 0 1
 ```
 
 creates a binary response variable based on the logistic regression
 model assumptions.
 
 ### How to filter
+
+We have implemented many filtering methods. You can list them easily
+using the function
+
+``` r
+list_filters()
+#> [1] "filter_chisq"   "filter_fcbf"    "filter_ic"      "filter_ig"     
+#> [5] "filter_praznik" "filter_quipt"
+```
+
+Using k-mer space and target variable you can filter k-mers as follows:
+
+``` r
+filter_quipt(target, results, significance_level = 0.05)
+#>  [1] "a.c_1"         "b.d_2"         "b.b_4"         "c.b_5"        
+#>  [5] "c.a.c_0.0"     "c.c.a_1.0"     "c.c.c_1.1"     "b.c.c_3.1"    
+#>  [9] "c.b.b_0.4"     "c.c.a.c_1.0.0" "d.c.c.a_0.1.0" "c.b.b.b_0.3.0"
+#> [13] "c.c.c.c_1.1.1" "b.c.c.c_1.1.1" "d.c.c.c_3.1.1" "b.c.b.b_0.2.1"
+#> [17] "b.c.b.b_0.3.1" "c.b.c.b_0.0.3"
+```
 
 ## Contributing
 

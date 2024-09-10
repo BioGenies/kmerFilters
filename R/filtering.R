@@ -315,3 +315,18 @@ sparse_cor <- function(y_name, xy, candidates_sums, n) {
 
 
 
+
+#' Get a list of filtering methods
+#'
+#' @return a character vector of names of filtering functions
+#'
+#' @examples
+#' list_filters()
+#'
+#' @export
+
+list_filters <- function()
+    ls("package:kmerFilters")[grep(pattern = "filter_",
+                                   x = ls("package:kmerFilters"))]
+
+
