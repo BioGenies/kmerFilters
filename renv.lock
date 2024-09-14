@@ -375,7 +375,7 @@
     },
     "Rdpack": {
       "Package": "Rdpack",
-      "Version": "2.6",
+      "Version": "2.6.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -385,7 +385,7 @@
         "tools",
         "utils"
       ],
-      "Hash": "3e1384ada5d3948b392e98b11434d972"
+      "Hash": "24a964d2cf75ad25d7b843856c8d4c93"
     },
     "S4Arrays": {
       "Package": "S4Arrays",
@@ -569,16 +569,23 @@
     "biogram": {
       "Package": "biogram",
       "Version": "1.6.3",
-      "Source": "Repository",
+      "Source": "GitHub",
       "Repository": "CRAN",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "biogram",
+      "RemoteUsername": "KrystynaGrzesiak",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "d106dd7882aececf78c9140cb77bfc4003e1b592",
       "Requirements": [
+        "Matrix",
         "R",
         "combinat",
         "entropy",
         "partitions",
         "slam"
       ],
-      "Hash": "16ad11ab1148293d81ef7ab4038880aa"
+      "Hash": "fbbe1590400e139c0a3cbed10264391f"
     },
     "bitops": {
       "Package": "bitops",
@@ -645,7 +652,7 @@
     },
     "checkmate": {
       "Package": "checkmate",
-      "Version": "2.3.1",
+      "Version": "2.3.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -653,7 +660,7 @@
         "backports",
         "utils"
       ],
-      "Hash": "c01cab1cb0f9125211a6fc99d540e315"
+      "Hash": "0e14e01ce07e7c88fd25de6d4260d26b"
     },
     "cli": {
       "Package": "cli",
@@ -920,14 +927,14 @@
     },
     "gmp": {
       "Package": "gmp",
-      "Version": "0.7-4",
+      "Version": "0.7-5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
       ],
-      "Hash": "eef7063b82c79405f4eb2de9a051a312"
+      "Hash": "47b774de7ee40f6134cfdeab3fc85df9"
     },
     "gridExtra": {
       "Package": "gridExtra",
@@ -1447,7 +1454,7 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.27",
+      "Version": "2.28",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1466,7 +1473,7 @@
         "xfun",
         "yaml"
       ],
-      "Hash": "27f9502e1cdbfa195f94e03b0f517484"
+      "Hash": "062470668513dcda416927085ee9bdc7"
     },
     "rprojroot": {
       "Package": "rprojroot",
@@ -1555,14 +1562,14 @@
     },
     "slam": {
       "Package": "slam",
-      "Version": "0.1-51",
+      "Version": "0.1-53",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "stats"
       ],
-      "Hash": "93d0bf2740adf7d41e909a76f1e1053c"
+      "Hash": "530404612c10533ff2deb1622c458b36"
     },
     "speedglm": {
       "Package": "speedglm",
